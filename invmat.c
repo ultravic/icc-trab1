@@ -33,6 +33,12 @@ int main(int argc, char const *argv[])
 					if (argv[++i] == argc)
 					{
 						K = atoi(argv[i]);
+						if(K == 0){
+							if(argv[i] != 0){
+								fprintf(stderr,PARAM_ERROR);
+								exit(FAILURE);
+							}
+						}
 					} else
 					{
 						in_file = (char *) argv[i];
