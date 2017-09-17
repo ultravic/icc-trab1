@@ -25,32 +25,37 @@ void changeLines(t_matrix *matrix, int fline, int sline)
 */
 t_matrix* gaussElimination(t_matrix *matrix)
 {
-    int j, i, k;
+    int j, i, k, sizeL = 0;
     int line_change;
     double column_subtract;
-    double largest_column_n;
-    t_matrix *matrixL;
+    double largest_column_n = 0.0f;
+    t_matrix matrixL;
 
-    int sizeL = matrix->lenght - 1;
-    i = sizeL - 1;
-    while (i--) sizeL =+ i;
+    i = matrix->lenght - 1;
+    while (i) {
+      sizeL += i;
+      --i;
+    }
 
-    matrixL->lenght = sizeL;
-    matrixL->matrix = (double *)malloc(sizeof(double)*sizeL); //Verificar tamanho
+    matrixL.lenght = sizeL;
+    matrixL.matrix = (double *)malloc(sizeof(double)*sizeL); //Verificar tamanho
 
     for (i = 0; i < (matrix->lenght - 1); ++i) {
-        largest_column_n = matrix->matrix[(i*matrix->lenght) + i];
-        for (j = i; j < matrix->lenght; ++j) {
-            if (matrix->matrix[(j*matrix->lenght) + i] > largest_column_n) {
-                largest_column_n = matrix->matrix[(j*matrix->lenght) + i];
-                line_change = j;
-            }
+      line_change = i;
+      largest_column_n = matrix->matrix[(i*matrix->lenght) + i];
+      for (j = i; j < matrix->lenght; ++j) {
+        if (matrix->matrix[(j*matrix->lenght) + i] > largest_column_n) {
+            largest_column_n = matrix->matrix[(j*matrix->lenght) + i];
+            line_change = j;
         }
-        changeLines(matrix, i, line_change);
-        for (j = i + 1; j < matrix->lenght; ++j) {
-          matrixL->matrix[j - 1] = matrix->matrix[(j*matrix->lenght) + i]/matrix->matrix[(i*matrix->lenght) + i];
-          for (k = i + 1; k < matrix->lenght; ++k)
-            matrix->matrix[(j*matrix->lenght) + k] -= matrixL->matrix[j - 1] * matrix->matrix[(i*matrix->lenght) + k];
-        }
+      }
+      changeLines(matrix, i, line_change);
+
+      for (j = i + 1; j < matrix->lenght; ++j) {
+        matrixL.matrix[j - 1] = matrix->matrix[(j*matrix->lenght) + i]/matrix->matrix[(i*matrix->lenght) + i];
+        matrix->matrix[(j*matrix->lenght) + i] = 0.0f;
+        for (k = i + 1; k < matrix->lenght; ++k)
+          matrix->matrix[(j*matrix->lenght) + k] -= matrixL.matrix[j - 1] * matrix->matrix[(i*matrix->lenght) + k];
+      }
     }
 }
