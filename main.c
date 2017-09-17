@@ -20,12 +20,15 @@ int main(int argc, char const *argv[]) {
   t_matrix matrix;
 
   matrix.matrix = (double *)malloc(sizeof(double));
-  matrix.lenght = 2;
+  printf("N: ");
+  scanf("%d", &matrix.lenght);
 
   matrix.matrix = generateSquareRandomMatrix(matrix.lenght);
 
   printMatrix(matrix);
+  printf("\n");
   gaussElimination(&matrix);
+  printMatrix(matrix);
 
   return 0;
 }
