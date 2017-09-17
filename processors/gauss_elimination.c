@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../datatypes.h"
+#include "../headers/datatypes.h"
 
 /*
     - Função criada para fazer a troca de linhas.

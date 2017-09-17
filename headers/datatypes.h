@@ -1,5 +1,5 @@
-#ifndef _DATA_STRUCTURES_
-#define _DATA_STRUCTURES_
+#ifndef __DATATYPES__
+#define __DATATYPES__
 
 	/** @brief     Estrutura para matrizes de ponto fluntuante de precisão dupla */
 	typedef struct {
