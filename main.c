@@ -15,20 +15,33 @@ void printMatrix(t_matrix matrix)
   }
 }
 
+void printMatrixL(t_matrix matrix)
+{
+  int i;
+  printf("%d\n", matrix.lenght);
+  for (i = 0; i < matrix.lenght; ++i) {
+    printf("%1.20f\n", matrix.matrix[i]);
+  }
+}
+
 int main(int argc, char const *argv[]) {
   /* code */
   t_matrix matrix;
+  t_matrix matrixL;
 
   matrix.matrix = (double *)malloc(sizeof(double));
   printf("N: ");
-  scanf("%d", &matrix.lenght);
+  //scanf("%d", &matrix.lenght);
+  matrix.lenght = 4;
 
   matrix.matrix = generateSquareRandomMatrix(matrix.lenght);
 
   printMatrix(matrix);
   printf("\n");
-  gaussElimination(&matrix);
+  matrixL = gaussElimination(&matrix);
   printMatrix(matrix);
+  printf("\n");
+  printMatrixL(matrixL);
 
   return 0;
 }

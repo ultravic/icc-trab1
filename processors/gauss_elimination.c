@@ -23,7 +23,7 @@ void changeLines(t_matrix *matrix, int fline, int sline)
     - Função que utiliza o método da eliminação de Gauss.
     - Recebe um vetor e seu tamanho.
 */
-t_matrix* gaussElimination(t_matrix *matrix)
+t_matrix gaussElimination(t_matrix *matrix)
 {
     int j, i, k, sizeL = 0;
     int line_change;
@@ -39,6 +39,7 @@ t_matrix* gaussElimination(t_matrix *matrix)
 
     matrixL.lenght = sizeL;
     matrixL.matrix = (double *)malloc(sizeof(double)*sizeL); //Verificar tamanho
+    sizeL = 0;
 
     for (i = 0; i < (matrix->lenght - 1); ++i) {
       line_change = i;
@@ -52,10 +53,13 @@ t_matrix* gaussElimination(t_matrix *matrix)
       changeLines(matrix, i, line_change);
 
       for (j = i + 1; j < matrix->lenght; ++j) {
-        matrixL.matrix[j - 1] = matrix->matrix[(j*matrix->lenght) + i]/matrix->matrix[(i*matrix->lenght) + i];
+        matrixL.matrix[sizeL] = matrix->matrix[(j*matrix->lenght) + i]/matrix->matrix[(i*matrix->lenght) + i];
         matrix->matrix[(j*matrix->lenght) + i] = 0.0f;
         for (k = i + 1; k < matrix->lenght; ++k)
-          matrix->matrix[(j*matrix->lenght) + k] -= matrixL.matrix[j - 1] * matrix->matrix[(i*matrix->lenght) + k];
+          matrix->matrix[(j*matrix->lenght) + k] -= matrixL.matrix[sizeL] * matrix->matrix[(i*matrix->lenght) + k];
+        sizeL++;
       }
     }
+
+    return matrixL;
 }
