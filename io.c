@@ -1,69 +1,66 @@
-// #include "io.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
-
-typedef struct {
-	int length; // size
-	double * matrix; // matrix
-} t_matrix;
-
-#ifndef _IO_HEADER
-
-	/** @brief     Faz x^2 */
-	#define SQ(x) ((x)*(x))
-
-	/**
-	 * @brief      Aloca memória
-	 *
-	 * @param      t     tipo de dado
-	 * @param      n     unidades
-	 *
-	 * @return     uma região de memória
-	 */
-	#define ALLOC(t,n) (t *) malloc((n)*sizeof(t))
-
-	/** @brief     Erro de leitura */
-	#define READ_ERROR -1
-
-	/** @brief    Numero do STDIN */
-	#define STDIN_FILENO 0
-
-#endif
-
+#include <string.h>
+#include "headers/io.h"
 
 /**
- * @brief      Le uma matriz n*n 
+ * @brief      Le uma matriz n*n
  *
- * @return     Matriz[n*n], ou NULL caso ocorra ERRO na leitura
+ * @param      M          Matriz onde serão guardados os valores lidos
+ * @param      file_path  Arquivo a ser lido, ou "stdin"
+ *
+ * @return     0 Caso tenha sucesso
  */
-double * readMatrix(){
-	t_matrix M;
-	M.length = (int) getc(stdin);	
-	M.matrix = ALLOC(double,length);
-	int n;
+int readMatrix(t_matrix * M, char *file_path){
+	FILE *file;
+	int i = 0; // contador de valores
+	int c;
+	int size;
 
-	while ((n = read(STDIN_FILENO, M.matrix, sizeof(double))) > 0)
-	if (n == READ_ERROR){
-		printf("Erro! Não é possível ler a matriz. \n");
-		return NULL;
-	}
-	return matrix;
-} 
+	if (strcmp(file_path, "stdin") == 0)
+		file = stdin;
+	else
+		file = fopen(file_path, "r");
 
-void printMatrix(){
-	for (int i = 0; i < count; ++i)
+
+ 	if (file)
+ 	{
+		if(fscanf(file, "%d\n", &M->length) == ERROR)
+			return ERROR;
+
+		M->matrix = ALLOC(double,SQ(M->length));
+		size = SQ(M->length);
+
+		for (i = 0; i < size; ++i)
+			c = fscanf(file, "%lf ", &M->matrix[i]);
+
+		fclose(file);
+
+		if (c != 1)
+			return ERROR;
+
+		return SUCCESS;
+	};
+
+	return ERROR;
+}
+
+/**
+ * @brief      Imprime a matriz no formato especificado
+ *
+ * @param      M     Matriz a ser impressa
+ */
+void printMatrix(t_matrix *M){
+	int length = M->length;
+	printf("%d\n",length);
+	for (int i = 0; i < length; ++i)
 	{
-		/* code */
+		for (int j = 0; j < length; j++) {
+			printf("%.17g " , VALUE(M,i,j));
+		};
+		printf("\n");
 	}
 }
 
 
-int main(int argc, char const *argv[])
-{
-	double *A;
-	if(!(A = readMatrix()))
-		return -1;
-	printf("ok\n");
-	return 0;
-}
+
