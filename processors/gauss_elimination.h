@@ -2,6 +2,6 @@
 #define __GAUSS_ELIMINATION__
 
 /* Definição */
-double* gaussElimination(double* matrixU, int size);
+t_matrix* gaussElimination(t_matrix* matrix, int size);
 
 #endif
