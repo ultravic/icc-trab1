@@ -4,6 +4,6 @@
 #include "datatypes.h"
 
 /* Definição */
-t_matrix* gaussElimination(t_matrix* matrix);
+t_matrix gaussElimination(t_matrix* matrix);
 
 #endif

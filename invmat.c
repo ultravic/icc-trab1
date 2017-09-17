@@ -5,6 +5,7 @@
 #include "headers/gauss_elimination.h"
 #include "headers/matrix_generator.h"
 #include "headers/datatypes.h"
+#include "headers/printers.h"
 #include "headers/io.h"
 
 
@@ -68,9 +69,12 @@ int main(int argc, char const *argv[])
 			}
 		#endif
 		printMatrix(A);
-
+		printf("\n");
+		matrixL = gaussElimination(&matrix);
+		printMatrix(matrix);
+		printf("\n");
+		printMatrixL(matrixL);
 	}
 
 	return SUCCESS;
 }
-

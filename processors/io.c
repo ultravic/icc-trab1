@@ -44,23 +44,3 @@ int readMatrix(t_matrix * M, char *file_path){
 
 	return ERROR;
 }
-
-/**
- * @brief      Imprime a matriz no formato especificado
- *
- * @param      M     Matriz a ser impressa
- */
-void printMatrix(t_matrix *M){
-	int length = M->length;
-	printf("%d\n",length);
-	for (int i = 0; i < length; ++i)
-	{
-		for (int j = 0; j < length; j++) {
-			printf("%.17g " , VALUE(M,i,j));
-		};
-		printf("\n");
-	}
-}
-
-
-
