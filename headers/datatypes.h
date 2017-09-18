@@ -7,8 +7,6 @@
 		double * matrix; // matrix
 	} t_matrix;
 
-	#ifndef _IO_HEADER
-
 	/** @brief     Faz x^2 */
 	#define SQ(x) (x)*(x)
 
@@ -42,6 +40,7 @@
 	 * @return     O valor acessado
 	 */
 	#define VALUE(M,l,c) (M->matrix[(l) * M->length + (c)])
+	#define SAVE(M,l,c,v) (M->matrix[(l) * M->length + (c)] = (v))
 
 	/** @brief     Erro de leitura */
 	#define ERROR -1

@@ -1,6 +1,6 @@
+#include "datatypes.h"
 #ifndef __IO__
 #define __IO__
-#include "datatypes.h"
 
 /**
  * @brief      Le uma matriz n*n
