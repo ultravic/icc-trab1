@@ -91,7 +91,6 @@ int main(int argc, char const *argv[])
 	INIT_MATRIX(A);
 	INIT_MATRIX(L);
 
-
 	if(P->random)
 	{
 		A->length = P->N;

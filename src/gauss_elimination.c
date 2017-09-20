@@ -45,20 +45,20 @@ t_matrix * gaussElimination(t_matrix *matrix)
 
     for (i = 0; i < (matrix->length - 1); ++i) {
       line_change = i;
-      largest_column_n = VALUE(matrix,i,i);
+      largest_column_n = GET(matrix,i,i);
       for (j = i; j < matrix->length; ++j) {
-        if (VALUE(matrix,j,i) > largest_column_n) {
-            largest_column_n = VALUE(matrix,j,i);
+        if (GET(matrix,j,i) > largest_column_n) {
+            largest_column_n = GET(matrix,j,i);
             line_change = j;
         }
       }
       changeLines(matrix, i, line_change);
 
       for (j = i + 1; j < matrix->length; ++j) {
-        matrixL->matrix[sizeL] = VALUE(matrix,j,i)/VALUE(matrix,i,i);
-        SAVE(matrix,j,i,0.0f);
+        matrixL->matrix[sizeL] = GET(matrix,j,i)/GET(matrix,i,i);
+        SET(matrix,j,i,0.0f);
         for (k = i + 1; k < matrix->length; ++k)
-          matrix->matrix[(j*matrix->length) + k] -= matrixL->matrix[sizeL] * VALUE(matrix,i,k);
+          matrix->matrix[(j*matrix->length) + k] -= matrixL->matrix[sizeL] * GET(matrix,i,k);
         sizeL++;
       }
     }

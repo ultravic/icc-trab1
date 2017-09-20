@@ -11,7 +11,7 @@ double *generateSquareRandomMatrix(int n)
 
   /* generate a randomly initialized matrix in row-major order */
   double *ptr = mat;
-  double *end = mat + (n * n);
+  double *end = mat + SQ(n);
 
   double invRandMax = 1.0/(double)RAND_MAX;
 
