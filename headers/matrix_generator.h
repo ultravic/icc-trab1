@@ -2,6 +2,6 @@
 #define __MATRIX_GENERATOR__
 
 /* Definição */
-double* generateSquareRandomMatrix(unsigned int n);
+double* generateSquareRandomMatrix(int n);
 
 #endif

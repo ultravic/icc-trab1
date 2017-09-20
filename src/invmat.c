@@ -94,6 +94,7 @@ int main(int argc, char const *argv[])
 
 	if(P->random)
 	{
+		A->length = P->N;
 		A->matrix = generateSquareRandomMatrix(P->N);
 	} else
 	{

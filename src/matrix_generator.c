@@ -1,11 +1,12 @@
+#include "../headers/datatypes.h"
 #include <stdlib.h>
 
-double *generateSquareRandomMatrix(unsigned int n)
+double *generateSquareRandomMatrix(int n)
 {
   double *mat = NULL;
 
   /* return NULL if memory allocation fails */
-  if (!(mat = (double *)malloc(n*n*sizeof(double))))
+  if (!(mat = ALLOC(double, SQ(n))))
     return NULL;
 
   /* generate a randomly initialized matrix in row-major order */
