@@ -1,4 +1,4 @@
-	#include <stdlib.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
@@ -35,7 +35,7 @@ int parseParameters(int argc, char const *argv[], param *P){
 	int i;
 	// Verifica se parametros tem chance de estarem no padrão
 	if (!((argc >= 2) && (argc % 2 != 0)))
-		return 1;
+		return ERROR;
 	else
 	{
 		// Trata parametros
@@ -43,28 +43,25 @@ int parseParameters(int argc, char const *argv[], param *P){
 		{
 			switch (argv[i][1])
 			{
-				case 'i': //Input file ou iterações?
+				case 'e': //Input file?
 					i++;
-					if (atoi(argv[i]) == argc) {
-						P->K = atoi(argv[i]);
-						if(P->K == 0)
-							if((argv)[i] != 0)
-								return 2;
-					} else	{
-						P->in_file = (char *) argv[i];
-					}
+					P->in_file = (char *) argv[i];
 				break;
 				case 'o': //output file?
-				        i++;
-						P->out_file = (char *) argv[i];
+			        i++;
+					P->out_file = (char *) argv[i];
 				break;
 				case 'r': // random?
 				    i++;
 					P->random = true;
 					P->N = atoi(argv[i]);
 				break;
+				case 'i': //iterações
+					i++;
+					P->K = atoi(argv[i]);
+				break;
 				default:
-					return 3;
+					return ERROR;
 			}
 		}
 	}
@@ -73,7 +70,7 @@ int parseParameters(int argc, char const *argv[], param *P){
 
 int main(int argc, char const *argv[])
 {
-	// static const char PARAM_ERROR[] = "Parametros inválidos!\n Favor usar:invmat [-i arquivo_entrada] [-o arquivo_saida] [-r N] -i k \n";
+	static const char PARAM_ERROR[] = "Parametros inválidos!\n Favor usar:invmat [-i arquivo_entrada] [-o arquivo_saida] [-r N] -i k \n";
 
 
 	// Trata parametros
@@ -82,7 +79,7 @@ int main(int argc, char const *argv[])
 
 	int t;
 	if((t = parseParameters(argc,argv,P)) != SUCCESS){
-		// die(PARAM_ERROR);
+		die(PARAM_ERROR);
 		printf("error %d\n", t);
 		return -1;
 	}
