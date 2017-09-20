@@ -42,10 +42,13 @@
 	#define GET(M,l,c) (M->matrix[(l) * M->length + (c)])
 	#define SET(M,l,c,v) (M->matrix[(l) * M->length + (c)] = (v))
 
-	/** @brief     Erro de leitura */
+	/** @brief     Erro */
 	#define ERROR -1
 
-	/** @brief     Erro de leitura */
+	/** @brief    Sucesso */
 	#define SUCCESS 0
+
+	/** @brief     Zero em ponto fluntuante */
+	#define ZEROF 0.0f
 
 #endif
