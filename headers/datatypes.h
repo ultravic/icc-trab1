@@ -27,7 +27,7 @@
 	 */
 	#define INIT_MATRIX(M) { \
 		M = ALLOC(t_matrix,1); \
-		M.length = 0; \
+		M->length = 0; \
 	}
 
 	/**

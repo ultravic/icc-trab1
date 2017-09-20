@@ -18,12 +18,12 @@ typedef struct{
 }param;
 
 #define INIT_PARAM(P) { \
-	(*P) = ALLOC(param,1); \
-	P.K = 0; \
-	P.N = 0; \
-	P.in_file = "stdin"; \
-	P.out_file = "stdout"; \
-	P.random = false; \
+	P = ALLOC(param,1); \
+	P->K = 0; \
+	P->N = 0; \
+	P->in_file = "stdin"; \
+	P->out_file = "stdout"; \
+	P->random = false; \
 }
 
 void die(char const reason[]){
@@ -77,11 +77,11 @@ int main(int argc, char const *argv[])
 
 
 	// Trata parametros
-	param P;
+	param *P;
 	INIT_PARAM(P);
 
 	int t;
-	if((t = parseParameters(argc,argv,&P)) != SUCCESS){
+	if((t = parseParameters(argc,argv,P)) != SUCCESS){
 		// die(PARAM_ERROR);
 		printf("error %d\n", t);
 		return -1;
@@ -90,29 +90,29 @@ int main(int argc, char const *argv[])
 	// Tudo certo com os parametros, prosseguindo
 
 	// inicializa matriz A
-	t_matrix A, L;
+	t_matrix *A, *L;
 	INIT_MATRIX(A);
 	INIT_MATRIX(L);
 
 
-	if(P.random)
+	if(P->random)
 	{
-		A.matrix = generateSquareRandomMatrix(P.N);
+		A->matrix = generateSquareRandomMatrix(P->N);
 	} else
 	{
-		printf("%s\n",P.in_file );
-		if(readMatrix(&A,P.in_file) == ERROR){
+		printf("%s\n",P->in_file );
+		if(readMatrix(A,P->in_file) == ERROR){
 			printf("Erro! Não foi possível ler a entrada.\n");
 			return ERROR;
 		}
 	}
 
-	printMatrix(&A);
+	printMatrix(A);
 	printf("\n");
-	L = gaussElimination(&A);
-	printMatrix(&A);
+	L = gaussElimination(A);
+	printMatrix(A);
 	printf("\n");
-	printMatrixL(&L);
+	printMatrixL(L);
 
 	return SUCCESS;
 }
