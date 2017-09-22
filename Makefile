@@ -5,7 +5,7 @@ vpath %.c src
 vpath %.h headers
 
 src = $(wildcard *.c)
-OBJ = invmat.o printers.o matrix_generator.o gauss_elimination.o io.o
+OBJ = invmat.o printers.o matrix_generator.o matrix_solver.o gauss_elimination.o io.o
 
 invmat: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)

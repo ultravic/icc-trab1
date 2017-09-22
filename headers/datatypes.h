@@ -40,7 +40,10 @@
 	 * @return     O valor acessado
 	 */
 	#define GET(M,l,c) (M->matrix[(l) * M->length + (c)])
+	#define GETV(M,i) (M->matrix[(i)])
+
 	#define SET(M,l,c,v) (M->matrix[(l) * M->length + (c)] = (v))
+	#define SETV(M,i,v) (M->matrix[(i)] = (v))
 
 	/** @brief     Erro */
 	#define ERROR -1

@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include "../headers/gauss_elimination.h"
 #include "../headers/matrix_generator.h"
+#include "../headers/matrix_solver.h"
 #include "../headers/datatypes.h"
 #include "../headers/printers.h"
 #include "../headers/io.h"

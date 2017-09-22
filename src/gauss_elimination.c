@@ -62,7 +62,7 @@ t_matrix * gaussElimination(t_matrix *matrix)
             line_change = j;
         }
       }
-      
+
       changeLines(matrix, i, line_change);
 
       for (j = i + 1; j < length; ++j) {
