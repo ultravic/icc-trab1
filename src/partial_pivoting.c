@@ -25,8 +25,8 @@ void pivot(t_matrix *M, int pos, int *index_array){
             max_line = i;
         }
     }
-    if(IS_ZERO(max_num))
-        die(ERROR_ZERO_PIVOT);
+    // if(IS_ZERO(max_num))
+    //     die(ERROR_ZERO_PIVOT);
     index_array[pos] = max_line;
     index_array[max_line] = pos;
 }

@@ -60,16 +60,20 @@ int main(int argc, char const *argv[])
 	// while (k > 0) {
 		printMatrix(mA);
 		printf("\n");
+		printMatrix(mB);
+		printf("\n");
 		printMatrix(mI);
 		printf("\n");
-		gaussElimination(mA, mL, index_array);
+		gaussElimination(mA, mB, mL, index_array);
 		printMatrix(mA);
+		printf("\n");
+		printMatrix(mB);
 		printf("\n");
 		printMatrixL(mL);
 
 		// Matriz B recebe a matriz resíduo r = Identidade (I) - A (U). X'
 		mB = mI;
-		resultRefinement(mA, mX, mI, mB);
+		// resultRefinement(mA, mX, mI, mB);
 	// }
 
 	return SUCCESS;

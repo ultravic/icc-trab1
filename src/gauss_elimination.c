@@ -40,19 +40,21 @@ void initMatrixL(t_matrix *matrixL, int length)
     - Função que utiliza o método da eliminação de Gauss.
     - Recebe um vetor e seu tamanho.''
 */
-void gaussElimination(t_matrix *matrix, t_matrix *matrixL, int *index_array)
+void gaussElimination(t_matrix *mA, t_matrix *mB, t_matrix *mL, int *index_array)
 {
     int j, i, k, sizeL = 0;
-    int length = matrix->length;
+    int length = mA->length;
 
     for (i = 0; i < (length - 1); ++i) {
-      pivot(matrix, i, index_array);
+      pivot(mA, i, index_array);
       for (j = i + 1; j < length; ++j) {
-        matrixL->matrix[sizeL] = GET(matrix,j,i)/GET(matrix,i,i);
-        SET(matrix,j,i,ZEROF);
+        mL->matrix[sizeL] = GET(mA,j,i)/GET(mA,i,i);
+        SET(mA,j,i,ZEROF);
         for (k = i + 1; k < length; ++k)
-          matrix->matrix[(j*length) + k] -= matrixL->matrix[sizeL] * GET(matrix,i,k);
+          mA->matrix[(j*length) + k] -= mL->matrix[sizeL] * GET(mA,i,k);
         sizeL++;
       }
     }
+
+//    mB->matrix[(j*length) + k] -= mL->matrix[sizeL] * GET(mB,i,k);
 }

@@ -54,7 +54,7 @@
 		P->N = 0; \
 		P->in_file = "stdin"; \
 		P->out_file = "stdout"; \
-		P->random = false; \
+		P->random = true; \
 	}
 
 	#define INIT_KAHAN(K) { \

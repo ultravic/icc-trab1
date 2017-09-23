@@ -4,7 +4,7 @@
 
 
 /* Definição */
-void gaussElimination(t_matrix *matrix, t_matrix *matrixL, int *index_change);
+void gaussElimination(t_matrix *mA, t_matrix *mB, t_matrix *mL, int *index_change);
 
 /* Definição */
 void initMatrixL(t_matrix *matrixL, int length);
