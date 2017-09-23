@@ -13,7 +13,7 @@ void printMatrix(t_matrix *M)
 
     for (i = 0; i < length; ++i) {
 		for (j = 0; j < length; j++) {
-			printf("%.17g " , VALUE(M,i,j));
+			printf("%.17g " , GET(M,i,j));
 		};
 		printf("\n");
 	}

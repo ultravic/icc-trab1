@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../headers/gauss_elimination.h"
+#include "../headers/partial_pivoting.h"
 #include "../headers/datatypes.h"
 
 /*
@@ -25,21 +26,19 @@ void changeLines(t_matrix *matrix, int fline, int sline)
     - Função que utiliza o método da eliminação de Gauss.
     - Recebe um vetor e seu tamanho.''
 */
-t_matrix * gaussElimination(t_matrix *matrix)
+t_matrix * gaussElimination(t_matrix *matrix, t_matrix *index_array)
 {
     int j, i, k, sizeL = 0;
-    int line_change;
-    int length = length;
+    int length = matrix->length;
 
     // double column_subtract;
-    double largest_column_n = ZEROF;
     t_matrix *matrixL;
     INIT_MATRIX(matrixL);
 
     //vetor de indices
     double * index_array;
-    index_array = ALLOC(double,length);
-    for (i = 0; i < count; i++)
+    index_array = ALLOC(double, length);
+    for (i = 0; i < length; i++)
       index_array[i] = i;
 
 
@@ -53,10 +52,8 @@ t_matrix * gaussElimination(t_matrix *matrix)
     matrixL->matrix = ALLOC(double,sizeL); //Verificar tamanho
     sizeL = 0;
 
-
-
-      changeLines(matrix, i, line_change);
-
+    for (i = 0; i < (length - 1); ++i) {
+      pivot(matrix, i, index_array);
       for (j = i + 1; j < length; ++j) {
         matrixL->matrix[sizeL] = GET(matrix,j,i)/GET(matrix,i,i);
         SET(matrix,j,i,ZEROF);

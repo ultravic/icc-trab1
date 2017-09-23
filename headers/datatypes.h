@@ -43,6 +43,12 @@
 		M->length = 0; \
 	}
 
+	#define INIT_STRUCT() { \
+		t_matriz M; \
+		M = ALLOC(t_matrix, 1); \
+		M.length = 0; \
+	}
+
 	#define INIT_PARAM(P) { \
 		P = ALLOC(param,1); \
 		P->K = 0; \

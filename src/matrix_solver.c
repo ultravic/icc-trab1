@@ -26,7 +26,7 @@ t_matrix * backwardSubstitution(t_matrix *U, t_matrix *B, int *index_array){
 	int i,j,k;
 	int index;
 
-	double aux = GET(B,last,1) / GET_U(U,last,last);
+	double aux = GET(B,last,1) / GET(U,last,last);
 
 	t_kahan *kahan;
 	kahan = ALLOC(t_kahan,1);
