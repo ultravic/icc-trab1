@@ -4,6 +4,8 @@
 
 #define DBL_ZERO 10e-7
 
+#define ABS(x) (((x)<0) ? -(x) : (x))
+
 #define IS_ZERO(NUM) (NUM) < DBL_ZERO
 
 #define KAHAN_SUM(K, input){ \
