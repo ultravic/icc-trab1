@@ -1,5 +1,6 @@
 #include "error_handler.h"
 #include <stdbool.h>
+#include <stdlib.h>
 #ifndef __DATATYPES__
 #define __DATATYPES__
 
@@ -41,12 +42,6 @@
 	#define INIT_MATRIX(M) { \
 		M = ALLOC(t_matrix,1); \
 		M->length = 0; \
-	}
-
-	#define INIT_STRUCT() { \
-		t_matriz M; \
-		M = ALLOC(t_matrix, 1); \
-		M.length = 0; \
 	}
 
 	#define INIT_PARAM(P) { \

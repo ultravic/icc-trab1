@@ -26,7 +26,7 @@ void changeLines(t_matrix *matrix, int fline, int sline)
     - Função que utiliza o método da eliminação de Gauss.
     - Recebe um vetor e seu tamanho.''
 */
-t_matrix * gaussElimination(t_matrix *matrix, t_matrix *index_array)
+t_matrix * gaussElimination(t_matrix *matrix, int *index_array)
 {
     int j, i, k, sizeL = 0;
     int length = matrix->length;
@@ -34,12 +34,6 @@ t_matrix * gaussElimination(t_matrix *matrix, t_matrix *index_array)
     // double column_subtract;
     t_matrix *matrixL;
     INIT_MATRIX(matrixL);
-
-    //vetor de indices
-    double * index_array;
-    index_array = ALLOC(double, length);
-    for (i = 0; i < length; i++)
-      index_array[i] = i;
 
 
     i = length - 1;
