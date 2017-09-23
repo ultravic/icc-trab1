@@ -1,34 +1,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../headers/matrix_solver.h"
+#include "../headers/double_operations.h"
 #include "../headers/datatypes.h"
 
 /**
- * @brief      Efetua retrosubstituição de um sistema triangular sup
+ * @brief      Efetua retrosubstituição
  *
- * @param      A     Uma Matriz triangular superior de coeficientes
- * @param      b     Um vetor de termos independentes
+ * @param      U            Matriz triangular superior
+ * @param      B            Matriz de termos independentes
+ * @param      index_array  Vetor de troca de linhas
  *
- * @return     vetor com o valor calculado das incógnitas
+ * @return     A Matriz resultante
  */
-double * backwardSubstitution(t_matrix *A, double *b){
+t_matrix * backwardSubstitution(t_matrix *U, t_matrix *B, int *index_array){
+	int length = U->length;
+	int last = length-1;
 
-    int length = A->length;
-    // Cria vetor de incógnitas
-    double *x = ALLOC(double,length);
-    // contadores
-    int i,j;
+	t_matrix *X;
+	INIT_MATRIX(X);
+	X->length = length;
+	X->matrix = ALLOC(double,SQ(length));
 
-    double sum;
+	// contadores
+	int i,j,k;
+	int index;
 
-    for (i = (length - 1); i > 0; --i){
-        sum = b[i];
+	double aux = GET(B,last,1) / GET_U(U,last,last);
 
-        for (j = (i+1); j < length; ++i)
-        {
-            sum = sum - (GET(A,i,j) * GETV(x,j)); // risco cancelamento subtrativo
-            SETV(x,k,(sum/GET(A,i,i))); //risco overflow e div por 0
-        }
-    }
-    return x;
+	t_kahan *kahan;
+	kahan = ALLOC(t_kahan,1);
+
+
+	SET(X,last,1,aux);
+
+	for (k = 0; k < length; ++k)
+	{
+		INIT_KAHAN(kahan);
+		for (i = last; i > 0; --i){
+
+			index = index_array[i];
+			kahan->sum = GET(B,index,k);
+
+			for (j = (i+1); j < length; ++j)
+			{
+				KAHAN_SUM(kahan,(kahan->sum - (GET(U,index,j) * GET(X,j,k))));
+				aux = GET(U,index,i);
+				if(IS_ZERO(aux))
+					die(/*ERROR_ZERO_DIVISION*/"divisaoporzero");
+				SET(X,j,k,( kahan->sum / aux ));
+			}
+		}
+	}
+	return X;
 }

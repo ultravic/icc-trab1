@@ -3,6 +3,6 @@
 #define __MATRIX_SOLVER__
 
 /* Definição */
-double* backwardSubstitution(t_matrix *A, t_matrix *b, t_matrix *x);
+t_matrix* backwardSubstitution(t_matrix *U, t_matrix *B, int * index_array);
 
 #endif

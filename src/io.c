@@ -44,3 +44,41 @@ int readMatrix(t_matrix * M, char *file_path){
 
 	return ERROR;
 }
+
+int parseParameters(int argc, char const *argv[], param *P){
+	int i;
+	// Verifica se parametros tem chance de estarem no padrão
+	if (!((argc >= 2) && (argc % 2 != 0)))
+		return ERROR;
+	else
+	{
+		// Trata parametros
+		for (i = 1; i < argc && argv[i][0] == '-'; i++)
+		{
+			switch (argv[i][1])
+			{
+				case 'e': //Input file?
+					i++;
+					P->in_file = (char *) argv[i];
+				break;
+				case 'o': //output file?
+			        i++;
+					P->out_file = (char *) argv[i];
+				break;
+				case 'r': // random?
+				    i++;
+					P->random = true;
+					P->N = atoi(argv[i]);
+				break;
+				case 'i': //iterações
+					i++;
+					P->K = atoi(argv[i]);
+				break;
+				default:
+					return ERROR;
+			}
+		}
+	}
+	return SUCCESS;
+}
+

@@ -53,15 +53,7 @@ t_matrix * gaussElimination(t_matrix *matrix)
     matrixL->matrix = ALLOC(double,sizeL); //Verificar tamanho
     sizeL = 0;
 
-    for (i = 0; i < (length - 1); ++i) {
-      line_change = i;
-      largest_column_n = GET(matrix,i,i);
-      for (j = i; j < length; ++j) {
-        if (GET(matrix,j,i) > largest_column_n) {
-            largest_column_n = GET(matrix,j,i);
-            line_change = j;
-        }
-      }
+
 
       changeLines(matrix, i, line_change);
 
