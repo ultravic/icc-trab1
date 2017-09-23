@@ -7,9 +7,7 @@
 void initIndexArray(int *index_array, int length){
     int i = 0;
     for (i = 0; i < length; ++i)
-    {
         index_array[i] = i;
-    }
 }
 
 void pivot(t_matrix *M, int pos, int *index_array){

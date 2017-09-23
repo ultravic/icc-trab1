@@ -3,9 +3,9 @@
 #define __RESULT_REFINAMENT__
 
 /* Definição */
-t_matrix* resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I);
+void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B);
 
 /* Definição */
-void createIdentity(t_matrix *I, int length);
+void initMatrixIdentity(t_matrix *I, int length);
 
 #endif

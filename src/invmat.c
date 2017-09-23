@@ -14,13 +14,12 @@
 int main(int argc, char const *argv[])
 {
 	// Inicializa struct de parametros
-	param Parameters,*P;
-	P = &Parameters;
+	param *P;
 	INIT_PARAM(P);
 
 	// Trata parametros
 	int t;
-	if((t = parseParameters(argc,argv,P)) != SUCCESS){
+	if((t = parseParameters(argc, argv, P)) != SUCCESS){
 		die(ERROR_PARAM);
 		printf("error %d\n", t);
 		return -1;
@@ -30,16 +29,11 @@ int main(int argc, char const *argv[])
 
 	//inicializa Vetor de Troca de Linhas
 	int *index_array;
+	INIT_ARRAY(index_array, P->N);
 	initIndexArray(index_array, P->N);
 
 	// inicializa todas as matrizes necessárias e ponteiros
-	t_matrix A, L, B, X, I, *mA, *mL, *mB, *mX, *mI;
-
-	mA = &A;
-	mB = &B;
-	mL = &L;
-	mX = &X;
-	mI = &I;
+	t_matrix *mA, *mL, *mB, *mX, *mI;
 
 	INIT_MATRIX(mA);
 	INIT_MATRIX(mL);
@@ -47,32 +41,35 @@ int main(int argc, char const *argv[])
 	INIT_MATRIX(mX);
 	INIT_MATRIX(mI);
 
-	// cria a identidade
-	createIdentity(mI, P->N);
-
-	if(P->random)
-	{
-		A.length = P->N;
-		A.matrix = generateSquareRandomMatrix(P->N);
-	} else
-	{
-		printf("%s\n",P->in_file );
-		if(readMatrix(mA,P->in_file) == ERROR){
+	if(P->random) {
+		mA->length = P->N;
+		mA->matrix = generateSquareRandomMatrix(P->N);
+		initMatrixIdentity(mI, P->N);
+		initMatrixL(mL, P->N);
+	} else {
+		printf("%s\n", P->in_file );
+		if(readMatrix(mA, P->in_file) == ERROR) {
 			printf("Erro! Não foi possível ler a entrada.\n");
 			return ERROR;
 		}
+		initMatrixIdentity(mI, mA->length);
+		initMatrixL(mL, mA->length);
 	}
 
+	mB = mI;
 	// while (k > 0) {
 		printMatrix(mA);
 		printf("\n");
-		mL = gaussElimination(mA, index_array);
+		printMatrix(mI);
+		printf("\n");
+		gaussElimination(mA, mL, index_array);
 		printMatrix(mA);
 		printf("\n");
 		printMatrixL(mL);
 
 		// Matriz B recebe a matriz resíduo r = Identidade (I) - A (U). X'
-		mB = resultRefinement(mA, mX, mI);
+		mB = mI;
+		resultRefinement(mA, mX, mI, mB);
 	// }
 
 	return SUCCESS;

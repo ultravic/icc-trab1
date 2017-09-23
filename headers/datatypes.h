@@ -44,6 +44,10 @@
 		M->length = 0; \
 	}
 
+	#define INIT_ARRAY(A,L) { \
+		A = ALLOC(int, L);\
+	}
+
 	#define INIT_PARAM(P) { \
 		P = ALLOC(param,1); \
 		P->K = 0; \

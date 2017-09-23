@@ -22,29 +22,28 @@ void changeLines(t_matrix *matrix, int fline, int sline)
   }
 }
 
+void initMatrixL(t_matrix *matrixL, int length)
+{
+  int i, sizeL = 0;
+  i = length - 1;
+
+  while (i) {
+    sizeL += i;
+    --i;
+  }
+
+  matrixL->length = sizeL;
+  matrixL->matrix = ALLOC(double, sizeL);
+}
+
 /*
     - Função que utiliza o método da eliminação de Gauss.
     - Recebe um vetor e seu tamanho.''
 */
-t_matrix * gaussElimination(t_matrix *matrix, int *index_array)
+void gaussElimination(t_matrix *matrix, t_matrix *matrixL, int *index_array)
 {
     int j, i, k, sizeL = 0;
     int length = matrix->length;
-
-    // double column_subtract;
-    t_matrix *matrixL;
-    INIT_MATRIX(matrixL);
-
-
-    i = length - 1;
-    while (i) {
-      sizeL += i;
-      --i;
-    }
-
-    matrixL->length = sizeL;
-    matrixL->matrix = ALLOC(double,sizeL); //Verificar tamanho
-    sizeL = 0;
 
     for (i = 0; i < (length - 1); ++i) {
       pivot(matrix, i, index_array);
@@ -56,6 +55,4 @@ t_matrix * gaussElimination(t_matrix *matrix, int *index_array)
         sizeL++;
       }
     }
-
-    return matrixL;
 }
