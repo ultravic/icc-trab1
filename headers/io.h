@@ -17,8 +17,6 @@ int readMatrix(t_matrix * M, char *file_path);
  *
  * @param      M     Matriz a ser impressa
  */
-void printMatrix(t_matrix *M);
-
 
 int parseParameters(int argc, char const *argv[], param *P);
 

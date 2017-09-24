@@ -58,18 +58,18 @@ int main(int argc, char const *argv[])
 
 	mB = mI;
 	// while (k > 0) {
-		printMatrix(mA);
+		printMatrix(mA, index_array);
 		printf("\n");
-		printMatrix(mB);
+		printMatrix(mB, index_array);
 		printf("\n");
-		printMatrix(mI);
+		printMatrix(mI, index_array);
 		printf("\n");
 		gaussElimination(mA, mB, mL, index_array);
-		printMatrix(mA);
+		printMatrix(mA, index_array);
 		printf("\n");
-		printMatrix(mB);
+		printMatrix(mB, index_array);
 		printf("\n");
-		printMatrixL(mL);
+		printMatrixL(mL, index_array);
 
 		// Matriz B recebe a matriz resíduo r = Identidade (I) - A (U). X'
 		mB = mI;

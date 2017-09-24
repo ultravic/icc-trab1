@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "../headers/gauss_elimination.h"
 #include "../headers/partial_pivoting.h"
+#include "../headers/printers.h"
 #include "../headers/datatypes.h"
 
 /*
@@ -46,15 +47,22 @@ void gaussElimination(t_matrix *mA, t_matrix *mB, t_matrix *mL, int *index_array
     int length = mA->length;
 
     for (i = 0; i < (length - 1); ++i) {
+      printMatrix(mA, index_array);
       pivot(mA, i, index_array);
+      printMatrix(mA, index_array);
       for (j = i + 1; j < length; ++j) {
-        mL->matrix[sizeL] = GET(mA,j,i)/GET(mA,i,i);
-        SET(mA,j,i,ZEROF);
+        mL->matrix[sizeL] = GET(mA, index_array[j], i)/GET(mA, index_array[i], i);
+        SET(mA, index_array[j], i, ZEROF);
         for (k = i + 1; k < length; ++k)
-          mA->matrix[(j*length) + k] -= mL->matrix[sizeL] * GET(mA,i,k);
+          mA->matrix[(index_array[j]*length) + k] -= mL->matrix[sizeL] * GET(mA, index_array[i], k);
         sizeL++;
       }
     }
 
-//    mB->matrix[(j*length) + k] -= mL->matrix[sizeL] * GET(mB,i,k);
+    sizeL = 0;
+    for (i = 0; i < length; ++i) {
+      for (j = 0; j < length; ++j)
+        mB->matrix[(index_array[i]*length) + j] -= mL->matrix[sizeL] * GET(mB, index_array[i], j);
+      sizeL++;
+    }
 }

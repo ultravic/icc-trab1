@@ -5,25 +5,26 @@
  *
  * @param      M     Matriz a ser impressa
  */
-void printMatrix(t_matrix *M)
+void printMatrix(t_matrix *matrix, int *index_array)
 {
-    int i,j;
-	int length = M->length;
-    printf("Tamanho matrix (NxN): %d\n",length);
+  int i, j;
+	int length = matrix->length;
 
-    for (i = 0; i < length; ++i) {
-		for (j = 0; j < length; j++) {
-			printf("%.17g " , GET(M,i,j));
-		};
+  printf("Tamanho matrix (NxN): %d\n",length);
+
+  for (i = 0; i < length; ++i) {
+		for (j = 0; j < length; j++)
+			printf("%.17g " , GET(matrix, index_array[i], j));
 		printf("\n");
 	}
 }
 
-void printMatrixL(t_matrix *matrix)
+void printMatrixL(t_matrix *matrix, int *index_array)
 {
   int i;
+
   printf("Tamanho matrix L (N): %d\n", matrix->length);
-  for (i = 0; i < matrix->length; ++i) {
-    printf("%.17g\n", matrix->matrix[i]);
-  }
+
+  for (i = 0; i < matrix->length; ++i)
+    printf("%.17g\n", GET(matrix, 0, index_array[i]));
 }
