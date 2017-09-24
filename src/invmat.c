@@ -56,25 +56,35 @@ int main(int argc, char const *argv[])
 		initMatrixL(mL, mA->length);
 	}
 
-	mB = mI;
-	// while (k > 0) {
-		printMatrix(mA, index_array);
-		printf("\n");
-		printMatrix(mB, index_array);
-		printf("\n");
-		printMatrix(mI, index_array);
-		printf("\n");
-		gaussElimination(mA, mB, mL, index_array);
-		printMatrix(mA, index_array);
-		printf("\n");
-		printMatrix(mB, index_array);
-		printf("\n");
-		printMatrixL(mL, index_array);
+	// inicializa o B copiando I
+	mB->length = mA->length;
+	mB->matrix = ALLOC(double, SQ(mA->length));
+	memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(mA->length));
 
+	printMatrix(mA, index_array);
+	printf("\n");
+	printMatrix(mB, index_array);
+	printf("\n");
+	printNormal(mI);
+	printf("\n");
+	gaussElimination(mA, mB, mL, index_array);
+	printMatrix(mA, index_array);
+	printf("\n");
+	printMatrix(mB, index_array);
+	printf("\n");
+	printMatrixL(mL, index_array);
+	printf("\n");
+
+	// a cada iteração é feito o refinamento
+	while (P->K > 0) {
+		// calcula o X
+		// retrosubstitution();
 		// Matriz B recebe a matriz resíduo r = Identidade (I) - A (U). X'
-		mB = mI;
+		*(mB)->matrix = *(mI)->matrix;
+		// calcula o resíduo
 		// resultRefinement(mA, mX, mI, mB);
-	// }
+		P->K--;
+	}
 
 	return SUCCESS;
 }

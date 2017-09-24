@@ -12,7 +12,7 @@ void initIndexArray(int *index_array, int length){
 
 void pivot(t_matrix *M, int pos, int *index_array){
     int i, length;
-    int max_line = index_array[pos];
+    int max_line = pos;
 
     double max_num = GET(M, index_array[pos], pos);
     double aux;
