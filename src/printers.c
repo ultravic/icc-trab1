@@ -26,5 +26,5 @@ void printMatrixL(t_matrix *matrix, int *index_array)
   printf("Tamanho matrix L (N): %d\n", matrix->length);
 
   for (i = 0; i < matrix->length; ++i)
-    printf("%.17g\n", GET(matrix, 0, index_array[i]));
+    printf("%.17g\n", GET(matrix, 0, i));
 }
