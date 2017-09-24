@@ -47,7 +47,6 @@ void gaussElimination(t_matrix *mA, t_matrix *mB, t_matrix *mL, int *index_array
     int length = mA->length;
 
     for (i = 0; i < (length - 1); ++i) {
-      printMatrix(mA, index_array);
       pivot(mA, i, index_array);
       for (j = i + 1; j < length; ++j) {
         mL->matrix[sizeL] = GET(mA, index_array[j], i)/GET(mA, index_array[i], i);
@@ -55,7 +54,7 @@ void gaussElimination(t_matrix *mA, t_matrix *mB, t_matrix *mL, int *index_array
         for (k = i + 1; k < length; ++k)
           mA->matrix[(index_array[j]*length) + k] -= mL->matrix[sizeL] * GET(mA, index_array[i], k);
         for (m = 0; m < length; ++m)
-          mB->matrix[(index_array[j+1]*length) + m] -= mL->matrix[sizeL] * GET(mB, index_array[j], m);
+          mB->matrix[(index_array[j]*length) + m] -= mL->matrix[sizeL] * GET(mB, index_array[i], m);
         sizeL++;
       }
     }
