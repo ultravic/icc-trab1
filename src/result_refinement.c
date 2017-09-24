@@ -43,13 +43,11 @@ void initMatrixIdentity(t_matrix *I, int length) {
  *
  * @return     The lc.
  */
-double calculateLC(t_matrix *U, t_matrix *X, int line, int column) {
+double calculateLC(t_matrix *U, t_matrix *X, int *index_array, int line, int column) {
   int i;
-  double temporary = ZEROF;
+  double temporary = TRUE_ZERO;
   for (i = 0; i < U->length; ++i)
-
     temporary += U->matrix[(index_array[line]*U->length) + i] + X->matrix[i*X->length + column];
-
   return temporary;
 }
 
@@ -63,26 +61,20 @@ double calculateLC(t_matrix *U, t_matrix *X, int line, int column) {
  *
  * @return     Matriz de Residuos
  */
-t_matrix *resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I) {
-
-  t_matrix Residue, *R;
-  R = &Residue;
-  INIT_MATRIX(R);
+void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *index_array){
 
   int length = U->length;
-  createIdentity(R, length);
 
   t_kahan *kahan;
   kahan = ALLOC(t_kahan, 1);
   INIT_KAHAN(kahan);
+  double aux;
 
   int i, j;
   for (i = 0; i < length; ++i)
     for (j = 0; j < length; ++j) {
-      KAHAN_SUM(kahan, (GET(R, i, j) - calculateLC(U, X, i, j)));
-      SET(R, i, j, kahan->sum);
+      aux = (GET(B, i, j) - calculateLC(U, X, index_array, i, j));
+      KAHAN_SUM(kahan, aux);
+      SET(B, i, j, kahan->sum);
     }
-
-  return R;
-
 }

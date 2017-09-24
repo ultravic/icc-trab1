@@ -19,6 +19,9 @@
  */
 #define SEQUENTIAL_SUM(n) (int)(((1 + (n)) * (n)) / 2)
 
-t_matrix * gaussElimination(t_matrix* matrix, int *index_change);
+void initMatrixL(t_matrix *matrixL, int length);
+
+void gaussElimination(t_matrix *mA, t_matrix *mB, t_matrix *mL, int *index_array);
+
 
 #endif

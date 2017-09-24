@@ -42,7 +42,6 @@ int main(int argc, char const *argv[]) {
   // inicializa todas as matrizes necessárias e ponteiros
   t_matrix A, L, B, X, I, *mA, *mL, *mB, *mX, *mI;
 
-<<<<<<< HEAD
   mA = &A;
   mB = &B;
   mL = &L;
@@ -99,7 +98,7 @@ int main(int argc, char const *argv[]) {
 	printf("\n");
 	printMatrix(mB, index_array);
 	printf("\n");
-	printMatrixL(mL, index_array);
+	printMatrixL(mL);
 	printf("\n");
 
 	// a cada iteração é feito o refinamento

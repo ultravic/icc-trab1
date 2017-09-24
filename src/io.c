@@ -122,7 +122,7 @@ void printMatrix(t_matrix *matrix, int *index_array)
   *
   * @param      matrix  The matrix
   */
-void printMatrixL(t_matrix *matrix, int *index_array)
+void printMatrixL(t_matrix *matrix)
 {
   int i;
 

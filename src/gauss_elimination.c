@@ -25,7 +25,7 @@
 void initMatrixL(t_matrix *matrixL, int length)
 {
   matrixL->length = SEQUENTIAL_SUM(length);
-  matrixL->matrix = ALLOC(double, sizeL);
+  matrixL->matrix = ALLOC(double, matrixL->length);
 }
 
 /**
@@ -46,7 +46,7 @@ void gaussElimination(t_matrix *mA, t_matrix *mB, t_matrix *mL, int *index_array
       pivot(mA, i, index_array);
       for (j = i + 1; j < length; ++j) {
         mL->matrix[sizeL] = GET(mA, index_array[j], i)/GET(mA, index_array[i], i);
-        SET(mA, index_array[j], i, ZEROF);
+        SET(mA, index_array[j], i, TRUE_ZERO);
         for (k = i + 1; k < length; ++k)
           mA->matrix[(index_array[j]*length) + k] -= mL->matrix[sizeL] * GET(mA, index_array[i], k);
         for (m = 0; m < length; ++m)

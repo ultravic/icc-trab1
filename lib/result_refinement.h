@@ -13,8 +13,8 @@
 
 void initMatrixIdentity(t_matrix *I, int length);
 
-double calculateLC(t_matrix *U, t_matrix *X, int line, int column);
+double calculateLC(t_matrix *U, t_matrix *X, int *index_array, int line, int column);
 
-t_matrix* resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I);
+void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *index_array);
 
 #endif

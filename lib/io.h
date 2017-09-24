@@ -15,7 +15,7 @@ int readMatrix(t_matrix * M, char *file_path);
 
 int parseParameters(int argc, char const *argv[], param *P);
 
-void printMatrix(t_matrix *matrix);
+void printMatrix(t_matrix *matrix, int *index_array);
 
 void printMatrixL(t_matrix *matrix);
 
