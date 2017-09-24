@@ -1,0 +1,121 @@
+\hypertarget{result__refinement_8c}{}\section{Referência ao ficheiro src/result\+\_\+refinement.c}
+\label{result__refinement_8c}\index{src/result\+\_\+refinement.\+c@{src/result\+\_\+refinement.\+c}}
+
+
+Esse arquivo contém as definições das funções usadas para realiza o refinamento do resultado da inversão.  
+
+
+{\ttfamily \#include \char`\"{}../lib/datatypes.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../lib/double\+\_\+operations.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../lib/result\+\_\+refinement.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+\subsection*{Funções}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{result__refinement_8c_a9c843be6852dce525340e7f74d4b0979}{create\+Identity} (\hyperlink{structt__matrix}{t\+\_\+matrix} $\ast$I, int length)
+\begin{DoxyCompactList}\small\item\em Cria uma matriz Identidade. \end{DoxyCompactList}\item 
+double \hyperlink{result__refinement_8c_ae7dae5a9c3c1aa5b79d6d393cd3a43ac}{calculate\+LC} (\hyperlink{structt__matrix}{t\+\_\+matrix} $\ast$U, \hyperlink{structt__matrix}{t\+\_\+matrix} $\ast$X, int line, int column)
+\begin{DoxyCompactList}\small\item\em Calcula a matriz. \end{DoxyCompactList}\item 
+\hyperlink{structt__matrix}{t\+\_\+matrix} $\ast$ \hyperlink{result__refinement_8c_a5e115beb4d0fd156a220c176c9825caf}{result\+Refinement} (\hyperlink{structt__matrix}{t\+\_\+matrix} $\ast$U, \hyperlink{structt__matrix}{t\+\_\+matrix} $\ast$X, \hyperlink{structt__matrix}{t\+\_\+matrix} $\ast$I)
+\begin{DoxyCompactList}\small\item\em Executa o refinamento do resultado. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Descrição detalhada}
+Esse arquivo contém as definições das funções usadas para realiza o refinamento do resultado da inversão. 
+
+\begin{DoxyAuthor}{Autor}
+Pedro Luiz de Souza Moreira G\+R\+R20163064 
+
+Victor Picussa G\+R\+R\+VP 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Data}
+24 Sep 2017 
+\end{DoxyDate}
+
+
+\subsection{Documentação das funções}
+\index{result\+\_\+refinement.\+c@{result\+\_\+refinement.\+c}!calculate\+LC@{calculate\+LC}}
+\index{calculate\+LC@{calculate\+LC}!result\+\_\+refinement.\+c@{result\+\_\+refinement.\+c}}
+\subsubsection[{\texorpdfstring{calculate\+L\+C(t\+\_\+matrix $\ast$\+U, t\+\_\+matrix $\ast$\+X, int line, int column)}{calculateLC(t_matrix *U, t_matrix *X, int line, int column)}}]{\setlength{\rightskip}{0pt plus 5cm}double calculate\+LC (
+\begin{DoxyParamCaption}
+\item[{{\bf t\+\_\+matrix} $\ast$}]{U, }
+\item[{{\bf t\+\_\+matrix} $\ast$}]{X, }
+\item[{int}]{line, }
+\item[{int}]{column}
+\end{DoxyParamCaption}
+)}\hypertarget{result__refinement_8c_ae7dae5a9c3c1aa5b79d6d393cd3a43ac}{}\label{result__refinement_8c_ae7dae5a9c3c1aa5b79d6d393cd3a43ac}
+
+
+Calcula a matriz. 
+
+
+\begin{DoxyParams}[1]{Parâmetros}
+ & {\em U} & \{ parameter\+\_\+description \} \\
+\hline
+ & {\em X} & \{ parameter\+\_\+description \} \\
+\hline
+\mbox{\tt in}  & {\em line} & The line \\
+\hline
+\mbox{\tt in}  & {\em column} & The column\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Retorna}
+The lc. 
+\end{DoxyReturn}
+
+
+Definido na linha 46 do ficheiro result\+\_\+refinement.\+c.
+
+\index{result\+\_\+refinement.\+c@{result\+\_\+refinement.\+c}!create\+Identity@{create\+Identity}}
+\index{create\+Identity@{create\+Identity}!result\+\_\+refinement.\+c@{result\+\_\+refinement.\+c}}
+\subsubsection[{\texorpdfstring{create\+Identity(t\+\_\+matrix $\ast$\+I, int length)}{createIdentity(t_matrix *I, int length)}}]{\setlength{\rightskip}{0pt plus 5cm}void create\+Identity (
+\begin{DoxyParamCaption}
+\item[{{\bf t\+\_\+matrix} $\ast$}]{I, }
+\item[{int}]{length}
+\end{DoxyParamCaption}
+)}\hypertarget{result__refinement_8c_a9c843be6852dce525340e7f74d4b0979}{}\label{result__refinement_8c_a9c843be6852dce525340e7f74d4b0979}
+
+
+Cria uma matriz Identidade. 
+
+
+\begin{DoxyParams}[1]{Parâmetros}
+ & {\em I} & Ponteiro para a Matriz \\
+\hline
+\mbox{\tt in}  & {\em length} & a largura da matriz \\
+\hline
+\end{DoxyParams}
+
+
+Definido na linha 22 do ficheiro result\+\_\+refinement.\+c.
+
+\index{result\+\_\+refinement.\+c@{result\+\_\+refinement.\+c}!result\+Refinement@{result\+Refinement}}
+\index{result\+Refinement@{result\+Refinement}!result\+\_\+refinement.\+c@{result\+\_\+refinement.\+c}}
+\subsubsection[{\texorpdfstring{result\+Refinement(t\+\_\+matrix $\ast$\+U, t\+\_\+matrix $\ast$\+X, t\+\_\+matrix $\ast$\+I)}{resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf t\+\_\+matrix}$\ast$ result\+Refinement (
+\begin{DoxyParamCaption}
+\item[{{\bf t\+\_\+matrix} $\ast$}]{U, }
+\item[{{\bf t\+\_\+matrix} $\ast$}]{X, }
+\item[{{\bf t\+\_\+matrix} $\ast$}]{I}
+\end{DoxyParamCaption}
+)}\hypertarget{result__refinement_8c_a5e115beb4d0fd156a220c176c9825caf}{}\label{result__refinement_8c_a5e115beb4d0fd156a220c176c9825caf}
+
+
+Executa o refinamento do resultado. 
+
+
+\begin{DoxyParams}{Parâmetros}
+{\em U} & Matriz triangular superior resultante da eliminação gaussiana \\
+\hline
+{\em X} & Matriz de resultados \\
+\hline
+{\em I} & Matriz Identidade\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Retorna}
+Matriz de Residuos 
+\end{DoxyReturn}
+
+
+Definido na linha 64 do ficheiro result\+\_\+refinement.\+c.
+

@@ -1,0 +1,58 @@
+\hypertarget{matrix__solver_8h}{}\section{Referência ao ficheiro lib/matrix\+\_\+solver.h}
+\label{matrix__solver_8h}\index{lib/matrix\+\_\+solver.\+h@{lib/matrix\+\_\+solver.\+h}}
+
+
+Esse arquivo contém os cabeçalhos das funções\+: backward\+Substitution.  
+
+
+{\ttfamily \#include \char`\"{}datatypes.\+h\char`\"{}}\\*
+\subsection*{Funções}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structt__matrix}{t\+\_\+matrix} $\ast$ \hyperlink{matrix__solver_8h_a3fbc8d6421f33c5cc999b93971168ab7}{backward\+Substitution} (\hyperlink{structt__matrix}{t\+\_\+matrix} $\ast$U, \hyperlink{structt__matrix}{t\+\_\+matrix} $\ast$B, int $\ast$index\+\_\+array)
+\begin{DoxyCompactList}\small\item\em Efetua retrosubstituição. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Descrição detalhada}
+Esse arquivo contém os cabeçalhos das funções\+: backward\+Substitution. 
+
+\begin{DoxyAuthor}{Autor}
+Pedro Luiz de Souza Moreira G\+R\+R20163064 
+
+Victor Picussa G\+R\+R\+VP 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Data}
+24 Sep 2017 
+\end{DoxyDate}
+
+
+\subsection{Documentação das funções}
+\index{matrix\+\_\+solver.\+h@{matrix\+\_\+solver.\+h}!backward\+Substitution@{backward\+Substitution}}
+\index{backward\+Substitution@{backward\+Substitution}!matrix\+\_\+solver.\+h@{matrix\+\_\+solver.\+h}}
+\subsubsection[{\texorpdfstring{backward\+Substitution(t\+\_\+matrix $\ast$\+U, t\+\_\+matrix $\ast$\+B, int $\ast$index\+\_\+array)}{backwardSubstitution(t_matrix *U, t_matrix *B, int *index_array)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf t\+\_\+matrix}$\ast$ backward\+Substitution (
+\begin{DoxyParamCaption}
+\item[{{\bf t\+\_\+matrix} $\ast$}]{U, }
+\item[{{\bf t\+\_\+matrix} $\ast$}]{B, }
+\item[{int $\ast$}]{index\+\_\+array}
+\end{DoxyParamCaption}
+)}\hypertarget{matrix__solver_8h_a3fbc8d6421f33c5cc999b93971168ab7}{}\label{matrix__solver_8h_a3fbc8d6421f33c5cc999b93971168ab7}
+
+
+Efetua retrosubstituição. 
+
+
+\begin{DoxyParams}{Parâmetros}
+{\em U} & Matriz triangular superior \\
+\hline
+{\em B} & Matriz de termos independentes \\
+\hline
+{\em index\+\_\+array} & Vetor de troca de linhas\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Retorna}
+A Matriz resultante 
+\end{DoxyReturn}
+
+
+Definido na linha 25 do ficheiro matrix\+\_\+solver.\+c.
+

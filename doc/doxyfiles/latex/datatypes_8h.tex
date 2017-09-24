@@ -1,0 +1,241 @@
+\hypertarget{datatypes_8h}{}\section{Referência ao ficheiro lib/datatypes.h}
+\label{datatypes_8h}\index{lib/datatypes.\+h@{lib/datatypes.\+h}}
+
+
+Esse arquivo contém as estruturas de dados principais usadas durante o programa, bem como algumas macros uteis.  
+
+
+{\ttfamily \#include \char`\"{}error\+\_\+handler.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdbool.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+\subsection*{Estruturas de Dados}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structt__matrix}{t\+\_\+matrix}
+\begin{DoxyCompactList}\small\item\em Estrutura para matrizes de ponto fluntuante de precisão dupla. \end{DoxyCompactList}\item 
+struct \hyperlink{structt__kahan}{t\+\_\+kahan}
+\begin{DoxyCompactList}\small\item\em Estrutura para guardar variaveis da soma de kahan. \end{DoxyCompactList}\item 
+struct \hyperlink{structparam}{param}
+\begin{DoxyCompactList}\small\item\em Estrutura para guardar os parametros lidos na execução. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{datatypes_8h_ac3644f84794a8bfdacf39c4b2c2495fc}{SQ}(x)~(x)$\ast$(x)
+\begin{DoxyCompactList}\small\item\em Faz x$^\wedge$2. \end{DoxyCompactList}\item 
+\#define \hyperlink{datatypes_8h_ade0072e12dad159bbf06858a91e47a8c}{A\+L\+L\+OC}(t,  n)~(t $\ast$) malloc((n)$\ast$sizeof(t))
+\begin{DoxyCompactList}\small\item\em Aloca memória. \end{DoxyCompactList}\item 
+\#define \hyperlink{datatypes_8h_a0132e745365ba7a12e6d4c181f30fa80}{I\+N\+I\+T\+\_\+\+M\+A\+T\+R\+IX}(M)
+\begin{DoxyCompactList}\small\item\em Inicializa uma matriz. \end{DoxyCompactList}\item 
+\#define \hyperlink{datatypes_8h_a7484ddd0dab022c66286bfea4446317e}{I\+N\+I\+T\+\_\+\+P\+A\+R\+AM}(P)
+\begin{DoxyCompactList}\small\item\em Inicializa a estrutura dos parametros. \end{DoxyCompactList}\item 
+\#define \hyperlink{datatypes_8h_a7e8bc9475d9c358a51e09da2f2754c31}{I\+N\+I\+T\+\_\+\+K\+A\+H\+AN}(K)
+\begin{DoxyCompactList}\small\item\em Inicializa a estrutura auxiliar da soma de kahan. \end{DoxyCompactList}\item 
+\#define \hyperlink{datatypes_8h_a034a20df63bc9f12a3bad2aa20345c28}{G\+ET}(M,  l,  c)~(M-\/$>$matrix\mbox{[}(l) $\ast$ M-\/$>$length + (c)\mbox{]})
+\begin{DoxyCompactList}\small\item\em Retorna um valor na matriz. \end{DoxyCompactList}\item 
+\#define \hyperlink{datatypes_8h_a3b245e68e4c6a3d253f179fb1d501e82}{S\+ET}(M,  l,  c,  v)~(M-\/$>$matrix\mbox{[}(l) $\ast$ M-\/$>$length + (c)\mbox{]} = (v))
+\begin{DoxyCompactList}\small\item\em Retorna um valor na matriz. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Descrição detalhada}
+Esse arquivo contém as estruturas de dados principais usadas durante o programa, bem como algumas macros uteis. 
+
+\begin{DoxyAuthor}{Autor}
+Pedro Luiz de Souza Moreira G\+R\+R20163064 
+
+Victor Picussa G\+R\+R\+VP 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Data}
+24 Sep 2017 
+\end{DoxyDate}
+
+
+\subsection{Documentação das macros}
+\index{datatypes.\+h@{datatypes.\+h}!A\+L\+L\+OC@{A\+L\+L\+OC}}
+\index{A\+L\+L\+OC@{A\+L\+L\+OC}!datatypes.\+h@{datatypes.\+h}}
+\subsubsection[{\texorpdfstring{A\+L\+L\+OC}{ALLOC}}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+L\+L\+OC(
+\begin{DoxyParamCaption}
+\item[{}]{t, }
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~(t $\ast$) malloc((n)$\ast$sizeof(t))}\hypertarget{datatypes_8h_ade0072e12dad159bbf06858a91e47a8c}{}\label{datatypes_8h_ade0072e12dad159bbf06858a91e47a8c}
+
+
+Aloca memória. 
+
+
+\begin{DoxyParams}{Parâmetros}
+{\em t} & tipo de dado \\
+\hline
+{\em n} & unidades\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Retorna}
+uma região de memória 
+\end{DoxyReturn}
+
+
+Definido na linha 52 do ficheiro datatypes.\+h.
+
+\index{datatypes.\+h@{datatypes.\+h}!G\+ET@{G\+ET}}
+\index{G\+ET@{G\+ET}!datatypes.\+h@{datatypes.\+h}}
+\subsubsection[{\texorpdfstring{G\+ET}{GET}}]{\setlength{\rightskip}{0pt plus 5cm}\#define G\+ET(
+\begin{DoxyParamCaption}
+\item[{}]{M, }
+\item[{}]{l, }
+\item[{}]{c}
+\end{DoxyParamCaption}
+)~(M-\/$>$matrix\mbox{[}(l) $\ast$ M-\/$>$length + (c)\mbox{]})}\hypertarget{datatypes_8h_a034a20df63bc9f12a3bad2aa20345c28}{}\label{datatypes_8h_a034a20df63bc9f12a3bad2aa20345c28}
+
+
+Retorna um valor na matriz. 
+
+
+\begin{DoxyParams}{Parâmetros}
+{\em M} & Matriz \\
+\hline
+{\em l} & Linha \\
+\hline
+{\em c} & Coluna\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Retorna}
+O valor acessado 
+\end{DoxyReturn}
+
+
+Definido na linha 100 do ficheiro datatypes.\+h.
+
+\index{datatypes.\+h@{datatypes.\+h}!I\+N\+I\+T\+\_\+\+K\+A\+H\+AN@{I\+N\+I\+T\+\_\+\+K\+A\+H\+AN}}
+\index{I\+N\+I\+T\+\_\+\+K\+A\+H\+AN@{I\+N\+I\+T\+\_\+\+K\+A\+H\+AN}!datatypes.\+h@{datatypes.\+h}}
+\subsubsection[{\texorpdfstring{I\+N\+I\+T\+\_\+\+K\+A\+H\+AN}{INIT_KAHAN}}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+N\+I\+T\+\_\+\+K\+A\+H\+AN(
+\begin{DoxyParamCaption}
+\item[{}]{K}
+\end{DoxyParamCaption}
+)}\hypertarget{datatypes_8h_a7e8bc9475d9c358a51e09da2f2754c31}{}\label{datatypes_8h_a7e8bc9475d9c358a51e09da2f2754c31}
+{\bfseries Valor\+:}
+\begin{DoxyCode}
+\{ \(\backslash\)
+        K->c = 0.0; \(\backslash\)
+        K->sum = 0.0;\(\backslash\)
+    \}
+\end{DoxyCode}
+
+
+Inicializa a estrutura auxiliar da soma de kahan. 
+
+
+\begin{DoxyParams}{Parâmetros}
+{\em K} & estrutura auxiliar da soma de kahan \\
+\hline
+\end{DoxyParams}
+
+
+Definido na linha 86 do ficheiro datatypes.\+h.
+
+\index{datatypes.\+h@{datatypes.\+h}!I\+N\+I\+T\+\_\+\+M\+A\+T\+R\+IX@{I\+N\+I\+T\+\_\+\+M\+A\+T\+R\+IX}}
+\index{I\+N\+I\+T\+\_\+\+M\+A\+T\+R\+IX@{I\+N\+I\+T\+\_\+\+M\+A\+T\+R\+IX}!datatypes.\+h@{datatypes.\+h}}
+\subsubsection[{\texorpdfstring{I\+N\+I\+T\+\_\+\+M\+A\+T\+R\+IX}{INIT_MATRIX}}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+N\+I\+T\+\_\+\+M\+A\+T\+R\+IX(
+\begin{DoxyParamCaption}
+\item[{}]{M}
+\end{DoxyParamCaption}
+)}\hypertarget{datatypes_8h_a0132e745365ba7a12e6d4c181f30fa80}{}\label{datatypes_8h_a0132e745365ba7a12e6d4c181f30fa80}
+{\bfseries Valor\+:}
+\begin{DoxyCode}
+\{ \(\backslash\)
+        M = \hyperlink{datatypes_8h_ade0072e12dad159bbf06858a91e47a8c}{ALLOC}(\hyperlink{structt__matrix}{t\_matrix},1); \(\backslash\)
+        M->length = 0; \(\backslash\)
+    \}
+\end{DoxyCode}
+
+
+Inicializa uma matriz. 
+
+
+\begin{DoxyParams}{Parâmetros}
+{\em M} & matriz a ser inicializada \\
+\hline
+\end{DoxyParams}
+
+
+Definido na linha 62 do ficheiro datatypes.\+h.
+
+\index{datatypes.\+h@{datatypes.\+h}!I\+N\+I\+T\+\_\+\+P\+A\+R\+AM@{I\+N\+I\+T\+\_\+\+P\+A\+R\+AM}}
+\index{I\+N\+I\+T\+\_\+\+P\+A\+R\+AM@{I\+N\+I\+T\+\_\+\+P\+A\+R\+AM}!datatypes.\+h@{datatypes.\+h}}
+\subsubsection[{\texorpdfstring{I\+N\+I\+T\+\_\+\+P\+A\+R\+AM}{INIT_PARAM}}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+N\+I\+T\+\_\+\+P\+A\+R\+AM(
+\begin{DoxyParamCaption}
+\item[{}]{P}
+\end{DoxyParamCaption}
+)}\hypertarget{datatypes_8h_a7484ddd0dab022c66286bfea4446317e}{}\label{datatypes_8h_a7484ddd0dab022c66286bfea4446317e}
+{\bfseries Valor\+:}
+\begin{DoxyCode}
+\{ \(\backslash\)
+        P = \hyperlink{datatypes_8h_ade0072e12dad159bbf06858a91e47a8c}{ALLOC}(\hyperlink{structparam}{param},1); \(\backslash\)
+        P->K = 0; \(\backslash\)
+        P->N = 0; \(\backslash\)
+        P->in\_file = \textcolor{stringliteral}{"stdin"}; \(\backslash\)
+        P->out\_file = \textcolor{stringliteral}{"stdout"}; \(\backslash\)
+        P->random = \textcolor{keyword}{false}; \(\backslash\)
+    \}
+\end{DoxyCode}
+
+
+Inicializa a estrutura dos parametros. 
+
+
+\begin{DoxyParams}{Parâmetros}
+{\em P} & estrutura dos parametros \\
+\hline
+\end{DoxyParams}
+
+
+Definido na linha 72 do ficheiro datatypes.\+h.
+
+\index{datatypes.\+h@{datatypes.\+h}!S\+ET@{S\+ET}}
+\index{S\+ET@{S\+ET}!datatypes.\+h@{datatypes.\+h}}
+\subsubsection[{\texorpdfstring{S\+ET}{SET}}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\+ET(
+\begin{DoxyParamCaption}
+\item[{}]{M, }
+\item[{}]{l, }
+\item[{}]{c, }
+\item[{}]{v}
+\end{DoxyParamCaption}
+)~(M-\/$>$matrix\mbox{[}(l) $\ast$ M-\/$>$length + (c)\mbox{]} = (v))}\hypertarget{datatypes_8h_a3b245e68e4c6a3d253f179fb1d501e82}{}\label{datatypes_8h_a3b245e68e4c6a3d253f179fb1d501e82}
+
+
+Retorna um valor na matriz. 
+
+
+\begin{DoxyParams}{Parâmetros}
+{\em M} & Matriz \\
+\hline
+{\em l} & Linha \\
+\hline
+{\em c} & Coluna \\
+\hline
+{\em v} & valor a ser guardado \\
+\hline
+\end{DoxyParams}
+
+
+Definido na linha 111 do ficheiro datatypes.\+h.
+
+\index{datatypes.\+h@{datatypes.\+h}!SQ@{SQ}}
+\index{SQ@{SQ}!datatypes.\+h@{datatypes.\+h}}
+\subsubsection[{\texorpdfstring{SQ}{SQ}}]{\setlength{\rightskip}{0pt plus 5cm}\#define SQ(
+\begin{DoxyParamCaption}
+\item[{}]{x}
+\end{DoxyParamCaption}
+)~(x)$\ast$(x)}\hypertarget{datatypes_8h_ac3644f84794a8bfdacf39c4b2c2495fc}{}\label{datatypes_8h_ac3644f84794a8bfdacf39c4b2c2495fc}
+
+
+Faz x$^\wedge$2. 
+
+
+\begin{DoxyParams}{Parâmetros}
+{\em x} & numero a ser elevado \\
+\hline
+\end{DoxyParams}
+
+
+Definido na linha 42 do ficheiro datatypes.\+h.
+

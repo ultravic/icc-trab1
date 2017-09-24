@@ -1,79 +1,97 @@
-#include <stdlib.h>
+/**
+ * @file invmat.c
+ * @author     Pedro Luiz de Souza Moreira  GRR20163064
+ * @author     Victor Picussa   GRRVP
+ * @date       24 Sep 2017
+ * @brief      Esse arquivo contém a função principal do programa, que inverte
+ *             uma matriz, e faz o refinamento do resultado
+ */
+
+#include "../lib/datatypes.h"
+#include "../lib/io.h"
+#include "../lib/time_measurement.h"
+#include "../lib/gauss_elimination.h"
+#include "../lib/matrix_generator.h"
+#include "../lib/matrix_solver.h"
+#include "../lib/partial_pivoting.h"
+#include "../lib/result_refinement.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "../headers/partial_pivoting.h"
-#include "../headers/gauss_elimination.h"
-#include "../headers/result_refinement.h"
-#include "../headers/matrix_generator.h"
-#include "../headers/matrix_solver.h"
-#include "../headers/datatypes.h"
-#include "../headers/printers.h"
-#include "../headers/io.h"
 
-int main(int argc, char const *argv[])
-{
-	// Inicializa struct de parametros
-	param Parameters,*P;
-	P = &Parameters;
-	INIT_PARAM(P);
+int main(int argc, char const *argv[]) {
+  // Inicializa struct de parametros
+  param Parameters, *P;
+  P = &Parameters;
+  INIT_PARAM(P);
 
-	// Trata parametros
-	int t;
-	if((t = parseParameters(argc,argv,P)) != SUCCESS){
-		die(ERROR_PARAM);
-		printf("error %d\n", t);
-		return -1;
-	}
+  // Trata parametros
+  int t;
+  #ifndef DEBUG
+    if((t = parseParameters(argc,argv,P)) != SUCCESS){
+      die(ERROR_PARAM);
+      printf("error %d\n", t);
+      return -1;
+    }
+  #else
+    P->random = true;
+  #endif
 
-	// Tudo certo com os parametros, prosseguindo
+  // inicializa todas as matrizes necessárias e ponteiros
+  t_matrix A, L, B, X, I, *mA, *mL, *mB, *mX, *mI;
 
-	//inicializa Vetor de Troca de Linhas
-	int *index_array;
-	initIndexArray(index_array, P->N);
+  mA = &A;
+  mB = &B;
+  mL = &L;
+  mX = &X;
+  mI = &I;
 
-	// inicializa todas as matrizes necessárias e ponteiros
-	t_matrix A, L, B, X, I, *mA, *mL, *mB, *mX, *mI;
+  INIT_MATRIX(mA);
+  INIT_MATRIX(mL);
+  INIT_MATRIX(mB);
+  INIT_MATRIX(mX);
+  INIT_MATRIX(mI);
 
-	mA = &A;
-	mB = &B;
-	mL = &L;
-	mX = &X;
-	mI = &I;
+  if (P->random) {
+    // Caso tenha entrado com o parametro "-r" gera matriz aleatŕoia
+    #ifndef DEBUG
+      mA->length = P->N = 5;
+    #else
+      mA->length = P->N;
+    #endif
 
-	INIT_MATRIX(mA);
-	INIT_MATRIX(mL);
-	INIT_MATRIX(mB);
-	INIT_MATRIX(mX);
-	INIT_MATRIX(mI);
+    srand( 20172 );
+    mA->matrix = generateSquareRandomMatrix(P->N);
+  } else {
+    //  Caso contrário le a matriz
+    printf("%s\n", P->in_file);
+    if (readMatrix(mA, P->in_file) == ERROR) {
+      printf("Erro! Não foi possível ler a entrada.\n");
+      return ERROR;
+    }
+  }
 
-	// cria a identidade
-	createIdentity(mI, P->N);
+  // cria a identidade
+  createIdentity(mI, A.length);
 
-	if(P->random)
-	{
-		A.length = P->N;
-		A.matrix = generateSquareRandomMatrix(P->N);
-	} else
-	{
-		printf("%s\n",P->in_file );
-		if(readMatrix(mA,P->in_file) == ERROR){
-			printf("Erro! Não foi possível ler a entrada.\n");
-			return ERROR;
-		}
-	}
+  // inicializa Vetor de Troca de Linhas
+  int *index_array;
+  index_array = ALLOC(int, P->N);
+  initIndexArray(index_array, P->N);
 
-	// while (k > 0) {
-		printMatrix(mA);
-		printf("\n");
-		mL = gaussElimination(mA, index_array);
-		printMatrix(mA);
-		printf("\n");
-		printMatrixL(mL);
+  // começa processo de inversão e refinamento
+  // while (k > 0) {
+  printMatrix(mA);
+  printf("\n");
+  mL = gaussElimination(mA, index_array);
+  printMatrix(mA);
+  printf("\n");
+  printMatrixL(mL);
 
-		// Matriz B recebe a matriz resíduo r = Identidade (I) - A (U). X'
-		mB = resultRefinement(mA, mX, mI);
-	// }
+  // Matriz B recebe a matriz resíduo r = Identidade (I) - A (U). X'
+  mB = resultRefinement(mA, mX, mI);
+  // }
 
-	return SUCCESS;
+  return SUCCESS;
 }

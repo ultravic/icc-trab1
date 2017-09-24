@@ -1,8 +1,23 @@
-#include "../headers/datatypes.h"
+/**
+ * @file       matrix_generator.c
+ * @author     Pedro Luiz de Souza Moreira  GRR20163064
+ * @author     Victor Picussa   GRRVP
+ * @date       24 Sep 2017
+ * @brief      Esse arquivo contém a definição da função usada para a
+ *             geração de matrizes quadradas aleatórias
+ */
+
+#include "../lib/datatypes.h"
 #include <stdlib.h>
 
-double *generateSquareRandomMatrix(int n)
-{
+/**
+ * @brief      Dado uma largura, gera uma matriz quadrada aleatória
+ *
+ * @param[in]  n     A largura
+ *
+ * @return     A matriz gerada
+ */
+double *generateSquareRandomMatrix(int n) {
   double *mat = NULL;
 
   /* return NULL if memory allocation fails */
@@ -13,9 +28,9 @@ double *generateSquareRandomMatrix(int n)
   double *ptr = mat;
   double *end = mat + SQ(n);
 
-  double invRandMax = 1.0/(double)RAND_MAX;
+  double invRandMax = 1.0 / (double)RAND_MAX;
 
-  while(ptr != end) {
+  while (ptr != end) {
     *ptr++ = (double)rand() * invRandMax;
   }
 

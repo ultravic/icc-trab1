@@ -1,0 +1,66 @@
+\hypertarget{partial__pivoting_8c}{}\section{Referência ao ficheiro src/partial\+\_\+pivoting.c}
+\label{partial__pivoting_8c}\index{src/partial\+\_\+pivoting.\+c@{src/partial\+\_\+pivoting.\+c}}
+{\ttfamily \#include \char`\"{}../lib/datatypes.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../lib/double\+\_\+operations.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../lib/partial\+\_\+pivoting.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+\subsection*{Funções}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{partial__pivoting_8c_a6dcd0459fd1d5f9be17fd2270b931db8}{init\+Index\+Array} (int $\ast$index\+\_\+array, int length)
+\begin{DoxyCompactList}\small\item\em Inicializa o vetor de troca de linhas com uma enumeração de 0 a N-\/1. \end{DoxyCompactList}\item 
+void \hyperlink{partial__pivoting_8c_a42000a85a3c3972adf31b3c8aee07d0c}{pivot} (\hyperlink{structt__matrix}{t\+\_\+matrix} $\ast$M, int pos, int $\ast$index\+\_\+array)
+\begin{DoxyCompactList}\small\item\em Encontra o maior valor de uma coluna da matriz, a partir de uma determinada posição e troca as posições no vetor de troca de. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Documentação das funções}
+\index{partial\+\_\+pivoting.\+c@{partial\+\_\+pivoting.\+c}!init\+Index\+Array@{init\+Index\+Array}}
+\index{init\+Index\+Array@{init\+Index\+Array}!partial\+\_\+pivoting.\+c@{partial\+\_\+pivoting.\+c}}
+\subsubsection[{\texorpdfstring{init\+Index\+Array(int $\ast$index\+\_\+array, int length)}{initIndexArray(int *index_array, int length)}}]{\setlength{\rightskip}{0pt plus 5cm}void init\+Index\+Array (
+\begin{DoxyParamCaption}
+\item[{int $\ast$}]{index\+\_\+array, }
+\item[{int}]{length}
+\end{DoxyParamCaption}
+)}\hypertarget{partial__pivoting_8c_a6dcd0459fd1d5f9be17fd2270b931db8}{}\label{partial__pivoting_8c_a6dcd0459fd1d5f9be17fd2270b931db8}
+
+
+Inicializa o vetor de troca de linhas com uma enumeração de 0 a N-\/1. 
+
+
+\begin{DoxyParams}[1]{Parâmetros}
+ & {\em index\+\_\+array} & Vetor de troca de linhas \\
+\hline
+\mbox{\tt in}  & {\em length} & Numero de linhas do sistema \\
+\hline
+\end{DoxyParams}
+
+
+Definido na linha 22 do ficheiro partial\+\_\+pivoting.\+c.
+
+\index{partial\+\_\+pivoting.\+c@{partial\+\_\+pivoting.\+c}!pivot@{pivot}}
+\index{pivot@{pivot}!partial\+\_\+pivoting.\+c@{partial\+\_\+pivoting.\+c}}
+\subsubsection[{\texorpdfstring{pivot(t\+\_\+matrix $\ast$\+M, int pos, int $\ast$index\+\_\+array)}{pivot(t_matrix *M, int pos, int *index_array)}}]{\setlength{\rightskip}{0pt plus 5cm}void pivot (
+\begin{DoxyParamCaption}
+\item[{{\bf t\+\_\+matrix} $\ast$}]{M, }
+\item[{int}]{pos, }
+\item[{int $\ast$}]{index\+\_\+array}
+\end{DoxyParamCaption}
+)}\hypertarget{partial__pivoting_8c_a42000a85a3c3972adf31b3c8aee07d0c}{}\label{partial__pivoting_8c_a42000a85a3c3972adf31b3c8aee07d0c}
+
+
+Encontra o maior valor de uma coluna da matriz, a partir de uma determinada posição e troca as posições no vetor de troca de. 
+
+
+\begin{DoxyParams}[1]{Parâmetros}
+\mbox{\tt in}  & {\em M} & Matriz a ser buscada \\
+\hline
+\mbox{\tt in}  & {\em pos} & A posição do valor a ser pivotado \\
+\hline
+ & {\em index\+\_\+array} & O vetor de troca de linhas \\
+\hline
+\end{DoxyParams}
+
+
+Definido na linha 36 do ficheiro partial\+\_\+pivoting.\+c.
+
