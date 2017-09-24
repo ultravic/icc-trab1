@@ -1,7 +1,7 @@
 /**
  * @file       io.c
  * @author     Pedro Luiz de Souza Moreira  GRR20163064
- * @author     Victor Picussa   GRRVP
+ * @author     Victor Picussa   GRR20163068
  * @date       24 Sep 2017
  * @brief      Esse arquivo contém as definições das funções utilizada na
  *             entrada e saída de dados temporização do programa
@@ -103,15 +103,16 @@ int parseParameters(int argc, char const *argv[], param *P) {
  *
  * @param      M     Matriz a ser impressa
  */
-void printMatrix(t_matrix *M) {
+void printMatrix(t_matrix *matrix, int *index_array)
+{
   int i, j;
-  int length = M->length;
-  printf("Tamanho matrix (NxN): %d\n", length);
+  int length = matrix->length;
+
+  printf("Tamanho matrix (NxN): %d\n",length);
 
   for (i = 0; i < length; ++i) {
-    for (j = 0; j < length; j++) {
-      printf("%.17g ", GET(M, i, j));
-    };
+    for (j = 0; j < length; j++)
+      printf("%.17g " , GET(matrix, index_array[i], j));
     printf("\n");
   }
 }
@@ -121,10 +122,39 @@ void printMatrix(t_matrix *M) {
   *
   * @param      matrix  The matrix
   */
- void printMatrixL(t_matrix *matrix) {
+void printMatrixL(t_matrix *matrix, int *index_array)
+{
   int i;
+
   printf("Tamanho matrix L (N): %d\n", matrix->length);
-  for (i = 0; i < matrix->length; ++i) {
-    printf("%.17g\n", matrix->matrix[i]);
+
+  for (i = 0; i < matrix->length; ++i)
+    printf("%.17g\n", GET(matrix, 0, i));
+}
+
+
+void printNormal(t_matrix *matrix)
+{
+  int i, j;
+  int length = matrix->length;
+
+  printf("Tamanho matrix (NxN): %d\n",length);
+
+  for (i = 0; i < length; ++i) {
+    for (j = 0; j < length; j++)
+      printf("%.17g " , GET(matrix, i, j));
+    printf("\n");
   }
+}
+
+void printIndexes(t_matrix *m, int *index_array)
+{
+  int i;
+
+  printf("Indexes: ");
+
+  for (i = 0; i < m->length; ++i)
+    printf("%d, ", index_array[i]);
+
+  printf("\n");
 }

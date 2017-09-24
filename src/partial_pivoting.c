@@ -1,7 +1,7 @@
 /**
  * @file       time_measurement.c
  * @author     Pedro Luiz de Souza Moreira  GRR20163064
- * @author     Victor Picussa   GRRVP
+ * @author     Victor Picussa   GRR20163068
  * @date       24 Sep 2017
  * @brief      Esse arquivo contém a definição das funções utilizadas no
  *             pivotamento parcial
@@ -27,29 +27,31 @@ void initIndexArray(int *index_array, int length) {
 }
 
 /**
- * @brief      Encontra o maior valor de uma coluna da matriz, a partir de uma determinada posição e troca as posições no vetor de troca de
+ * @brief      Encontra o maior valor de uma coluna da matriz, a partir de uma
+ *             determinada posição e troca as posições no vetor de troca de
  *
  * @param[in]  M            Matriz a ser buscada
  * @param[in]  pos          A posição do valor a ser pivotado
  * @param      index_array  O vetor de troca de linhas
  */
-void pivot(t_matrix *M, int pos, int *index_array) {
-  int i, length;
-  int max_line = pos;
+void pivot(t_matrix *M, int pos, int *index_array){
+    int i, length;
+    int max_line = pos;
 
-  double max_num = GET(M, pos, pos);
-  double aux;
-  length = M->length;
+    double max_num = GET(M, index_array[pos], pos);
+    double aux;
+    length = M->length;
 
-  for (i = pos + 1; i < length; ++i) {
-    if ((aux = GET(M, pos, i)) > max_num) {
-      max_num = aux;
-      max_line = i;
+    for (i = pos+1; i < length; ++i) {
+        if((aux = GET(M, index_array[i], pos)) > max_num) {
+            max_num = aux;
+            max_line = i;
+        }
     }
-  }
-  if (IS_ZERO(ABS(max_num)))
-    die(ERROR_ZERO_PIVOT);
+    if(IS_ZERO(max_num))
+        die(ERROR_ZERO_PIVOT);
+    aux = index_array[pos];
+    index_array[pos] = index_array[max_line];
+    index_array[max_line] = aux;
 
-  index_array[pos] = max_line;
-  index_array[max_line] = pos;
 }

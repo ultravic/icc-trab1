@@ -1,7 +1,7 @@
 /**
  * @file       datatypes.h
  * @author     Pedro Luiz de Souza Moreira  GRR20163064
- * @author     Victor Picussa   GRRVP
+ * @author     Victor Picussa   GRR20163068
  * @date       24 Sep 2017
  * @brief      Esse arquivo contém as estruturas de dados principais usadas
  *             durante o programa, bem como algumas macros uteis

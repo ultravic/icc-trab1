@@ -1,7 +1,7 @@
 /**
  * @file       result_refinement.c
  * @author     Pedro Luiz de Souza Moreira  GRR20163064
- * @author     Victor Picussa   GRRVP
+ * @author     Victor Picussa   GRR20163068
  * @date       24 Sep 2017
  * @brief      Esse arquivo contém as definições das funções usadas para realiza
  *             o refinamento do resultado da inversão
@@ -19,7 +19,7 @@
  * @param      I       Ponteiro para a Matriz
  * @param[in]  length  a largura da matriz
  */
-void createIdentity(t_matrix *I, int length) {
+void initMatrixIdentity(t_matrix *I, int length) {
   int i, j;
 
   I->length = length;
@@ -45,12 +45,14 @@ void createIdentity(t_matrix *I, int length) {
  */
 double calculateLC(t_matrix *U, t_matrix *X, int line, int column) {
   int i;
-  double temporary = 0;
+  double temporary = ZEROF;
   for (i = 0; i < U->length; ++i)
-    temporary += GET(U, line, i) + GET(X, i, column);
+
+    temporary += U->matrix[(index_array[line]*U->length) + i] + X->matrix[i*X->length + column];
 
   return temporary;
 }
+
 
 /**
  * @brief      Executa o refinamento do resultado
@@ -82,4 +84,5 @@ t_matrix *resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I) {
     }
 
   return R;
+
 }

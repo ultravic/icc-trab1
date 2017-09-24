@@ -1,7 +1,7 @@
 /**
  * @file       gauss_elimination.h
  * @author     Pedro Luiz de Souza Moreira  GRR20163064
- * @author     Victor Picussa   GRRVP
+ * @author     Victor Picussa   GRR20163068
  * @date       24 Sep 2017
  * @brief      Esse arquivo contém uma macro para calcular o tamanho "real" de
  *             uma matriz triangular, o cabeçalho da função de eliminação

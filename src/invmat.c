@@ -1,7 +1,7 @@
 /**
  * @file invmat.c
  * @author     Pedro Luiz de Souza Moreira  GRR20163064
- * @author     Victor Picussa   GRRVP
+ * @author     Victor Picussa   GRR20163068
  * @date       24 Sep 2017
  * @brief      Esse arquivo contém a função principal do programa, que inverte
  *             uma matriz, e faz o refinamento do resultado
@@ -20,6 +20,7 @@
 #include <string.h>
 #include <unistd.h>
 
+
 int main(int argc, char const *argv[]) {
   // Inicializa struct de parametros
   param Parameters, *P;
@@ -31,16 +32,17 @@ int main(int argc, char const *argv[]) {
   #ifndef DEBUG
     if((t = parseParameters(argc,argv,P)) != SUCCESS){
       die(ERROR_PARAM);
-      printf("error %d\n", t);
-      return -1;
+      return ERROR;
     }
   #else
     P->random = true;
   #endif
 
+
   // inicializa todas as matrizes necessárias e ponteiros
   t_matrix A, L, B, X, I, *mA, *mL, *mB, *mX, *mI;
 
+<<<<<<< HEAD
   mA = &A;
   mB = &B;
   mL = &L;
@@ -71,9 +73,9 @@ int main(int argc, char const *argv[]) {
       return ERROR;
     }
   }
+  initMatrixIdentity(mI, mA->length);
+  initMatrixL(mL, mA->length);
 
-  // cria a identidade
-  createIdentity(mI, A.length);
 
   // inicializa Vetor de Troca de Linhas
   int *index_array;
@@ -81,17 +83,36 @@ int main(int argc, char const *argv[]) {
   initIndexArray(index_array, P->N);
 
   // começa processo de inversão e refinamento
-  // while (k > 0) {
-  printMatrix(mA);
-  printf("\n");
-  mL = gaussElimination(mA, index_array);
-  printMatrix(mA);
-  printf("\n");
-  printMatrixL(mL);
+	// inicializa o B copiando I
+	mB->length = mA->length;
+	mB->matrix = ALLOC(double, SQ(mA->length));
+	memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(mA->length));
 
-  // Matriz B recebe a matriz resíduo r = Identidade (I) - A (U). X'
-  mB = resultRefinement(mA, mX, mI);
-  // }
+	printMatrix(mA, index_array);
+	printf("\n");
+	printMatrix(mB, index_array);
+	printf("\n");
+	printNormal(mI);
+	printf("\n");
+	gaussElimination(mA, mB, mL, index_array);
+	printMatrix(mA, index_array);
+	printf("\n");
+	printMatrix(mB, index_array);
+	printf("\n");
+	printMatrixL(mL, index_array);
+	printf("\n");
+
+	// a cada iteração é feito o refinamento
+	while (P->K > 0) {
+		// calcula o X
+		// retrosubstitution();
+		// Matriz B recebe a matriz resíduo r = Identidade (I) - A (U). X'
+		*(mB)->matrix = *(mI)->matrix;
+		// calcula o resíduo
+		// resultRefinement(mA, mX, mI, mB);
+		P->K--;
+	}
+
 
   return SUCCESS;
 }
