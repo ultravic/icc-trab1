@@ -22,6 +22,9 @@
 
 
 int main(int argc, char const *argv[]) {
+  double initial_time, actual_time;
+
+
   // Inicializa struct de parametros
   param Parameters, *P;
   P = &Parameters;

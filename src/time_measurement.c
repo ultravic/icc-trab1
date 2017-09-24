@@ -12,9 +12,9 @@
 #include "../lib/time_measurement.h"
 
 /**
- * @brief      Mede o tempoentre regiões de interesse
+ * @brief      Retorna o tempo atual do sistema
  *
- * @return     O tempo decorrido em segundos
+ * @return     Tempo atual
  */
 double timestamp(void) {
   struct timeval tp;
