@@ -23,9 +23,8 @@
 
 int main(int argc, char const *argv[]) {
   // Inicializa struct de parametros
-  param Parameters, *P;
-  P = &Parameters;
-  INIT_PARAM(P);
+  param *P;
+	INIT_PARAM(P);
 
   // Trata parametros
   int t;
@@ -40,19 +39,14 @@ int main(int argc, char const *argv[]) {
 
 
   // inicializa todas as matrizes necessárias e ponteiros
-  t_matrix A, L, B, X, I, *mA, *mL, *mB, *mX, *mI;
+  t_matrix *mA, *mL, *mB, *mX, *mI;
 
-  mA = &A;
-  mB = &B;
-  mL = &L;
-  mX = &X;
-  mI = &I;
+	INIT_MATRIX(mA);
+	INIT_MATRIX(mL);
+	INIT_MATRIX(mB);
+	INIT_MATRIX(mX);
+	INIT_MATRIX(mI);
 
-  INIT_MATRIX(mA);
-  INIT_MATRIX(mL);
-  INIT_MATRIX(mB);
-  INIT_MATRIX(mX);
-  INIT_MATRIX(mI);
 
   if (P->random) {
     // Caso tenha entrado com o parametro "-r" gera matriz aleatŕoia
@@ -62,7 +56,7 @@ int main(int argc, char const *argv[]) {
       mA->length = P->N;
     #endif
 
-    srand( 20172 );
+    //srand( 20172 );
     mA->matrix = generateSquareRandomMatrix(P->N);
   } else {
     //  Caso contrário le a matriz
@@ -102,16 +96,20 @@ int main(int argc, char const *argv[]) {
 	printf("\n");
 
 	// a cada iteração é feito o refinamento
-	while (P->K > 0) {
-		// calcula o X
-		// retrosubstitution();
-		// Matriz B recebe a matriz resíduo r = Identidade (I) - A (U). X'
-		*(mB)->matrix = *(mI)->matrix;
-		// calcula o resíduo
-		// resultRefinement(mA, mX, mI, mB);
+	while (P->K > -5) {
+    printNormal(mI);
+    printf("\n");
+    mX = backwardSubstitution(mA, mB, index_array);
+    printMatrix(mX, index_array);
+    printf("\n");
+  	memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(mA->length));
+    printNormal(mB);
+    printf("\n");
+		resultRefinement(mA, mX, mI, mB, index_array);
+    printNormal(mB);
+    printf("\n");
 		P->K--;
 	}
-
 
   return SUCCESS;
 }

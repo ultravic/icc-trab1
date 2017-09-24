@@ -24,7 +24,7 @@
  */
 void initMatrixL(t_matrix *matrixL, int length)
 {
-  matrixL->length = SEQUENTIAL_SUM(length);
+  matrixL->length = SEQUENTIAL_SUM(length-1);
   matrixL->matrix = ALLOC(double, matrixL->length);
 }
 

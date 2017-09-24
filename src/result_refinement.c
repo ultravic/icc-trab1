@@ -71,10 +71,11 @@ void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *i
   double aux;
 
   int i, j;
-  for (i = 0; i < length; ++i)
+  for (i = 0; i < length; ++i) {
     for (j = 0; j < length; ++j) {
       aux = (GET(B, i, j) - calculateLC(U, X, index_array, i, j));
       KAHAN_SUM(kahan, aux);
       SET(B, i, j, kahan->sum);
     }
+  }
 }
