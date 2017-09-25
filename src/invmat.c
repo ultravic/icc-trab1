@@ -42,12 +42,13 @@ int main(int argc, char const *argv[]) {
   #endif
 
   // inicializa todas as matrizes necessárias e ponteiros
-  t_matrix *mA, *mL, *mB, *mX, *mI;
+  t_matrix *mA, *mL, *mB, *mX, *mXW, *mI;
 
 	INIT_MATRIX(mA);
 	INIT_MATRIX(mL);
 	INIT_MATRIX(mB);
 	INIT_MATRIX(mX);
+  INIT_MATRIX(mXW);
 	INIT_MATRIX(mI);
 
 
@@ -107,6 +108,9 @@ int main(int argc, char const *argv[]) {
   mX->length = mA->length;
   mX->matrix = ALLOC(double, SQ(mA->length));
 
+  mXW->length = mA->length;
+	mXW->matrix = ALLOC(double, SQ(mA->length));
+
   // a cada iteração é feito o refinamento
   int iter = 0;
 
@@ -120,8 +124,15 @@ int main(int argc, char const *argv[]) {
     initial_time = timestamp();
     // calcula o X
     backwardSubstitution(mA, mB, mX, index_array, type);
-    memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(mA->length));
-    resultRefinement(mA, mX, mI, mB, index_array);
+    if(type == 'A'){
+      memcpy(mXW->matrix, mX->matrix, sizeof(double)*SQ(mA->length));
+    }
+    else{
+      memcpy(mX->matrix, mXW->matrix, sizeof(double)*SQ(mA->length));
+      memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(mA->length));
+    }
+    resultRefinement(mA, mXW, mI, mB, index_array);
+    sumMatrix(mX, mXW);
     // Mede o tempo
     actual_time = timestamp();
     KAHAN_SUM(iter_time,(actual_time - initial_time));
@@ -160,6 +171,8 @@ int main(int argc, char const *argv[]) {
   free(mI);
   free(index_array);
   free(residue_time);
+  free(iter_time);
+
 
   return SUCCESS;
 }

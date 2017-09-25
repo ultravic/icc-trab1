@@ -53,6 +53,21 @@ double calculateLC(t_matrix *U, t_matrix *X, int *index_array, int line, int col
 }
 
 
+
+/**
+ * @brief      Efetua a soma de duas matrizes
+ *
+ * @param      X     Matriz
+ * @param      XW    Matriz
+ */
+void sumMatrix(t_matrix *X, t_matrix *XW)
+{
+  int i, j;
+  for (i = 0; i < X->length; ++i)
+    for (j = 0; j < X->length; ++j)
+      SET(XW, i, j, (GET(XW, i, j) + GET(X, i, j)));
+}
+
 /**
  * @brief      Executa o refinamento do resultado
  *
@@ -83,6 +98,13 @@ void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *i
   free(kahan);
 }
 
+/**
+ * @brief      Calcula a norma L2 da matriz de residuos
+ *
+ * @param      R     Matriz de residuos
+ *
+ * @return     A norma
+ */
 double calculateL2Norm(t_matrix *R){
   int i;
   int size = SQ(R->length);

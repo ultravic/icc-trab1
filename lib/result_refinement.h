@@ -19,4 +19,6 @@ void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *i
 
 double calculateL2Norm(t_matrix *R);
 
+void sumMatrix(t_matrix *X, t_matrix *XW);
+
 #endif
