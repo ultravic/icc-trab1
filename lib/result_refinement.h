@@ -17,4 +17,6 @@ double calculateLC(t_matrix *U, t_matrix *X, int *index_array, int line, int col
 
 void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *index_array);
 
+void sumMatrix(t_matrix *X, t_matrix *XW);
+
 #endif

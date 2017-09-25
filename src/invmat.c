@@ -39,12 +39,13 @@ int main(int argc, char const *argv[]) {
 
 
   // inicializa todas as matrizes necessárias e ponteiros
-  t_matrix *mA, *mL, *mB, *mX, *mI;
+  t_matrix *mA, *mL, *mB, *mX, *mXW, *mI;
 
 	INIT_MATRIX(mA);
 	INIT_MATRIX(mL);
 	INIT_MATRIX(mB);
 	INIT_MATRIX(mX);
+  INIT_MATRIX(mXW);
 	INIT_MATRIX(mI);
 
 
@@ -98,21 +99,38 @@ int main(int argc, char const *argv[]) {
   mX->length = mA->length;
   mX->matrix = ALLOC(double, SQ(mA->length));
 
+  mXW->length = mA->length;
+	mXW->matrix = ALLOC(double, SQ(mA->length));
+
 	// a cada iteração é feito o refinamento
   backwardSubstitution(mA, mB, mX, index_array, 'A');
-  printf("X\n");
-  printNormal(mX);
-  printf("\n");
+  memcpy(mXW->matrix, mX->matrix, sizeof(double)*SQ(mA->length));
 	while (P->K > 0) {
-    resultRefinement(mA, mX, mI, mB, index_array);
-    backwardSubstitution(mA, mB, mX, index_array, 'N');
+    memcpy(mX->matrix, mXW->matrix, sizeof(double)*SQ(mA->length));
+    resultRefinement(mA, mXW, mI, mB, index_array);
+    printf("B\n");
+    printNormal(mB);
+    printf("\n");
+    backwardSubstitution(mA, mB, mXW, index_array, 'N');
+    sumMatrix(mX, mXW);
   	memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(mA->length));
     P->K--;
 	}
 
-  printf("X\n");
-  printNormal(mX);
+  printf("X=\n");
+  printNormal(mXW);
   printf("\n");
+
+  free(mA->matrix);
+  free(mA);
+  free(mB->matrix);
+  free(mB);
+  free(mI->matrix);
+  free(mI);
+  free(mL->matrix);
+  free(mL);
+  free(mX->matrix);
+  free(mX);
 
   return SUCCESS;
 }

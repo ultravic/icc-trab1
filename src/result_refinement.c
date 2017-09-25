@@ -61,6 +61,15 @@ double calculateLC(t_matrix *U, t_matrix *X, int *index_array, int line, int col
  *
  * @return     Matriz de Residuos
  */
+
+void sumMatrix(t_matrix *X, t_matrix *XW)
+{
+  int i, j;
+  for (i = 0; i < X->length; ++i)
+    for (j = 0; j < X->length; ++j)
+      SET(XW, i, j, (GET(XW, i, j) + GET(X, i, j)));
+}
+
 void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *index_array){
 
   int length = U->length;
