@@ -105,15 +105,16 @@ int main(int argc, char const *argv[]) {
 	// a cada iteração é feito o refinamento
   backwardSubstitution(mA, mB, mX, index_array, 'A');
   memcpy(mXW->matrix, mX->matrix, sizeof(double)*SQ(mA->length));
+  resultRefinement(mA, mXW, mI, mB, index_array, 'A');
 	while (P->K > 0) {
     memcpy(mX->matrix, mXW->matrix, sizeof(double)*SQ(mA->length));
-    resultRefinement(mA, mXW, mI, mB, index_array);
     printf("B\n");
     printNormal(mB);
     printf("\n");
     backwardSubstitution(mA, mB, mXW, index_array, 'N');
     sumMatrix(mX, mXW);
-  	memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(mA->length));
+    memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(mA->length));
+    resultRefinement(mA, mXW, mI, mB, index_array, 'N');
     P->K--;
 	}
 
