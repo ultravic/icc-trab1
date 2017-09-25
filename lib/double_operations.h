@@ -8,11 +8,9 @@
  */
 
 #include "datatypes.h"
+#include "float.h"
 #ifndef __DOUBLE_OPERATIONS__
 #define __DOUBLE_OPERATIONS__
-
-/** @brief    Zero tolerado */
-#define DBL_ZERO 10e-7
 
 
 /** @brief     Zero em ponto fluntuante */
@@ -33,7 +31,7 @@
  *
  * @return     Verdadeiro se zero, ou Falso se não.
  */
-#define IS_ZERO(NUM) (NUM) < DBL_ZERO
+#define IS_ZERO(NUM) (NUM) < DBL_EPSILON
 
 /**
  * @brief      Efetua uma soma de Kahan

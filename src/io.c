@@ -66,6 +66,7 @@ int readMatrix(t_matrix *M, char *file_path) {
 int parseParameters(int argc, char const *argv[], param *P) {
   // contador
   int i;
+  bool e = false;
   // Verifica se parametros tem chance de estarem no padrão
   if (!((argc >= 2) && (argc % 2 != 0)))
     return ERROR;
@@ -76,24 +77,31 @@ int parseParameters(int argc, char const *argv[], param *P) {
       case 'e': // Input file?
         i++;
         P->in_file = (char *)argv[i];
+        e = true;
         break;
       case 'o': // output file?
         i++;
+        P->to_file = true;
         P->out_file = (char *)argv[i];
         break;
       case 'r': // random?
         i++;
-        P->random = true;
-        P->N = atoi(argv[i]);
+        if(!e){
+          P->random = true;
+          P->N = atoi(argv[i]);
+        }
         break;
       case 'i': // iterações
         i++;
         P->K = atoi(argv[i]);
+        if(P->K < 0)
+          die(ERROR_PARAM_NEGATIVE_K);
         break;
       default:
         return ERROR;
       }
     }
+
   }
   return SUCCESS;
 }
@@ -103,17 +111,17 @@ int parseParameters(int argc, char const *argv[], param *P) {
  *
  * @param      M     Matriz a ser impressa
  */
-void printMatrix(t_matrix *matrix, int *index_array)
+void printMatrix(t_matrix *matrix, int *index_array, FILE *file)
 {
   int i, j;
   int length = matrix->length;
 
-  printf("Tamanho matrix (NxN): %d\n",length);
+  fprintf(file,"%d\n",length);
 
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      printf("%.17g " , GET(matrix, index_array[i], j));
-    printf("\n");
+      fprintf(file,"%.17g " , GET(matrix, index_array[i], j));
+    fprintf(file,"\n");
   }
 }
 
@@ -122,39 +130,40 @@ void printMatrix(t_matrix *matrix, int *index_array)
   *
   * @param      matrix  The matrix
   */
-void printMatrixL(t_matrix *matrix)
+void printMatrixL(t_matrix *matrix, FILE *file)
 {
   int i;
 
-  printf("Tamanho matrix L (N): %d\n", matrix->length);
+  fprintf(file,"%d\n", matrix->length);
 
   for (i = 0; i < matrix->length; ++i)
-    printf("%.17g\n", GET(matrix, 0, i));
+    fprintf(file,"%.17g\n", GET(matrix, 0, i));
 }
 
 
-void printNormal(t_matrix *matrix)
+void printNormal(t_matrix *matrix, FILE *file)
 {
   int i, j;
   int length = matrix->length;
 
-  printf("Tamanho matrix (NxN): %d\n",length);
+  fprintf(file,"%d\n",length);
 
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      printf("%.17g " , GET(matrix, i, j));
-    printf("\n");
+      fprintf(file,"%.17g " , GET(matrix, i, j));
+    fprintf(file,"\n");
   }
 }
 
-void printIndexes(t_matrix *m, int *index_array)
+void printIndexes(t_matrix *m, int *index_array, FILE *file)
 {
   int i;
 
-  printf("Indexes: ");
+  fprintf(file,"Indexes: \n");
 
   for (i = 0; i < m->length; ++i)
-    printf("%d, ", index_array[i]);
+    fprintf(file,"%d, ", index_array[i]);
 
-  printf("\n");
+  fprintf(file,"\n");
 }
+

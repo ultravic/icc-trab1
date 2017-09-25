@@ -8,6 +8,7 @@
  */
 
 #include "datatypes.h"
+#include "stdio.h"
 #ifndef __IO__
 #define __IO__
 
@@ -15,12 +16,12 @@ int readMatrix(t_matrix * M, char *file_path);
 
 int parseParameters(int argc, char const *argv[], param *P);
 
-void printMatrix(t_matrix *matrix, int *index_array);
+void printMatrix(t_matrix *matrix, int *index_array, FILE *file);
 
-void printMatrixL(t_matrix *matrix);
+void printMatrixL(t_matrix *matrix, FILE *file);
 
-void printNormal(t_matrix *matrix);
+void printNormal(t_matrix *matrix, FILE *file);
 
-void printIndexes(t_matrix *m, int *index_array);
+void printIndexes(t_matrix *m, int *index_array, FILE *file);
 
 #endif

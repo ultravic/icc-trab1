@@ -6,9 +6,6 @@
  * @brief      Esse arquivo contém a definição da função usada para a
  *             temporização do programa
  */
-
-#include <stdlib.h>
-#include <sys/time.h>
 #include "../lib/time_measurement.h"
 
 /**
@@ -16,8 +13,8 @@
  *
  * @return     Tempo atual
  */
-double timestamp(void) {
-  struct timeval tp;
-  gettimeofday(&tp, NULL);
-  return ((double)(tp.tv_sec * 1000.0 + tp.tv_usec / 1000.0));
+double timestamp(void){
+    struct timeval tp;
+    gettimeofday(&tp, NULL);
+    return((double)(tp.tv_sec*1000.0 + tp.tv_usec/1000.0));
 }

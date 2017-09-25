@@ -32,6 +32,7 @@
 		char *in_file; // arquivo de entrada
 		char *out_file; // arquivo de saída
 		bool random; // random
+		bool to_file; // tem arquivo para saida
 	}param;
 
 
@@ -76,6 +77,7 @@
 		P->in_file = "stdin"; \
 		P->out_file = "stdout"; \
 		P->random = false; \
+		P->to_file = false; \
 	}
 
 	/**

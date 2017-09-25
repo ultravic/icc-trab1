@@ -5,10 +5,10 @@
  * @date       24 Sep 2017
  * @brief      Esse arquivo contém o cabeçalho da função usada para a temporização do programa
  */
-
+#include <sys/time.h>
+#include <time.h>
 #ifndef __TIME_MEASUREMENT__
 #define __TIME_MEASUREMENT__
-
 double timestamp(void);
 
 #endif

@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -std=gnu89 -O1 -lrt
+CFLAGS = -Wall -std=gnu99 -O1 -lrt -lm
 DEBUG = -DDEBUG -g
 
 vpath %.c src

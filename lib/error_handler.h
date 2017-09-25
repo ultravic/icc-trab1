@@ -16,14 +16,21 @@
 /** @brief    Sucesso */
 #define SUCCESS 0
 
+
 /** @brief    Erros nos Parametros */
-static const char ERROR_PARAM[] = "Parametros inválidos!\n Favor usar:invmat [-i arquivo_entrada] [-o arquivo_saida] [-r N] -i k \n";
+static const char ERROR_PARAM[] = "Parametros inválidos!\nFavor usar:invmat [-i arquivo_entrada] [-o arquivo_saida] [-r N] -i k \n";
+
+/** @brief    Erros nos Parametros (k)*/
+static const char ERROR_PARAM_NEGATIVE_K[] =  "O numero de iterações deve ser >= 0! Abortando... \nFavor usar:invmat [-i arquivo_entrada] [-o arquivo_saida] [-r N] -i k \n";
+
+/** @brief    Erros na leitura */
+static const char ERROR_READING[] =  "Erro! Não foi possível ler a entrada.\n Abortando...";
 
 /** @brief    Erro de divisão por zero */
 static const char ERROR_ZERO_DIVISION[] = "Divisão por Zero!\n Abortando... \n";
 
 /** @brief    Erro de matriz possivelmente sem solução */
-static const char ERROR_ZERO_PIVOT[] = "Pivô é Zero! Sistema possivelmente sem solução.\n Abortando... \n";
+static const char ERROR_ZERO_PIVOT[] = "Um dos Pivôs é Zero! Sistema possivelmente sem solução.\n Abortando... \n";
 
 void die(char const reason[]);
 

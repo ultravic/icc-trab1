@@ -12,6 +12,7 @@
 #include "../lib/result_refinement.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 /**
  * @brief      Cria uma matriz Identidade
@@ -65,6 +66,7 @@ void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *i
 
   int length = U->length;
 
+  // inicializa estrutura auxiliar
   t_kahan *kahan;
   kahan = ALLOC(t_kahan, 1);
   INIT_KAHAN(kahan);
@@ -77,4 +79,22 @@ void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *i
       KAHAN_SUM(kahan, aux);
       SET(B, i, j, kahan->sum);
     }
+  free(kahan);
+}
+
+double calculateL2Norm(t_matrix *R){
+  int i;
+  int size = SQ(R->length);
+  double norm;
+  t_kahan *kahan;
+  kahan = ALLOC(t_kahan, 1);
+  INIT_KAHAN(kahan);
+
+  for (i = 0; i < size; ++i)
+  {
+    KAHAN_SUM(kahan,R->matrix[i]);
+  }
+  norm = kahan->sum;
+  free(kahan);
+  return sqrt(norm);
 }
