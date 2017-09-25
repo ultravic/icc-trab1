@@ -51,7 +51,7 @@ int main(int argc, char const *argv[]) {
   if (P->random) {
     // Caso tenha entrado com o parametro "-r" gera matriz aleatŕoia
     #ifndef DEBUG
-      mA->length = P->N = 5;
+      mA->length = P->N = 3;
     #else
       mA->length = P->N;
     #endif
@@ -95,21 +95,24 @@ int main(int argc, char const *argv[]) {
 	printMatrixL(mL);
 	printf("\n");
 
+  mX->length = mA->length;
+  mX->matrix = ALLOC(double, SQ(mA->length));
+
 	// a cada iteração é feito o refinamento
-	while (P->K > -5) {
-    printNormal(mI);
-    printf("\n");
-    mX = backwardSubstitution(mA, mB, index_array);
-    printMatrix(mX, index_array);
-    printf("\n");
+  backwardSubstitution(mA, mB, mX, index_array, 'A');
+  printf("X\n");
+  printNormal(mX);
+  printf("\n");
+	while (P->K > 0) {
+    resultRefinement(mA, mX, mI, mB, index_array);
+    backwardSubstitution(mA, mB, mX, index_array, 'N');
   	memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(mA->length));
-    printNormal(mB);
-    printf("\n");
-		resultRefinement(mA, mX, mI, mB, index_array);
-    printNormal(mB);
-    printf("\n");
-		P->K--;
+    P->K--;
 	}
+
+  printf("X\n");
+  printNormal(mX);
+  printf("\n");
 
   return SUCCESS;
 }
