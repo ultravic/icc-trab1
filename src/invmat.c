@@ -148,8 +148,17 @@ int main(int argc, char const *argv[]) {
 
   printMatrix(mX,index_array,file);
   fclose(file);
-
-  free(iter_time);
+  free(mA->matrix);
+  free(mA);
+  free(mL->matrix);
+  free(mL);
+  free(mB->matrix);
+  free(mB);
+  free(mX->matrix);
+  free(mX);
+  free(mI->matrix);
+  free(mI);
+  free(index_array);
   free(residue_time);
 
   return SUCCESS;
