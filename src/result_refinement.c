@@ -48,7 +48,7 @@ double calculateLC(t_matrix *U, t_matrix *X, int *index_array, int line, int col
   int i;
   double temporary = TRUE_ZERO;
   for (i = 0; i < U->length; ++i)
-    temporary += U->matrix[(index_array[line]*U->length) + i] + X->matrix[i*X->length + column];
+    temporary = temporary + (U->matrix[(index_array[line]*U->length) + i] + X->matrix[i*X->length + column]);
   return temporary;
 }
 
@@ -77,8 +77,7 @@ void sumMatrix(t_matrix *X, t_matrix *XW)
  *
  * @return     Matriz de Residuos
  */
-void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *index_array){
-
+void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *index_array, char type) {
   int length = U->length;
 
   // inicializa estrutura auxiliar
@@ -88,11 +87,21 @@ void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *i
   double aux;
 
   int i, j;
-  for (i = 0; i < length; ++i) {
-    for (j = 0; j < length; ++j) {
-      aux = (GET(B, i, j) - calculateLC(U, X, index_array, i, j));
-      KAHAN_SUM(kahan, aux);
-      SET(B, i, j, kahan->sum);
+  if (type == 'A') {
+    for (i = 0; i < length; ++i) {
+      for (j = 0; j < length; ++j) {
+        aux = (GET(B, index_array[i], j) - calculateLC(U, X, index_array, i, j));
+        KAHAN_SUM(kahan, aux);
+        SET(B, index_array[i], j, kahan->sum);
+      }
+    }
+  } else {
+    for (i = 0; i < length; ++i) {
+      for (j = 0; j < length; ++j) {
+        aux = (GET(B, i, j) - calculateLC(U, X, index_array, i, j));
+        KAHAN_SUM(kahan, aux);
+        SET(B, i, j, kahan->sum);
+      }
     }
   }
   free(kahan);

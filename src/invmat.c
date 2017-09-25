@@ -131,7 +131,7 @@ int main(int argc, char const *argv[]) {
       memcpy(mX->matrix, mXW->matrix, sizeof(double)*SQ(mA->length));
       memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(mA->length));
     }
-    resultRefinement(mA, mXW, mI, mB, index_array);
+    resultRefinement(mA, mXW, mI, mB, index_array, type);
     sumMatrix(mX, mXW);
     // Mede o tempo
     actual_time = timestamp();
