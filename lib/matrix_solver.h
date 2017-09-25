@@ -11,6 +11,6 @@
 #ifndef __MATRIX_SOLVER__
 #define __MATRIX_SOLVER__
 
-t_matrix* backwardSubstitution(t_matrix *U, t_matrix *B, int * index_array);
+void backwardSubstitution(t_matrix *U, t_matrix *B, t_matrix *X, int * index_array, char type);
 
 #endif

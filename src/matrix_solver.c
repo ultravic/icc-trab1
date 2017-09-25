@@ -22,44 +22,70 @@
  *
  * @return     A Matriz resultante
  */
-t_matrix *backwardSubstitution(t_matrix *U, t_matrix *B, int *index_array) {
+void backwardSubstitution(t_matrix *U, t_matrix *B, t_matrix *X, int *index_array, char type) {
   int length = U->length;
   int last = length - 1;
 
-  // Inicializa e aloca memória para a matriz resultante
-  t_matrix *X;
-  INIT_MATRIX(X);
-  X->length = length;
-  X->matrix = ALLOC(double, SQ(length));
 
   // contadores
-  int i, j, k;
-  int index;
+  int i, j, c;
 
   // define primeiro valor a ser usado
-  double aux = GET(B, last, 1) / GET(U, last, last);
+  double aux;
 
-  t_kahan *kahan;
-  kahan = ALLOC(t_kahan, 1);
+  //
+  // t_kahan *kahan;
+  // kahan = ALLOC(t_kahan, 1);
+  //
+  // SET(X, last, 1, aux);
+  //
+  // for (k = 0; k < length; ++k) {
+  //   INIT_KAHAN(kahan);
+  //   for (i = last; i > 0; --i) {
+  //
+  //     index = index_array[i];
+  //     kahan->sum = GET(B, index, k);
+  //
+  //     for (j = (i + 1); j < length; ++j) {
+  //       KAHAN_SUM(kahan, (kahan->sum - (GET(U, index, j) * GET(X, j, k))));
+  //       aux = GET(U, index, i);
+  //       if (IS_ZERO(aux))
+  //         die(ERROR_ZERO_DIVISION);
+  //       SET(X, j, k, (kahan->sum / aux));
+  //     }
+  //   }
+  // }
+  // free(kahan);
+  // return X;
+  //
+  double temp = 0;
+  if (type == 'A') {
+    for (c = 0; c < length; ++c) {
+      aux = GET(B, index_array[last], c) / GET(U, index_array[last], last);
+      SET(X, last, c, aux);
 
-  SET(X, last, 1, aux);
+      for (i = last - 1; i >= 0; --i) {
+        temp = GET(B, index_array[i], c);
+        for (j = last; j > i; --j) {
+          temp = temp - (GET(U, index_array[i], j) * GET(X, j, c));
+        }
+        temp = temp / GET(U, index_array[i], j);
+        SET(X, i, c, temp);
+      }
+    }
+  } else {
+    for (c = 0; c < length; ++c) {
+      aux = GET(B, last, c) / GET(U, index_array[last], last);
+      SET(X, last, c, aux);
 
-  for (k = 0; k < length; ++k) {
-    INIT_KAHAN(kahan);
-    for (i = last; i > 0; --i) {
-
-      index = index_array[i];
-      kahan->sum = GET(B, index, k);
-
-      for (j = (i + 1); j < length; ++j) {
-        KAHAN_SUM(kahan, (kahan->sum - (GET(U, index, j) * GET(X, j, k))));
-        aux = GET(U, index, i);
-        if (IS_ZERO(aux))
-          die(ERROR_ZERO_DIVISION);
-        SET(X, j, k, (kahan->sum / aux));
+      for (i = last - 1; i >= 0; --i) {
+        temp = GET(B, i, c);
+        for (j = last; j > i; --j) {
+          temp = temp - (GET(U, index_array[i], j) * GET(X, j, c));
+        }
+        temp = temp / GET(U, index_array[i], j);
+        SET(X, i, c, temp);
       }
     }
   }
-  free(kahan);
-  return X;
 }

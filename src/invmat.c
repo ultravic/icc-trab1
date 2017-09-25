@@ -23,16 +23,14 @@
 
 
 int main(int argc, char const *argv[]) {
-  double initial_time, actual_time;
+  double initial_time, actual_time, norm;
   double lu_time = TRUE_ZERO;
-
-  double norm;
+  char type = 'A';
   FILE *file;
 
   // Inicializa struct de parametros
-  param Parameters, *P;
-  P = &Parameters;
-  INIT_PARAM(P);
+  param *P;
+	INIT_PARAM(P);
 
   // Trata parametros
   #ifdef DEBUG
@@ -43,22 +41,15 @@ int main(int argc, char const *argv[]) {
     }
   #endif
 
-
-
   // inicializa todas as matrizes necessárias e ponteiros
-  t_matrix A, L, B, X, I, *mA, *mL, *mB, *mX, *mI;
+  t_matrix *mA, *mL, *mB, *mX, *mI;
 
-  mA = &A;
-  mB = &B;
-  mL = &L;
-  mX = &X;
-  mI = &I;
+	INIT_MATRIX(mA);
+	INIT_MATRIX(mL);
+	INIT_MATRIX(mB);
+	INIT_MATRIX(mX);
+	INIT_MATRIX(mI);
 
-  INIT_MATRIX(mA);
-  INIT_MATRIX(mL);
-  INIT_MATRIX(mB);
-  INIT_MATRIX(mX);
-  INIT_MATRIX(mI);
 
 
 
@@ -112,6 +103,9 @@ int main(int argc, char const *argv[]) {
     file = stdout;
   fprintf(file, "#\n");
 
+  // aloca a matriz x
+  mX->length = mA->length;
+  mX->matrix = ALLOC(double, SQ(mA->length));
 
   // a cada iteração é feito o refinamento
   int iter = 0;
@@ -122,20 +116,16 @@ int main(int argc, char const *argv[]) {
   residue_time = ALLOC(t_kahan, 1);
   INIT_KAHAN(iter_time);
   INIT_KAHAN(residue_time);
-  do{
-    //inicia contagem do tempo
+  do {
     initial_time = timestamp();
     // calcula o X
-    mX = backwardSubstitution(mA, mB, index_array);
-
-    // Matriz B recebe a matriz resíduo r = Identidade (I) - A (U). X'
-    *(mB)->matrix = *(mI)->matrix;
-
-    // Faz o refinamento
+    backwardSubstitution(mA, mB, mX, index_array, type);
+    memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(mA->length));
     resultRefinement(mA, mX, mI, mB, index_array);
     // Mede o tempo
     actual_time = timestamp();
     KAHAN_SUM(iter_time,(actual_time - initial_time));
+    type = 'N';
 
     // Calculo da norma
     initial_time = timestamp();
@@ -145,9 +135,9 @@ int main(int argc, char const *argv[]) {
 
     fprintf(file, "# iter %d: %.17g\n", iter, norm);
     iter++;
-  } while (iter <= P->K);
 
-  printf("%d\n",iter );
+  } while(iter <= P->K);
+
   iter_time->sum = (iter_time->sum / iter);
   residue_time->sum = (residue_time->sum / iter);
 
@@ -155,9 +145,12 @@ int main(int argc, char const *argv[]) {
   fprintf(file, "# Tempo iter %lf\n", iter_time->sum);
   fprintf(file, "# Tempo residuo: %lf\n", residue_time->sum);
   fprintf(file, "#\n");
-  printMatrix(mX,index_array,file);
 
+  printMatrix(mX,index_array,file);
   fclose(file);
+
+  free(iter_time);
+  free(residue_time);
 
   return SUCCESS;
 }
