@@ -21,7 +21,7 @@
 
 void initMatrixL(t_matrix *matrixL, int length);
 
-void gaussElimination(t_matrix *mA, t_matrix *mB, t_matrix *mL, int *index_array);
+void gaussElimination(t_matrix *A, t_matrix *L, t_matrix *U, int *index_array, int length);
 
 
 #endif

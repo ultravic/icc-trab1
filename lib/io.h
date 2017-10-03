@@ -12,7 +12,7 @@
 #ifndef __IO__
 #define __IO__
 
-int readMatrix(t_matrix * M, char *file_path);
+int readMatrix(t_matrix * M, int *length, char *file_path);
 
 int parseParameters(int argc, char const *argv[], param *P);
 

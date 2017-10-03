@@ -20,7 +20,7 @@
  *
  * @return     0 Caso tenha sucesso
  */
-int readMatrix(t_matrix *M, char *file_path) {
+int readMatrix(t_matrix *M, int *length, char *file_path) {
   FILE *file;
 
   // contadores
@@ -34,11 +34,11 @@ int readMatrix(t_matrix *M, char *file_path) {
     file = fopen(file_path, "r");
 
   if (file) {
-    if (fscanf(file, "%d\n", &M->length) == ERROR)
+    if (fscanf(file, "%d\n", length) == ERROR)
       return ERROR;
 
-    M->matrix = ALLOC(double, SQ(M->length));
-    size = SQ(M->length);
+    M->matrix = ALLOC(double, SQ((*length)));
+    size = SQ((*length));
 
     for (i = 0; i < size; ++i)
       c = fscanf(file, "%lf ", &M->matrix[i]);

@@ -24,75 +24,69 @@
 
 int main(int argc, char const *argv[]) {
   double initial_time, actual_time, norm;
-  double lu_time = TRUE_ZERO;
-  char type = 'A';
+  double iter_time, residue_time, lu_time;
+  int length;
+
   FILE *file;
 
   // Inicializa struct de parametros
   param *P;
-	INIT_PARAM(P);
+  INIT_PARAM(P);
 
   // Trata parametros
-  #ifdef DEBUG
-    P->random = true;
-  #else
-    if(parseParameters(argc,argv,P) != SUCCESS){
-      die(ERROR_PARAM);
-    }
-  #endif
+  if(parseParameters(argc,argv,P) != SUCCESS){
+    die(ERROR_PARAM);
+  }
 
   // inicializa todas as matrizes necessárias e ponteiros
-  t_matrix *mA, *mL, *mB, *mX, *mXW, *mI;
+  t_matrix *mA, *mU, *mL, *mB, *mX, *mXW, *mI;
 
-	INIT_MATRIX(mA);
-	INIT_MATRIX(mL);
-	INIT_MATRIX(mB);
-	INIT_MATRIX(mX);
+  INIT_MATRIX(mA);
+  INIT_MATRIX(mL);
+  INIT_MATRIX(mU);
+  INIT_MATRIX(mB);
+  INIT_MATRIX(mX);
   INIT_MATRIX(mXW);
-	INIT_MATRIX(mI);
+  INIT_MATRIX(mI);
 
-
-
-
+// Caso tenha entrado com o parametro "-r"
   if (P->random) {
-    // Caso tenha entrado com o parametro "-r" gera matriz aleatŕoia
-    #ifdef DEBUG
-      mA->length = P->N = 5;
-    #else
-      mA->length = P->N;
-    #endif
-
+    
+    // Gera matriz aleatŕoia
+    length = P->N;
     srand(20172 );
-    mA->matrix = generateSquareRandomMatrix(P->N);
+    mA->matrix = generateSquareRandomMatrix(length);
+  
   } else {
-    //  Caso contrário le a matriz
-    if (readMatrix(mA, P->in_file) == ERROR) {
+
+    //  Le a matriz
+    if (readMatrix(mA, &length, P->in_file) == ERROR) 
       die(ERROR_READING);
-    }
+
   }
 
 
-
   // inicializa uma matriz identidade
-  initMatrixIdentity(mI, mA->length);
+  initMatrixIdentity(mI, length);
 
   // inicializa matriz L
-  initMatrixL(mL, mA->length);
+  initMatrixL(mL, length);
 
   // inicializa Vetor de Troca de Linhas
   int *index_array;
-  index_array = ALLOC(int, mA->length);
-  initIndexArray(index_array, mA->length);
+  index_array = ALLOC(int, length);
+  initIndexArray(index_array, length);
 
   // começa processo de inversão e refinamento
   // inicializa o B copiando I
-  mB->length = mA->length;
-  mB->matrix = ALLOC(double, SQ(mA->length));
-  memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(mA->length));
+  mB->matrix = ALLOC(double, SQ(length));
+  memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(length));
 
-  // Efetua a eliminação gaussiana
+  // Efetua a eliminação gaussiana com pivotamento parcial e fatoração LU
   initial_time = timestamp();
-  gaussElimination(mA, mB, mL, index_array);
+
+  gaussElimination(mA, mL, mU, index_array, length);
+
   actual_time = timestamp();
   lu_time = actual_time - initial_time;
 
@@ -102,52 +96,66 @@ int main(int argc, char const *argv[]) {
     file = fopen(P->out_file, "w");
   else
     file = stdout;
+
   fprintf(file, "#\n");
 
-  // aloca a matriz x
-  mX->length = mA->length;
-  mX->matrix = ALLOC(double, SQ(mA->length));
-
-  mXW->length = mA->length;
-	mXW->matrix = ALLOC(double, SQ(mA->length));
-
   // a cada iteração é feito o refinamento
-  int iter = 0;
+  int iter = 1;
 
-  // os timers usam soma de kahan
-  t_kahan *iter_time,*residue_time;
-  iter_time = ALLOC(t_kahan, 1);
-  residue_time = ALLOC(t_kahan, 1);
-  INIT_KAHAN(iter_time);
-  INIT_KAHAN(residue_time);
-  do {
+  // L*Y = B
+  forwardSubstitution(L,Y,I);
+  
+  // U*X = Y
+  backwardSubstitution(U,X,Y);
+  
+
+  while(iter <= K){
+
+    //---------------------------------
+    // Calcula resíduo R = I - A*X
     initial_time = timestamp();
-    // calcula o X
-    backwardSubstitution(mA, mB, mX, index_array, type);
-    if(type == 'A'){
-      memcpy(mXW->matrix, mX->matrix, sizeof(double)*SQ(mA->length));
-    }
-    else{
-      memcpy(mX->matrix, mXW->matrix, sizeof(double)*SQ(mA->length));
-      memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(mA->length));
-    }
-    resultRefinement(mA, mXW, mI, mB, index_array, type);
-    sumMatrix(mX, mXW);
-    // Mede o tempo
-    actual_time = timestamp();
-    KAHAN_SUM(iter_time,(actual_time - initial_time));
-    type = 'N';
 
-    // Calculo da norma
+    residueCalc(A, X, R, I);
+
+    actual_time = timestamp();
+    residue_time +=(actual_time - initial_time);
+
+    //---------------------------------
+
+    //---------------------------------
+    // Calcula norma L2 do resíduo
     initial_time = timestamp();
-    norm = calculateL2Norm(mB);
-    actual_time = timestamp();
-    KAHAN_SUM(residue_time,(actual_time - initial_time));
 
+    norm = calculateL2Norm(R);
+
+    actual_time = timestamp();
+    iter_time += (actual_time - initial_time);
+    
     fprintf(file, "# iter %d: %.17g\n", iter, norm);
+    //---------------------------------
+    
+    //---------------------------------
+    initial_time = timestamp();
+
+    //Pivotamento parcial em R
+    ????
+    // Efetua Aw = R
+
+    // L*Y = R
+    forwardSubstitution(L,Y,R);
+    
+    // U*X = Y
+    backwardSubstitution(U,W,Y);
+
+    // X+=W
+    sumMatrix(W, X);
+    actual_time = timestamp();
+    residue_time +=(actual_time - initial_time);
+    //---------------------------------
+      
     iter++;
 
-  } while(iter <= P->K);
+  }
 
   iter_time->sum = (iter_time->sum / iter);
   residue_time->sum = (residue_time->sum / iter);

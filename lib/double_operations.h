@@ -16,6 +16,9 @@
 /** @brief     Zero em ponto fluntuante */
 #define TRUE_ZERO 0.0
 
+/** @brief     Um em ponto fluntuante */
+#define TRUE_ONE 1.0
+
 
 /**
  * @brief      Retorna valor absoluto de um valor

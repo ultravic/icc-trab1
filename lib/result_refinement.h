@@ -13,12 +13,12 @@
 
 void initMatrixIdentity(t_matrix *I, int length);
 
-double calculateLC(t_matrix *U, t_matrix *X, int *index_array, int line, int column);
+double lineTimesColumn(t_matrix *A, t_matrix *B, int line, int column, int length);
 
-void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *index_array, char type);
+void sumMatrix(t_matrix *A, t_matrix *B, int length);
 
-double calculateL2Norm(t_matrix *R);
+void residueCalc(t_matrix *A, t_matrix *X, t_matrix *I, t_matrix *R, int length);
 
-void sumMatrix(t_matrix *X, t_matrix *XW);
+double normCalc(t_matrix *R, int length);
 
 #endif

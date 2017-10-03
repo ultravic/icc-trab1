@@ -23,7 +23,6 @@
 void initMatrixIdentity(t_matrix *I, int length) {
   int i, j;
 
-  I->length = length;
   I->matrix = ALLOC(double, SQ(length));
 
   for (i = 0; i < length; ++i)
@@ -31,24 +30,31 @@ void initMatrixIdentity(t_matrix *I, int length) {
       I->matrix[i * length + j] = TRUE_ZERO;
 
   for (i = 0; i < length; ++i)
-    I->matrix[i * length + i] = 1.0;
+    I->matrix[i * length + i] = TRUE_ONE;
 }
 
+
 /**
- * @brief      Calcula a matriz
+ * @brief      Efetua o produto interno de uma linha de uma matriz por uma
+ *             coluna de outra matriz
  *
- * @param      U       { parameter_description }
- * @param      X       { parameter_description }
- * @param[in]  line    The line
- * @param[in]  column  The column
+ * @param      A       Matriz A
+ * @param      B       Matriz B
+ * @param[in]  line    A linha da matriz A
+ * @param[in]  column  A coluna da matriz B
+ * @param[in]  length  The length
+ * @param      index_array  The index array
  *
- * @return     The lc.
+ * @return     O resultado da operação
  */
-double calculateLC(t_matrix *U, t_matrix *X, int *index_array, int line, int column) {
+double lineTimesColumn(t_matrix *A, t_matrix *B, int line, int column, int length)
+{
   int i;
   double temporary = TRUE_ZERO;
-  for (i = 0; i < U->length; ++i)
-    temporary = temporary + (U->matrix[(index_array[line]*U->length) + i] + X->matrix[i*X->length + column]);
+
+  for (i = 0; i < length; ++i)
+    temporary = temporary + (GET(A,line,i) * GET(B,i,column) );
+
   return temporary;
 }
 
@@ -60,12 +66,20 @@ double calculateLC(t_matrix *U, t_matrix *X, int *index_array, int line, int col
  * @param      X     Matriz
  * @param      XW    Matriz
  */
-void sumMatrix(t_matrix *X, t_matrix *XW)
+void sumMatrix(t_matrix *A, t_matrix *B, int length) 
 {
   int i, j;
-  for (i = 0; i < X->length; ++i)
-    for (j = 0; j < X->length; ++j)
-      SET(XW, i, j, (GET(XW, i, j) + GET(X, i, j)));
+  double aux;
+
+  for (i = 0; i < length; ++i)
+  {
+
+    for (j = 0; j < length; ++j) {
+      aux = GET(B, i, j) + GET(A, i, j);
+      SET(B, i, j, aux);
+    }
+
+  }
 }
 
 /**
@@ -77,34 +91,21 @@ void sumMatrix(t_matrix *X, t_matrix *XW)
  *
  * @return     Matriz de Residuos
  */
-void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *index_array, char type) {
-  int length = U->length;
-
-  // inicializa estrutura auxiliar
-  t_kahan *kahan;
-  kahan = ALLOC(t_kahan, 1);
-  INIT_KAHAN(kahan);
+void residueCalc(t_matrix *A, t_matrix *X, t_matrix *I, t_matrix *R, int length)
+{
   double aux;
-
   int i, j;
-  if (type == 'A') {
-    for (i = 0; i < length; ++i) {
-      for (j = 0; j < length; ++j) {
-        aux = (GET(B, index_array[i], j) - calculateLC(U, X, index_array, i, j));
-        KAHAN_SUM(kahan, aux);
-        SET(B, index_array[i], j, kahan->sum);
-      }
+
+  memcpy(R, I, sizeof(double)*SQ(length));
+
+  for (i = 0; i < length; ++i) {
+
+    for (j = 0; j < length; ++j) {
+      aux = (GET(R, i, j) - lineTimesColumn(A, X, i, j));
+      SET(R, i, j, aux);
     }
-  } else {
-    for (i = 0; i < length; ++i) {
-      for (j = 0; j < length; ++j) {
-        aux = (GET(B, i, j) - calculateLC(U, X, index_array, i, j));
-        KAHAN_SUM(kahan, aux);
-        SET(B, i, j, kahan->sum);
-      }
-    }
+
   }
-  free(kahan);
 }
 
 /**
@@ -114,19 +115,14 @@ void resultRefinement(t_matrix *U, t_matrix *X, t_matrix *I, t_matrix *B, int *i
  *
  * @return     A norma
  */
-double calculateL2Norm(t_matrix *R){
+double normCalc(t_matrix *R, int length)
+{
   int i;
-  int size = SQ(R->length);
+  int size = SQ(length);
   double norm;
-  t_kahan *kahan;
-  kahan = ALLOC(t_kahan, 1);
-  INIT_KAHAN(kahan);
 
   for (i = 0; i < size; ++i)
-  {
-    KAHAN_SUM(kahan,R->matrix[i]);
-  }
-  norm = kahan->sum;
-  free(kahan);
+    norm += SQ(R->matrix[i]);
+
   return sqrt(norm);
 }

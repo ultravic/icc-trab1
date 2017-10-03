@@ -16,14 +16,13 @@
 /**
  * @brief      Efetua retrosubstituição
  *
- * @param      U            Matriz triangular superior
+ * @param      A            Matriz triangular superior
  * @param      B            Matriz de termos independentes
+ * @param      X            Matriz resultante
  * @param      index_array  Vetor de troca de linhas
- *
- * @return     A Matriz resultante
  */
-void backwardSubstitution(t_matrix *U, t_matrix *B, t_matrix *X, int *index_array, char type) {
-  int length = U->length;
+void backwardSubstitution(t_matrix *A, t_matrix *B, t_matrix *X, int *index_array) {
+  int length = A->length;
   int last = length - 1;
 
 
@@ -33,59 +32,56 @@ void backwardSubstitution(t_matrix *U, t_matrix *B, t_matrix *X, int *index_arra
   // define primeiro valor a ser usado
   double aux;
 
-  //
-  // t_kahan *kahan;
-  // kahan = ALLOC(t_kahan, 1);
-  //
-  // SET(X, last, 1, aux);
-  //
-  // for (k = 0; k < length; ++k) {
-  //   INIT_KAHAN(kahan);
-  //   for (i = last; i > 0; --i) {
-  //
-  //     index = index_array[i];
-  //     kahan->sum = GET(B, index, k);
-  //
-  //     for (j = (i + 1); j < length; ++j) {
-  //       KAHAN_SUM(kahan, (kahan->sum - (GET(U, index, j) * GET(X, j, k))));
-  //       aux = GET(U, index, i);
-  //       if (IS_ZERO(aux))
-  //         die(ERROR_ZERO_DIVISION);
-  //       SET(X, j, k, (kahan->sum / aux));
-  //     }
-  //   }
-  // }
-  // free(kahan);
-  // return X;
-  //
   double temp = 0;
-  if (type == 'A') {
-    for (c = 0; c < length; ++c) {
-      aux = GET(B, index_array[last], c) / GET(U, index_array[last], last);
-      SET(X, last, c, aux);
+  for (c = 0; c < length; ++c) {
+    aux = GET(B, index_array[last], c) / GET(A, index_array[last], last);
+    SET(X, last, c, aux);
 
-      for (i = last - 1; i >= 0; --i) {
-        temp = GET(B, index_array[i], c);
-        for (j = last; j > i; --j) {
-          temp = temp - (GET(U, index_array[i], j) * GET(X, j, c));
-        }
-        temp = temp / GET(U, index_array[i], j);
-        SET(X, i, c, temp);
+    for (i = last - 1; i >= 0; --i) {
+      temp = GET(B, index_array[i], c);
+      for (j = last; j > i; --j) {
+        temp = temp - (GET(A, index_array[i], j) * GET(X, j, c));
       }
+      temp = temp / GET(A, index_array[i], j);
+      SET(X, i, c, temp);
     }
-  } else {
-    for (c = 0; c < length; ++c) {
-      aux = GET(B, last, c) / GET(U, index_array[last], last);
-      SET(X, last, c, aux);
 
-      for (i = last - 1; i >= 0; --i) {
-        temp = GET(B, i, c);
-        for (j = last; j > i; --j) {
-          temp = temp - (GET(U, index_array[i], j) * GET(X, j, c));
-        }
-        temp = temp / GET(U, index_array[i], j);
-        SET(X, i, c, temp);
+  }
+}
+
+/**
+ * @brief      Efetua substituição
+ *
+ * @param      A            Matriz triangular inferior
+ * @param      B            Matriz de termos independentes
+ * @param      X            Matriz resultatne
+ * @param      index_array  Vetor de troca de linhas
+ */
+void forwardSubstitution(t_matrix *A, t_matrix *B, t_matrix *X, int *index_array) {
+  int length = A->length;
+  int last = length - 1;
+
+  // contadores
+  int i, j, c;
+
+  // define primeiro valor a ser usado
+  double aux;
+
+  double temp = 0;
+  for (c = 0; c < length; ++c) {
+    aux = GET(B, index_array[0], c) / GET(A, index_array[0], 0);
+    SET(X, 0, c, aux);
+
+    for (i = 1; i < last; ++i) {
+      temp = GET(B, index_array[i], c);
+
+      for (j = i; j >= 0; j++) {
+        temp = temp - (GET(A, index_array[i], j) * GET(X, j, c));
       }
+
+      temp = temp / GET(A, index_array[i], j);
+      SET(X, i, c, temp);
     }
   }
+
 }

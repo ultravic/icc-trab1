@@ -31,40 +31,27 @@ void initMatrixL(t_matrix *matrixL, int length)
 /**
  * @brief      Funçao que efetua a eliminação gaussiana em uma matriz
  *
- * @param      matrix        Matriz a ser escalonada
- * @param      index_change  Vetor de troca de linhas
+ * @param      A            Matriz original
+ * @param      L            Matriz de multiplicadores (triangular inferior)
+ * @param      U            Matriz escalonada (triangular superior)
+ * @param      index_array  Vetor de troca de linhas
  *
- * @return     Uma matriz triangular inferior com os multiplos utilizados na
- * eliminação
  */
-void gaussElimination(t_matrix *mA, t_matrix *mB, t_matrix *mL, int *index_array)
+void gaussElimination(t_matrix *A, t_matrix *L, t_matrix *U, int *index_array, int length)
 {
     int j, i, k, m, sizeL = 0;
-    int length = mA->length;
 
     for (i = 0; i < (length - 1); ++i) {
-      pivot(mA, i, index_array);
+      pivot(A, i, index_array);
+
       for (j = i + 1; j < length; ++j) {
-        mL->matrix[sizeL] = GET(mA, index_array[j], i)/GET(mA, index_array[i], i);
-        SET(mA, index_array[j], i, TRUE_ZERO);
+        L->matrix[sizeL] = GET(A, index_array[j], i) / GET(A, index_array[i], i);
+        SET(U, index_array[j], i, TRUE_ZERO);
+
         for (k = i + 1; k < length; ++k)
-          mA->matrix[(index_array[j]*length) + k] -= mL->matrix[sizeL] * GET(mA, index_array[i], k);
-        for (m = 0; m < length; ++m)
-          mB->matrix[(index_array[j]*length) + m] -= mL->matrix[sizeL] * GET(mB, index_array[i], m);
+          SET(U,index_array[j], k, (GET(A,index_array[j],k) - (L->matrix[sizeL] * GET(A, index_array[i], k))) );
+
         sizeL++;
       }
     }
-
-
-// for (i = 0; i < (length - 1); ++i) {
-//   pivot(matrix, i, index_array);
-//   for (j = i + 1; j < length; ++j) {
-//     matrixL->matrix[sizeL] = GET(matrix, j, i) / GET(matrix, i, i);
-//     SET(matrix, j, i, TRUE_ZERO);
-//     for (k = i + 1; k < length; ++k)
-//       GET(matrix, j, k) -= matrixL->matrix[sizeL] * GET(matrix, i, k);
-//     sizeL++;
-//   }
-// }
-
 }
