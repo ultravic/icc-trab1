@@ -23,163 +23,166 @@
 
 
 int main(int argc, char const *argv[]) {
+//----------------------------------------------------------------------
+// Instanciações e Alocação de memoria
+//----------------------------------------------------------------------
+  
+  // Variaveis para temporização
+  //----------------------------------------------------------------------
   double initial_time, actual_time, norm;
   double iter_time, residue_time, lu_time;
-  int length;
+  iter_time = residue_time = lu_time = TRUE_ZERO;
+  //----------------------------------------------------------------------
 
-  FILE *file;
+  // Arquivo de escrita
+  FILE *output_file;
 
-  // Inicializa struct de parametros
-  param *P;
+  // Estrutura para guardar os parametros
+  param P;
   INIT_PARAM(P);
 
   // Trata parametros
-  if(parseParameters(argc,argv,P) != SUCCESS){
-    die(ERROR_PARAM);
-  }
+  if(parseParameters(argc, argv, &P) != SUCCESS)
+    die(ERROR_PARAM); 
 
-  // inicializa todas as matrizes necessárias e ponteiros
-  t_matrix *mA, *mU, *mL, *mB, *mX, *mXW, *mI;
-
-  INIT_MATRIX(mA);
-  INIT_MATRIX(mL);
-  INIT_MATRIX(mU);
-  INIT_MATRIX(mB);
-  INIT_MATRIX(mX);
-  INIT_MATRIX(mXW);
-  INIT_MATRIX(mI);
-
-// Caso tenha entrado com o parametro "-r"
-  if (P->random) {
-    
+  // Conjunto de matrizes
+  matrixPack M;
+  M.length = 0;
+  // Obtém matriz original
+  //----------------------------------------------------------------------
+  if (P.random) {
     // Gera matriz aleatŕoia
-    length = P->N;
+    M.length = P.N;
     srand(20172 );
-    mA->matrix = generateSquareRandomMatrix(length);
-  
+    M.A = generateRandomSquareMatrix(M.length);
   } else {
-
     //  Le a matriz
-    if (readMatrix(mA, &length, P->in_file) == ERROR) 
+    if (readMatrix(&M, P.in_file) == ERROR) 
       die(ERROR_READING);
-
   }
+  //----------------------------------------------------------------------
+  // Aloca memória para as matrizes necessarias no processo
+  INIT_MATRIX_PACK(M);
 
+  // Gera uma matriz identidade
+  M.I = generateIdentityMatrix(M.length);
 
-  // inicializa uma matriz identidade
-  initMatrixIdentity(mI, length);
-
-  // inicializa matriz L
-  initMatrixL(mL, length);
-
-  // inicializa Vetor de Troca de Linhas
-  int *index_array;
-  index_array = ALLOC(int, length);
-  initIndexArray(index_array, length);
-
-  // começa processo de inversão e refinamento
-  // inicializa o B copiando I
-  mB->matrix = ALLOC(double, SQ(length));
-  memcpy(mB->matrix, mI->matrix, sizeof(double)*SQ(length));
+//----------------------------------------------------------------------
+// Inversão da Matriz
+//----------------------------------------------------------------------
+  // Inicializa vetor de mapeamento de linhas
+  //----------------------------------------------------------------------
+  int *line_map;
+  line_map = generateLineMap(M.length);
+  //----------------------------------------------------------------------
 
   // Efetua a eliminação gaussiana com pivotamento parcial e fatoração LU
+  //----------------------------------------------------------------------
   initial_time = timestamp();
 
-  gaussElimination(mA, mL, mU, index_array, length);
+  gaussElimination(&M.A, &M.L, &M.U, line_map, M.length);
 
+  printf("bbb%lf\n",M.L[2]);
+  die(ERROR_PARAM);
   actual_time = timestamp();
   lu_time = actual_time - initial_time;
+  //----------------------------------------------------------------------
 
 
-  // verifica se tem arquivo para saida
-  if (P->to_file)
-    file = fopen(P->out_file, "w");
-  else
-    file = stdout;
-
-  fprintf(file, "#\n");
-
-  // a cada iteração é feito o refinamento
-  int iter = 1;
-
+  // Inverte a Matriz
+  //----------------------------------------------------------------------
+  initial_time = timestamp();
+  
   // L*Y = B
-  forwardSubstitution(L,Y,I);
+  forwardSubstitution(&M.L, &M.Y, &M.I, line_map, M.length);
   
   // U*X = Y
-  backwardSubstitution(U,X,Y);
-  
+  backwardSubstitution(&M.U, &M.X, &M.Y, line_map, M.length);
+  actual_time = timestamp();
 
-  while(iter <= K){
+  residue_time +=(actual_time - initial_time);
+  //----------------------------------------------------------------------
+ 
+  // Verifica se tem arquivo para saida
+  //----------------------------------------------------------------------
+  if (P.to_file)
+    output_file = fopen(P.out_file, "w");
+  else
+    output_file = stdout;
 
-    //---------------------------------
+  fprintf(output_file, "#\n");
+  //----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Refinamento
+//----------------------------------------------------------------------
+  int iter = 1;
+  while(iter <= P.K){
     // Calcula resíduo R = I - A*X
+    //----------------------------------------------------------------------
     initial_time = timestamp();
 
-    residueCalc(A, X, R, I);
+    residueCalc(&M.A, &M.X, &M.R, &M.I, M.length);
 
     actual_time = timestamp();
     residue_time +=(actual_time - initial_time);
+    //----------------------------------------------------------------------
 
-    //---------------------------------
-
-    //---------------------------------
     // Calcula norma L2 do resíduo
+    //----------------------------------------------------------------------
     initial_time = timestamp();
 
-    norm = calculateL2Norm(R);
+    norm = normCalc(&M.R, M.length);
 
     actual_time = timestamp();
     iter_time += (actual_time - initial_time);
     
-    fprintf(file, "# iter %d: %.17g\n", iter, norm);
-    //---------------------------------
+    fprintf(output_file, "# iter %d: %.17g\n", iter, norm);
+    //----------------------------------------------------------------------
     
-    //---------------------------------
+    // Calcula novo S.L
+    //----------------------------------------------------------------------
     initial_time = timestamp();
 
-    //Pivotamento parcial em R
-    ????
+    // Pivotamento parcial em R
+    // ????
     // Efetua Aw = R
 
     // L*Y = R
-    forwardSubstitution(L,Y,R);
+    forwardSubstitution(&M.L, &M.Y, &M.R, line_map, M.length);
     
-    // U*X = Y
-    backwardSubstitution(U,W,Y);
+    // U*W = Y
+    backwardSubstitution(&M.U, &M.W, &M.Y, line_map, M.length);
 
     // X+=W
-    sumMatrix(W, X);
+    sumMatrix(&M.W, &M.X, M.length);
     actual_time = timestamp();
     residue_time +=(actual_time - initial_time);
-    //---------------------------------
+    //----------------------------------------------------------------------
       
     iter++;
-
   }
 
-  iter_time->sum = (iter_time->sum / iter);
-  residue_time->sum = (residue_time->sum / iter);
+  // Calcula médias dos tempos
+  //----------------------------------------------------------------------
+  iter_time = (iter_time / iter);
+  residue_time = (residue_time / iter);
+  //----------------------------------------------------------------------
 
-  fprintf(file, "# Tempo LU: %lf\n", lu_time);
-  fprintf(file, "# Tempo iter %lf\n", iter_time->sum);
-  fprintf(file, "# Tempo residuo: %lf\n", residue_time->sum);
-  fprintf(file, "#\n");
+  // Imprime os resultados
+  //----------------------------------------------------------------------
+  fprintf(output_file, "# Tempo LU: %lf\n", lu_time);
+  fprintf(output_file, "# Tempo iter %lf\n", iter_time);
+  fprintf(output_file, "# Tempo residuo: %lf\n", residue_time);
+  fprintf(output_file, "#\n");
+  printMatrix(&M.X, line_map, output_file, M.length);
+  //----------------------------------------------------------------------
 
-  printMatrix(mX,index_array,file);
-  fclose(file);
-  free(mA->matrix);
-  free(mA);
-  free(mL->matrix);
-  free(mL);
-  free(mB->matrix);
-  free(mB);
-  free(mX->matrix);
-  free(mX);
-  free(mI->matrix);
-  free(mI);
-  free(index_array);
-  free(residue_time);
-  free(iter_time);
+  // Fecha arquivo de saída
+  fclose(output_file);
+
+  // Libera a memória do conjunto de matrizes
+  // FREE_MATRIX_PACK(&M);
 
 
   return SUCCESS;

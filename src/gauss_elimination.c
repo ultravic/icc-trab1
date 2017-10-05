@@ -17,41 +17,30 @@
 
 
 /**
- * @brief      Inicializa uma matriz triangular
- *
- * @param      matrixL  A matriz
- * @param[in]  length   O tamanho da matriz
- */
-void initMatrixL(t_matrix *matrixL, int length)
-{
-  matrixL->length = SEQUENTIAL_SUM(length-1);
-  matrixL->matrix = ALLOC(double, matrixL->length);
-}
-
-/**
  * @brief      Funçao que efetua a eliminação gaussiana em uma matriz
  *
- * @param      A            Matriz original
- * @param      L            Matriz de multiplicadores (triangular inferior)
- * @param      U            Matriz escalonada (triangular superior)
- * @param      index_array  Vetor de troca de linhas
- *
+ * @param      A         Matriz original
+ * @param      L         Matriz de multiplicadores (triangular inferior)
+ * @param      U         Matriz escalonada (triangular superior)
+ * @param      line_map  vetor de mapeamento de linhas
+ * @param[in]  length    Largura da matriz
  */
-void gaussElimination(t_matrix *A, t_matrix *L, t_matrix *U, int *index_array, int length)
+void gaussElimination(double **A, double **L, double **U, int *line_map, int length)
 {
-    int j, i, k, m, sizeL = 0;
+  int j, i, k, sizeL = 0;
+  for (i = 0; i < (length - 1); ++i) {
+  printf("a%d\n",length);
+    pivot(A, i, line_map, length);
 
-    for (i = 0; i < (length - 1); ++i) {
-      pivot(A, i, index_array);
+  printf("a%d\n",length);
+    for (j = i + 1; j < length; ++j) {
+      *L[sizeL] = GET(A, length, line_map[j], i) / GET(A, length, line_map[i], i);
+      SET(U, length, line_map[j], i, TRUE_ZERO);
+      printf("L %lf\n",*L[sizeL] );
+      for (k = i + 1; k < length; ++k)
+        SET(U, length, line_map[j], k, (GET(A, length, line_map[j],k) - (*L[sizeL] * GET(A, length, line_map[i], k))) );
 
-      for (j = i + 1; j < length; ++j) {
-        L->matrix[sizeL] = GET(A, index_array[j], i) / GET(A, index_array[i], i);
-        SET(U, index_array[j], i, TRUE_ZERO);
-
-        for (k = i + 1; k < length; ++k)
-          SET(U,index_array[j], k, (GET(A,index_array[j],k) - (L->matrix[sizeL] * GET(A, index_array[i], k))) );
-
-        sizeL++;
-      }
+      sizeL++;
     }
+  }
 }

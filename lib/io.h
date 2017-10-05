@@ -12,16 +12,16 @@
 #ifndef __IO__
 #define __IO__
 
-int readMatrix(t_matrix * M, int *length, char *file_path);
-
 int parseParameters(int argc, char const *argv[], param *P);
 
-void printMatrix(t_matrix *matrix, int *index_array, FILE *file);
+int readMatrix(matrixPack *M, char *file_path);
 
-void printMatrixL(t_matrix *matrix, FILE *file);
+void printMatrix(double **matrix, int *line_map, FILE *file, int length);
 
-void printNormal(t_matrix *matrix, FILE *file);
+void printMatrixL(double **matrix, FILE *file, int length);
 
-void printIndexes(t_matrix *m, int *index_array, FILE *file);
+void printNormal(double **matrix, FILE *file, int length);
+
+void printIndexes(double **matrix, int *line_map, FILE *file, int length);
 
 #endif

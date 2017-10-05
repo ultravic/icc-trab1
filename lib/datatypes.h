@@ -15,9 +15,21 @@
 
 	/** @brief     Estrutura para matrizes de ponto fluntuante de precisão dupla */
 	typedef struct {
-		int length; // largura de uma linha da matriz
 		double * matrix; // matriz
 	} t_matrix;
+
+	/** @brief     Estrutura para guardar um conjunto de matrizes. */
+	typedef struct {
+		int length; // Largura das Matrizes
+		double *A; 	// Matriz Original 
+		double *L; 	// Matriz de Multiplicadores
+		double *U; 	// Matriz escalonada
+		double *Y; 	// Matriz temporária (L*Y = B)
+		double *X; 	// Matriz resultante (U*X = Y)
+		double *R; 	// Matriz de resíduos
+		double *I; 	// Matriz indentidade 
+		double *W; 	// Matriz novo X (A*W = R)
+	} matrixPack;
 
 	/** @brief     Estrutura para guardar variaveis da soma de kahan */
 	typedef struct {
@@ -52,6 +64,7 @@
 	 */
 	#define ALLOC(t,n) (t *) malloc((n)*sizeof(t))
 
+	#define ALLOC_SQ_MAT(t,n) (ALLOC(t,SQ(n)))
 
 // INICIALIZAÇÔES
 
@@ -62,8 +75,45 @@
 	 */
 	#define INIT_MATRIX(M) { \
 		M = ALLOC(t_matrix,1); \
-		M->length = 0; \
 	}
+
+	/**
+	 * @brief      Calcula tamanho de uma matriz triangular
+	 *
+	 * @param      n     tamanho da maior linha
+	 *
+	 * @return   	O tamanho calculado
+	 */
+	#define TRIANGLE_SIZE(n) (int)(((1 + (n)) * (n)) / 2)
+
+	/**
+	 * @brief      Aloca memória para um conjunto de Matrizes
+	 *
+	 * @param      M     Conjunto de matrizes
+	 */
+	#define INIT_MATRIX_PACK(M) { \
+		M.L = ALLOC(double,TRIANGLE_SIZE(M.length-1));	\
+		M.U = ALLOC(double,SQ(M.length));	\
+		M.Y = ALLOC(double,SQ(M.length));	\
+		M.X = ALLOC(double,SQ(M.length));	\
+		M.R = ALLOC(double,SQ(M.length));	\
+		M.I = ALLOC(double,SQ(M.length));	\
+		M.W = ALLOC(double,SQ(M.length));	\
+	}
+
+
+	#define FREE_MATRIX_PACK(M) { \
+		free(M.A);	\
+		free(M.L);	\
+		free(M.U);	\
+		free(M.Y);	\
+		free(M.X);	\
+		free(M.R);	\
+		free(M.I);	\
+		free(M.W);	\
+		free(M); 	\
+	}
+
 
 	/**
 	 * @brief      Inicializa a estrutura dos parametros
@@ -71,13 +121,12 @@
 	 * @param      P     estrutura dos parametros
 	 */
 	#define INIT_PARAM(P) { \
-		P = ALLOC(param,1); \
-		P->K = 0; \
-		P->N = 0; \
-		P->in_file = "stdin"; \
-		P->out_file = "stdout"; \
-		P->random = false; \
-		P->to_file = false; \
+		P.K = 0; \
+		P.N = 0; \
+		P.in_file = "stdin"; \
+		P.out_file = "stdout"; \
+		P.random = false; \
+		P.to_file = false; \
 	}
 
 	/**
@@ -93,24 +142,27 @@
 	/**
 	 * @brief      Retorna um valor na matriz
 	 *
-	 * @param      M     Matriz
-	 * @param      l     Linha
-	 * @param      c     Coluna
+	 * @param      M       Matriz
+	 * @param      length  Largura da matriz
+	 * @param      l       Linha
+	 * @param      c       Coluna
 	 *
 	 * @return     O valor acessado
 	 */
-	#define GET(M,l,c) (M->matrix[(l) * M->length + (c)])
+	#define GET(M,length,l,c) (*M[(l) * (length) + (c)])
 
 	/**
 	 * @brief      Retorna um valor na matriz
 	 *
-	 * @param      M     Matriz
-	 * @param      l     Linha
-	 * @param      c     Coluna
-	 * @param      v     valor a ser guardado
+	 * @param      M       Matriz
+	 * @param      length  Largura da matriz
+	 * @param      l       Linha
+	 * @param      c       Coluna
+	 * @param      v       valor a ser guardado
 	 *
+	 * @return     { description_of_the_return_value }
 	 */
-	#define SET(M,l,c,v) (M->matrix[(l) * M->length + (c)] = (v))
+	#define SET(M,length,l,c,v) (*M[(l) * (length) + (c)] = (v))
 
 
 #endif

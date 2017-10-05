@@ -13,48 +13,6 @@
 #include <string.h>
 
 /**
- * @brief      Le uma matriz n*n
- *
- * @param      M          Matriz onde serão guardados os valores lidos
- * @param      file_path  Arquivo a ser lido, ou "stdin"
- *
- * @return     0 Caso tenha sucesso
- */
-int readMatrix(t_matrix *M, int *length, char *file_path) {
-  FILE *file;
-
-  // contadores
-  int i = 0;
-  int c = 0;
-  int size;
-
-  if (strcmp(file_path, "stdin") == 0)
-    file = stdin;
-  else
-    file = fopen(file_path, "r");
-
-  if (file) {
-    if (fscanf(file, "%d\n", length) == ERROR)
-      return ERROR;
-
-    M->matrix = ALLOC(double, SQ((*length)));
-    size = SQ((*length));
-
-    for (i = 0; i < size; ++i)
-      c = fscanf(file, "%lf ", &M->matrix[i]);
-
-    fclose(file);
-
-    if (c != 1)
-      return ERROR;
-
-    return SUCCESS;
-  };
-
-  return ERROR;
-}
-
-/**
  * @brief      Função que preenche uma estrutura de parametros, pelos argumentos da execução do programa
  *
  * @param[in]  argc  Numero de argumentos
@@ -107,20 +65,59 @@ int parseParameters(int argc, char const *argv[], param *P) {
 }
 
 /**
+ * @brief      Le uma matriz n*n
+ *
+ * @param      M          Matriz onde serão guardados os valores lidos
+ * @param      file_path  Arquivo a ser lido, ou "stdin"
+ *
+ * @return     0 Caso tenha sucesso
+ */
+int readMatrix(matrixPack *M, char *file_path) {
+  FILE *file;
+
+  // contadores
+  int i = 0;
+  int c = 0;
+  int size;
+
+  if (strcmp(file_path, "stdin") == 0)
+    file = stdin;
+  else
+    file = fopen(file_path, "r");
+
+  if (file) {
+    if (fscanf(file, "%d\n", &(*M).length) == ERROR)
+      return ERROR;
+    size = SQ(M->length);
+    M->A = ALLOC(double, size);
+
+    for (i = 0; i < size; ++i)
+      c = fscanf(file, "%lf ", &(*M).A[i]);
+
+    fclose(file);
+
+    if (c != 1)
+      return ERROR;
+
+    return SUCCESS;
+  };
+
+  return ERROR;
+}
+
+
+/**
  * @brief      Imprime a matriz no formato especificado
  *
  * @param      M     Matriz a ser impressa
  */
-void printMatrix(t_matrix *matrix, int *index_array, FILE *file)
+void printMatrix(double **matrix, int *line_map, FILE *file, int length)
 {
   int i, j;
-  int length = matrix->length;
-
   fprintf(file,"%d\n",length);
-
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      fprintf(file,"%.17g " , GET(matrix, index_array[i], j));
+      fprintf(file,"%.17g " , GET(matrix, length, line_map[i], j));
     fprintf(file,"\n");
   }
 }
@@ -130,39 +127,38 @@ void printMatrix(t_matrix *matrix, int *index_array, FILE *file)
   *
   * @param      matrix  The matrix
   */
-void printMatrixL(t_matrix *matrix, FILE *file)
+void printMatrixL(double **matrix, FILE *file, int length)
 {
   int i;
 
-  fprintf(file,"%d\n", matrix->length);
+  fprintf(file,"%d\n", length);
 
-  for (i = 0; i < matrix->length; ++i)
-    fprintf(file,"%.17g\n", GET(matrix, 0, i));
+  for (i = 0; i < length; ++i)
+    fprintf(file,"%.17g\n", GET(matrix, length, 0, i));
 }
 
 
-void printNormal(t_matrix *matrix, FILE *file)
+void printNormal(double **matrix, FILE *file, int length)
 {
   int i, j;
-  int length = matrix->length;
 
   fprintf(file,"%d\n",length);
 
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      fprintf(file,"%.17g " , GET(matrix, i, j));
+      fprintf(file,"%.17g " , GET(matrix, length, i, j));
     fprintf(file,"\n");
   }
 }
 
-void printIndexes(t_matrix *m, int *index_array, FILE *file)
+void printIndexes(double **matrix, int *line_map, FILE *file, int length)
 {
   int i;
 
   fprintf(file,"Indexes: \n");
 
-  for (i = 0; i < m->length; ++i)
-    fprintf(file,"%d, ", index_array[i]);
+  for (i = 0; i < length; ++i)
+    fprintf(file,"%d, ", line_map[i]);
 
   fprintf(file,"\n");
 }

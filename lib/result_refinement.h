@@ -8,17 +8,16 @@
  */
 
 #include "datatypes.h"
+#include <string.h>
 #ifndef __RESULT_REFINAMENT__
 #define __RESULT_REFINAMENT__
 
-void initMatrixIdentity(t_matrix *I, int length);
+double lineTimesColumn(double **A, double **B, int line, int column, int length);
 
-double lineTimesColumn(t_matrix *A, t_matrix *B, int line, int column, int length);
+void sumMatrix(double **A, double **B, int length);
 
-void sumMatrix(t_matrix *A, t_matrix *B, int length);
+void residueCalc(double **A, double **X, double **I, double **R, int length);
 
-void residueCalc(t_matrix *A, t_matrix *X, t_matrix *I, t_matrix *R, int length);
-
-double normCalc(t_matrix *R, int length);
+double normCalc(double **R, int length);
 
 #endif

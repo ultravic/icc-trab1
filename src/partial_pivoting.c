@@ -14,44 +14,31 @@
 #include <stdlib.h>
 
 /**
- * @brief      Inicializa o vetor de troca de linhas com uma enumeração de 0 a N-1
- *
- * @param      index_array  Vetor de troca de linhas
- * @param[in]  length       Numero de linhas do sistema
- */
-void initIndexArray(int *index_array, int length) {
-  int i;
-  for (i = 0; i < length; ++i) {
-    index_array[i] = i;
-  }
-}
-
-/**
  * @brief      Encontra o maior valor de uma coluna da matriz, a partir de uma
  *             determinada posição e troca as posições no vetor de troca de
  *
  * @param[in]  M            Matriz a ser buscada
  * @param[in]  pos          A posição do valor a ser pivotado
- * @param      index_array  O vetor de troca de linhas
+ * @param      line_map  O vetor de mapeamento de linhas
  */
-void pivot(t_matrix *M, int pos, int *index_array){
-    int i, length;
+void pivot(double **M, int pos, int *line_map, int length){
+    int i;
     int max_line = pos;
-
-    double max_num = GET(M, index_array[pos], pos);
+    double max_num = GET(M, length, line_map[pos], pos);
     double aux;
-    length = M->length;
-
+    printf("aaaaaaa%lf\n",max_num);
     for (i = pos+1; i < length; ++i) {
-        if((aux = GET(M, index_array[i], pos)) > max_num) {
+        printf("lll%d\n",i );
+        printf("mmml%d\n",line_map[i] );
+        printf("lll%lf\n",GET(M, length, line_map[i], pos) );
+        if((aux = GET(M, length, line_map[i], pos)) > max_num) {
             max_num = aux;
             max_line = i;
         }
     }
     if(IS_ZERO(ABS(max_num)))
         die(ERROR_ZERO_PIVOT);
-    aux = index_array[pos];
-    index_array[pos] = index_array[max_line];
-    index_array[max_line] = aux;
-
+    aux = line_map[pos];
+    line_map[pos] = line_map[max_line];
+    line_map[max_line] = aux;
 }

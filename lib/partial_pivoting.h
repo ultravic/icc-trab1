@@ -12,8 +12,6 @@
 #ifndef __PARTIAL_PIVOTING__
 #define __PARTIAL_PIVOTING__
 
-void initIndexArray(int *index_array, int length);
-
-void pivot(t_matrix *M, int pos, int *index_array);
+void pivot(double **M, int pos, int *line_map, int length);
 
 #endif

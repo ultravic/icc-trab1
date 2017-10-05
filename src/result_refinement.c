@@ -14,25 +14,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-/**
- * @brief      Cria uma matriz Identidade
- *
- * @param      I       Ponteiro para a Matriz
- * @param[in]  length  a largura da matriz
- */
-void initMatrixIdentity(t_matrix *I, int length) {
-  int i, j;
-
-  I->matrix = ALLOC(double, SQ(length));
-
-  for (i = 0; i < length; ++i)
-    for (j = i + 1; j < length; ++j)
-      I->matrix[i * length + j] = TRUE_ZERO;
-
-  for (i = 0; i < length; ++i)
-    I->matrix[i * length + i] = TRUE_ONE;
-}
-
 
 /**
  * @brief      Efetua o produto interno de uma linha de uma matriz por uma
@@ -43,17 +24,17 @@ void initMatrixIdentity(t_matrix *I, int length) {
  * @param[in]  line    A linha da matriz A
  * @param[in]  column  A coluna da matriz B
  * @param[in]  length  The length
- * @param      index_array  The index array
+ * @param      line_map  The index array
  *
  * @return     O resultado da operação
  */
-double lineTimesColumn(t_matrix *A, t_matrix *B, int line, int column, int length)
+double lineTimesColumn(double **A, double **B, int line, int column, int length)
 {
   int i;
   double temporary = TRUE_ZERO;
 
   for (i = 0; i < length; ++i)
-    temporary = temporary + (GET(A,line,i) * GET(B,i,column) );
+    temporary = temporary + (GET(A,length,line,i) * GET(B,length,i,column));
 
   return temporary;
 }
@@ -66,7 +47,7 @@ double lineTimesColumn(t_matrix *A, t_matrix *B, int line, int column, int lengt
  * @param      X     Matriz
  * @param      XW    Matriz
  */
-void sumMatrix(t_matrix *A, t_matrix *B, int length) 
+void sumMatrix(double **A, double **B, int length) 
 {
   int i, j;
   double aux;
@@ -75,8 +56,8 @@ void sumMatrix(t_matrix *A, t_matrix *B, int length)
   {
 
     for (j = 0; j < length; ++j) {
-      aux = GET(B, i, j) + GET(A, i, j);
-      SET(B, i, j, aux);
+      aux = GET(B,length, i, j) + GET(A,length, i, j);
+      SET(B,length, i, j, aux);
     }
 
   }
@@ -91,7 +72,7 @@ void sumMatrix(t_matrix *A, t_matrix *B, int length)
  *
  * @return     Matriz de Residuos
  */
-void residueCalc(t_matrix *A, t_matrix *X, t_matrix *I, t_matrix *R, int length)
+void residueCalc(double **A, double **X, double **I, double **R, int length)
 {
   double aux;
   int i, j;
@@ -101,8 +82,8 @@ void residueCalc(t_matrix *A, t_matrix *X, t_matrix *I, t_matrix *R, int length)
   for (i = 0; i < length; ++i) {
 
     for (j = 0; j < length; ++j) {
-      aux = (GET(R, i, j) - lineTimesColumn(A, X, i, j));
-      SET(R, i, j, aux);
+      aux = (GET(R, length, i, j) - lineTimesColumn(A, X, i, j, length));
+      SET(R, length, i, j, aux);
     }
 
   }
@@ -115,14 +96,14 @@ void residueCalc(t_matrix *A, t_matrix *X, t_matrix *I, t_matrix *R, int length)
  *
  * @return     A norma
  */
-double normCalc(t_matrix *R, int length)
+double normCalc(double **R, int length)
 {
   int i;
   int size = SQ(length);
   double norm;
 
   for (i = 0; i < size; ++i)
-    norm += SQ(R->matrix[i]);
+    norm += SQ((*R)[i]);
 
   return sqrt(norm);
 }

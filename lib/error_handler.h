@@ -18,7 +18,7 @@
 
 
 /** @brief    Erros nos Parametros */
-static const char ERROR_PARAM[] = "Parametros inválidos!\nFavor usar:invmat [-i arquivo_entrada] [-o arquivo_saida] [-r N] -i k \n";
+static const char ERROR_PARAM[] = "Parametros inválidos!\nFavor usar:invmat [-e arquivo_entrada] [-o arquivo_saida] [-r N] -i k \n";
 
 /** @brief    Erros nos Parametros (k)*/
 static const char ERROR_PARAM_NEGATIVE_K[] =  "O numero de iterações deve ser >= 0! Abortando... \nFavor usar:invmat [-i arquivo_entrada] [-o arquivo_saida] [-r N] -i k \n";

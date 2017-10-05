@@ -12,16 +12,6 @@
 #ifndef __GAUSS_ELIMINATION__
 #define __GAUSS_ELIMINATION__
 
-/**
- * @brief      Retorna a soma dos numeros de 1 a N
- *
- * @param      n     o numero final
- */
-#define SEQUENTIAL_SUM(n) (int)(((1 + (n)) * (n)) / 2)
-
-void initMatrixL(t_matrix *matrixL, int length);
-
-void gaussElimination(t_matrix *A, t_matrix *L, t_matrix *U, int *index_array, int length);
-
+void gaussElimination(double **A, double **L, double **U, int *line_map, int length);
 
 #endif

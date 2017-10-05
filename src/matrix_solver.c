@@ -19,12 +19,10 @@
  * @param      A            Matriz triangular superior
  * @param      B            Matriz de termos independentes
  * @param      X            Matriz resultante
- * @param      index_array  Vetor de troca de linhas
+ * @param      line_map  vetor de mapeamento de linhas
  */
-void backwardSubstitution(t_matrix *A, t_matrix *B, t_matrix *X, int *index_array) {
-  int length = A->length;
+void backwardSubstitution(double **A, double **B, double **X, int *line_map, int length) {
   int last = length - 1;
-
 
   // contadores
   int i, j, c;
@@ -34,16 +32,16 @@ void backwardSubstitution(t_matrix *A, t_matrix *B, t_matrix *X, int *index_arra
 
   double temp = 0;
   for (c = 0; c < length; ++c) {
-    aux = GET(B, index_array[last], c) / GET(A, index_array[last], last);
-    SET(X, last, c, aux);
+    aux = GET(B, length, line_map[last], c) / GET(A, length, line_map[last], last);
+    SET(X, length, last, c, aux);
 
     for (i = last - 1; i >= 0; --i) {
-      temp = GET(B, index_array[i], c);
+      temp = GET(B, length, line_map[i], c);
       for (j = last; j > i; --j) {
-        temp = temp - (GET(A, index_array[i], j) * GET(X, j, c));
+        temp = temp - (GET(A, length, line_map[i], j) * GET(X, length, j, c));
       }
-      temp = temp / GET(A, index_array[i], j);
-      SET(X, i, c, temp);
+      temp = temp / GET(A, length, line_map[i], j);
+      SET(X, length, i, c, temp);
     }
 
   }
@@ -55,10 +53,9 @@ void backwardSubstitution(t_matrix *A, t_matrix *B, t_matrix *X, int *index_arra
  * @param      A            Matriz triangular inferior
  * @param      B            Matriz de termos independentes
  * @param      X            Matriz resultatne
- * @param      index_array  Vetor de troca de linhas
+ * @param      line_map  vetor de mapeamento de linhas
  */
-void forwardSubstitution(t_matrix *A, t_matrix *B, t_matrix *X, int *index_array) {
-  int length = A->length;
+void forwardSubstitution(double **A, double **B, double **X, int *line_map, int length) {
   int last = length - 1;
 
   // contadores
@@ -69,18 +66,18 @@ void forwardSubstitution(t_matrix *A, t_matrix *B, t_matrix *X, int *index_array
 
   double temp = 0;
   for (c = 0; c < length; ++c) {
-    aux = GET(B, index_array[0], c) / GET(A, index_array[0], 0);
-    SET(X, 0, c, aux);
+    aux = GET(B, length, line_map[0], c) / GET(A, length, line_map[0], 0);
+    SET(X, length, 0, c, aux);
 
     for (i = 1; i < last; ++i) {
-      temp = GET(B, index_array[i], c);
+      temp = GET(B, length, line_map[i], c);
 
       for (j = i; j >= 0; j++) {
-        temp = temp - (GET(A, index_array[i], j) * GET(X, j, c));
+        temp = temp - (GET(A, length, line_map[i], j) * GET(X, length, j, c));
       }
 
-      temp = temp / GET(A, index_array[i], j);
-      SET(X, i, c, temp);
+      temp = temp / GET(A, length, line_map[i], j);
+      SET(X, length, i, c, temp);
     }
   }
 
