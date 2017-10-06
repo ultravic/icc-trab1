@@ -16,11 +16,13 @@ int parseParameters(int argc, char const *argv[], param *P);
 
 int readMatrix(matrixPack *M, char *file_path);
 
-void printMatrix(double **matrix, int *line_map, FILE *file, int length);
+void printMapped(double **matrix, int *line_map, int length);
+
+void printfMapped(double **matrix, int *line_map, FILE *file, int length);
 
 void printMatrixL(double **matrix, FILE *file, int length);
 
-void printNormal(double **matrix, FILE *file, int length);
+void printNormal(double **matrix, int length);
 
 void printIndexes(double **matrix, int *line_map, FILE *file, int length);
 

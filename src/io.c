@@ -111,7 +111,23 @@ int readMatrix(matrixPack *M, char *file_path) {
  *
  * @param      M     Matriz a ser impressa
  */
-void printMatrix(double **matrix, int *line_map, FILE *file, int length)
+void printMapped(double **matrix, int *line_map, int length)
+{
+  int i, j;
+  printf("%d\n",length);
+  for (i = 0; i < length; ++i) {
+    for (j = 0; j < length; j++)
+      printf("%.17g " , GET(matrix, length, line_map[i], j));
+    printf("\n");
+  }
+}
+
+/**
+ * @brief      Imprime a matriz no formato especificado
+ *
+ * @param      M     Matriz a ser impressa
+ */
+void printfMapped(double **matrix, int *line_map, FILE *file, int length)
 {
   int i, j;
   fprintf(file,"%d\n",length);
@@ -121,6 +137,7 @@ void printMatrix(double **matrix, int *line_map, FILE *file, int length)
     fprintf(file,"\n");
   }
 }
+
 
  /**
   * @brief      Imprime uma matriz sequncialmente
@@ -138,18 +155,18 @@ void printMatrixL(double **matrix, FILE *file, int length)
 }
 
 
-void printNormal(double **matrix, FILE *file, int length)
+void printNormal(double **matrix, int length)
 {
   int i, j;
-
-  fprintf(file,"%d\n",length);
-
+  printf("%d\n",length);
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      fprintf(file,"%.17g " , GET(matrix, length, i, j));
-    fprintf(file,"\n");
+      printf("%.17g " , GET(matrix, length, i, j));
+    printf("\n");
   }
 }
+
+
 
 void printIndexes(double **matrix, int *line_map, FILE *file, int length)
 {

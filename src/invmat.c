@@ -26,7 +26,7 @@ int main(int argc, char const *argv[]) {
 //----------------------------------------------------------------------
 // Instanciações e Alocação de memoria
 //----------------------------------------------------------------------
-  
+
   // Variaveis para temporização
   //----------------------------------------------------------------------
   double initial_time, actual_time, norm;
@@ -43,7 +43,7 @@ int main(int argc, char const *argv[]) {
 
   // Trata parametros
   if(parseParameters(argc, argv, &P) != SUCCESS)
-    die(ERROR_PARAM); 
+    die(ERROR_PARAM);
 
   // Conjunto de matrizes
   matrixPack M;
@@ -57,7 +57,7 @@ int main(int argc, char const *argv[]) {
     M.A = generateRandomSquareMatrix(M.length);
   } else {
     //  Le a matriz
-    if (readMatrix(&M, P.in_file) == ERROR) 
+    if (readMatrix(&M, P.in_file) == ERROR)
       die(ERROR_READING);
   }
   //----------------------------------------------------------------------
@@ -82,8 +82,8 @@ int main(int argc, char const *argv[]) {
 
   gaussElimination(&M.A, &M.L, &M.U, line_map, M.length);
 
-  printf("bbb%lf\n",M.L[2]);
-  die(ERROR_PARAM);
+  printMapped(&M.U,line_map,M.length);
+
   actual_time = timestamp();
   lu_time = actual_time - initial_time;
   //----------------------------------------------------------------------
@@ -92,17 +92,17 @@ int main(int argc, char const *argv[]) {
   // Inverte a Matriz
   //----------------------------------------------------------------------
   initial_time = timestamp();
-  
+
   // L*Y = B
   forwardSubstitution(&M.L, &M.Y, &M.I, line_map, M.length);
-  
+
   // U*X = Y
   backwardSubstitution(&M.U, &M.X, &M.Y, line_map, M.length);
   actual_time = timestamp();
 
   residue_time +=(actual_time - initial_time);
   //----------------------------------------------------------------------
- 
+
   // Verifica se tem arquivo para saida
   //----------------------------------------------------------------------
   if (P.to_file)
@@ -136,10 +136,10 @@ int main(int argc, char const *argv[]) {
 
     actual_time = timestamp();
     iter_time += (actual_time - initial_time);
-    
+
     fprintf(output_file, "# iter %d: %.17g\n", iter, norm);
     //----------------------------------------------------------------------
-    
+
     // Calcula novo S.L
     //----------------------------------------------------------------------
     initial_time = timestamp();
@@ -150,7 +150,7 @@ int main(int argc, char const *argv[]) {
 
     // L*Y = R
     forwardSubstitution(&M.L, &M.Y, &M.R, line_map, M.length);
-    
+
     // U*W = Y
     backwardSubstitution(&M.U, &M.W, &M.Y, line_map, M.length);
 
@@ -159,7 +159,7 @@ int main(int argc, char const *argv[]) {
     actual_time = timestamp();
     residue_time +=(actual_time - initial_time);
     //----------------------------------------------------------------------
-      
+
     iter++;
   }
 
@@ -175,7 +175,7 @@ int main(int argc, char const *argv[]) {
   fprintf(output_file, "# Tempo iter %lf\n", iter_time);
   fprintf(output_file, "# Tempo residuo: %lf\n", residue_time);
   fprintf(output_file, "#\n");
-  printMatrix(&M.X, line_map, output_file, M.length);
+  printfMapped(&M.X, line_map, output_file, M.length);
   //----------------------------------------------------------------------
 
   // Fecha arquivo de saída

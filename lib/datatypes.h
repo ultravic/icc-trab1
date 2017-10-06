@@ -21,13 +21,13 @@
 	/** @brief     Estrutura para guardar um conjunto de matrizes. */
 	typedef struct {
 		int length; // Largura das Matrizes
-		double *A; 	// Matriz Original 
+		double *A; 	// Matriz Original
 		double *L; 	// Matriz de Multiplicadores
 		double *U; 	// Matriz escalonada
 		double *Y; 	// Matriz temporária (L*Y = B)
 		double *X; 	// Matriz resultante (U*X = Y)
 		double *R; 	// Matriz de resíduos
-		double *I; 	// Matriz indentidade 
+		double *I; 	// Matriz indentidade
 		double *W; 	// Matriz novo X (A*W = R)
 	} matrixPack;
 
@@ -149,7 +149,7 @@
 	 *
 	 * @return     O valor acessado
 	 */
-	#define GET(M,length,l,c) (*M[(l) * (length) + (c)])
+	#define GET(M,length,l,c) ((*M)[(l) * (length) + (c)])
 
 	/**
 	 * @brief      Retorna um valor na matriz
@@ -162,7 +162,7 @@
 	 *
 	 * @return     { description_of_the_return_value }
 	 */
-	#define SET(M,length,l,c,v) (*M[(l) * (length) + (c)] = (v))
+	#define SET(M,length,l,c,v) ((*M)[(l) * (length) + (c)] = (v))
 
 
 #endif

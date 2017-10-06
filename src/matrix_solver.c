@@ -71,8 +71,7 @@ void forwardSubstitution(double **A, double **B, double **X, int *line_map, int 
 
     for (i = 1; i < last; ++i) {
       temp = GET(B, length, line_map[i], c);
-
-      for (j = i; j >= 0; j++) {
+      for (j = 0; j <= i; j++) {
         temp = temp - (GET(A, length, line_map[i], j) * GET(X, length, j, c));
       }
 

@@ -26,11 +26,7 @@ void pivot(double **M, int pos, int *line_map, int length){
     int max_line = pos;
     double max_num = GET(M, length, line_map[pos], pos);
     double aux;
-    printf("aaaaaaa%lf\n",max_num);
     for (i = pos+1; i < length; ++i) {
-        printf("lll%d\n",i );
-        printf("mmml%d\n",line_map[i] );
-        printf("lll%lf\n",GET(M, length, line_map[i], pos) );
         if((aux = GET(M, length, line_map[i], pos)) > max_num) {
             max_num = aux;
             max_line = i;

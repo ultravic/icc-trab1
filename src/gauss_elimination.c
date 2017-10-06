@@ -28,19 +28,24 @@
 void gaussElimination(double **A, double **L, double **U, int *line_map, int length)
 {
   int j, i, k, sizeL = 0;
+  double aux;
+
   for (i = 0; i < (length - 1); ++i) {
-  printf("a%d\n",length);
     pivot(A, i, line_map, length);
 
-  printf("a%d\n",length);
     for (j = i + 1; j < length; ++j) {
-      *L[sizeL] = GET(A, length, line_map[j], i) / GET(A, length, line_map[i], i);
+      (*L)[sizeL] = GET(A, length, line_map[j], i) / GET(A, length, line_map[i], i);
+      printf("aaa%lf\n", (*L)[sizeL]);
       SET(U, length, line_map[j], i, TRUE_ZERO);
-      printf("L %lf\n",*L[sizeL] );
-      for (k = i + 1; k < length; ++k)
-        SET(U, length, line_map[j], k, (GET(A, length, line_map[j],k) - (*L[sizeL] * GET(A, length, line_map[i], k))) );
 
+      for (k = i + 1; k < length; ++k){
+        aux = GET(A, length, line_map[j],k) - ((*L)[sizeL] * GET(A, length, line_map[i], k));
+        SET(U, length, line_map[j], k, aux);
+      }
+      printMapped(U,line_map,length);
       sizeL++;
     }
+
   }
 }
+
