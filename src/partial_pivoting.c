@@ -21,13 +21,14 @@
  * @param[in]  pos          A posição do valor a ser pivotado
  * @param      line_map  O vetor de mapeamento de linhas
  */
-void pivot(double **M, int pos, int *line_map, int length){
+void partialPivoting(double **M, int pos, int *line_map, int length){
     int i;
     int max_line = pos;
-    double max_num = GET(M, length, line_map[pos], pos);
+    double max_num = abs(GET(M, length, line_map[pos], pos));
     double aux;
     for (i = pos+1; i < length; ++i) {
-        if((aux = GET(M, length, line_map[i], pos)) > max_num) {
+        aux = GET(M, length, line_map[i], pos);
+        if(abs(aux) > max_num) {
             max_num = aux;
             max_line = i;
         }

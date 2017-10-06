@@ -23,28 +23,36 @@
  * @param      L         Matriz de multiplicadores (triangular inferior)
  * @param      U         Matriz escalonada (triangular superior)
  * @param      line_map  vetor de mapeamento de linhas
- * @param[in]  length    Largura da matriz
+ * @param[in]  n    Largura da matriz
  */
-void gaussElimination(double **A, double **L, double **U, int *line_map, int length)
+void gaussElimination(double **A, double **L, double **U, int *line_map, int n)
 {
   int j, i, k, sizeL = 0;
-  double aux;
+  double aux, mult;
 
-  for (i = 0; i < (length - 1); ++i) {
-    pivot(A, i, line_map, length);
+    for (i = 0; i < (n - 1); ++i) {
+    partialPivoting(A, i, line_map, n);
 
-    for (j = i + 1; j < length; ++j) {
-      (*L)[sizeL] = GET(A, length, line_map[j], i) / GET(A, length, line_map[i], i);
-      printf("aaa%lf\n", (*L)[sizeL]);
-      SET(U, length, line_map[j], i, TRUE_ZERO);
+      for (k = 0; k < n; ++k)
+        SET(U,n,i,k,(GET(A,n,line_map[i],k)));
 
-      for (k = i + 1; k < length; ++k){
-        aux = GET(A, length, line_map[j],k) - ((*L)[sizeL] * GET(A, length, line_map[i], k));
-        SET(U, length, line_map[j], k, aux);
+    printf("aaa\n");
+    printMapped(A,line_map,n);
+
+    for (j = i + 1; j < n; ++j) {
+      (*L)[sizeL] = mult = GET(A, n, line_map[j], i) / GET(A, n, line_map[i], i);
+
+      printf("%lf/%lf = %lf\n",GET(A, n, line_map[j], i),GET(A, n, line_map[i], i), mult);
+
+      SET(U, n, j, i, TRUE_ZERO);
+
+      for (k = i + 1; k < n; ++k){
+        aux = GET(A, n, line_map[j],k) - (mult * GET(A, n, line_map[i], k));
+        SET(U, n, j, k, aux);
       }
-      printMapped(U,line_map,length);
       sizeL++;
     }
+    // Problema: o multiplicador está sendo calculado pelo valor desatualizado
 
   }
 }

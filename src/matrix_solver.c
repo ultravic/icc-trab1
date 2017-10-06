@@ -13,15 +13,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+
 /**
- * @brief      Efetua retrosubstituição
+ * @brief      Efetua substituição Ax=B
  *
- * @param      A            Matriz triangular superior
- * @param      B            Matriz de termos independentes
- * @param      X            Matriz resultante
+ * @param      A         Matriz triangular inferior
+ * @param      X         Matriz resultante
+ * @param      B         Matriz de termos independentes
  * @param      line_map  vetor de mapeamento de linhas
+ * @param[in]  length    A largura das matrizes
  */
-void backwardSubstitution(double **A, double **B, double **X, int *line_map, int length) {
+void forwardSubstitution(double **A, double **X, double **B, int *line_map, int length) {
   int last = length - 1;
 
   // contadores
@@ -32,52 +35,52 @@ void backwardSubstitution(double **A, double **B, double **X, int *line_map, int
 
   double temp = 0;
   for (c = 0; c < length; ++c) {
-    aux = GET(B, length, line_map[last], c) / GET(A, length, line_map[last], last);
-    SET(X, length, last, c, aux);
-
-    for (i = last - 1; i >= 0; --i) {
-      temp = GET(B, length, line_map[i], c);
-      for (j = last; j > i; --j) {
-        temp = temp - (GET(A, length, line_map[i], j) * GET(X, length, j, c));
-      }
-      temp = temp / GET(A, length, line_map[i], j);
-      SET(X, length, i, c, temp);
-    }
-
-  }
-}
-
-/**
- * @brief      Efetua substituição
- *
- * @param      A            Matriz triangular inferior
- * @param      B            Matriz de termos independentes
- * @param      X            Matriz resultatne
- * @param      line_map  vetor de mapeamento de linhas
- */
-void forwardSubstitution(double **A, double **B, double **X, int *line_map, int length) {
-  int last = length - 1;
-
-  // contadores
-  int i, j, c;
-
-  // define primeiro valor a ser usado
-  double aux;
-
-  double temp = 0;
-  for (c = 0; c < length; ++c) {
-    aux = GET(B, length, line_map[0], c) / GET(A, length, line_map[0], 0);
+    aux = GET(B, length, line_map[0], c) / GET(A, length, 0, 0);
     SET(X, length, 0, c, aux);
 
     for (i = 1; i < last; ++i) {
       temp = GET(B, length, line_map[i], c);
       for (j = 0; j <= i; j++) {
-        temp = temp - (GET(A, length, line_map[i], j) * GET(X, length, j, c));
+        temp = temp - (GET(A, length, i, j) * GET(X, length, j, c));
       }
 
-      temp = temp / GET(A, length, line_map[i], j);
+      temp = temp / GET(A, length, i, j);
       SET(X, length, i, c, temp);
     }
   }
 
+}
+
+/**
+ * @brief      Efetua substituição Ax=B
+ *
+ * @param      A         Matriz triangular superior
+ * @param      X         Matriz resultante
+ * @param      B         Matriz de termos independentes
+ * @param[in]  length    A largura das matrizes
+ */
+void backwardSubstitution(double **A, double **B, double **X, int length) {
+  int last = length - 1;
+
+  // contadores
+  int i, j, c;
+
+  // define primeiro valor a ser usado
+  double aux;
+
+  double temp = 0;
+  for (c = 0; c < length; ++c) {
+    aux = GET(B, length, last, c) / GET(A, length, last, last);
+    SET(X, length, last, c, aux);
+
+    for (i = last - 1; i >= 0; --i) {
+      temp = GET(B, length, i, c);
+      for (j = last; j > i; --j) {
+        temp = temp - (GET(A, length, i, j) * GET(X, length, j, c));
+      }
+      temp = temp / GET(A, length, i, j);
+      SET(X, length, i, c, temp);
+    }
+
+  }
 }

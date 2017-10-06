@@ -82,24 +82,38 @@ int main(int argc, char const *argv[]) {
 
   gaussElimination(&M.A, &M.L, &M.U, line_map, M.length);
 
-  printMapped(&M.U,line_map,M.length);
 
   actual_time = timestamp();
   lu_time = actual_time - initial_time;
   //----------------------------------------------------------------------
+  printf("U---------\n");
+  printNormal(&M.U,M.length);
+  printf("---------\n");
 
 
   // Inverte a Matriz
   //----------------------------------------------------------------------
   initial_time = timestamp();
 
+  printf("L---------\n");
+  printMatrixL(&M.L,TRIANGLE_SIZE(M.length));
+  printf("\n---------\n");
+
   // L*Y = B
   forwardSubstitution(&M.L, &M.Y, &M.I, line_map, M.length);
 
-  // U*X = Y
-  backwardSubstitution(&M.U, &M.X, &M.Y, line_map, M.length);
-  actual_time = timestamp();
+  printf("Y---------\n");
+  printNormal(&M.Y,M.length);
+  printf("---------\n");
 
+  // U*X = Y
+  backwardSubstitution(&M.U, &M.X, &M.Y, M.length);
+
+  printf("L---------\n");
+  printNormal(&M.Y,M.length);
+  printf("---------\n");
+
+  actual_time = timestamp();
   residue_time +=(actual_time - initial_time);
   //----------------------------------------------------------------------
 
@@ -152,7 +166,7 @@ int main(int argc, char const *argv[]) {
     forwardSubstitution(&M.L, &M.Y, &M.R, line_map, M.length);
 
     // U*W = Y
-    backwardSubstitution(&M.U, &M.W, &M.Y, line_map, M.length);
+    backwardSubstitution(&M.U, &M.W, &M.Y, M.length);
 
     // X+=W
     sumMatrix(&M.W, &M.X, M.length);

@@ -144,14 +144,14 @@ void printfMapped(double **matrix, int *line_map, FILE *file, int length)
   *
   * @param      matrix  The matrix
   */
-void printMatrixL(double **matrix, FILE *file, int length)
+void printMatrixL(double **matrix, int length)
 {
   int i;
 
-  fprintf(file,"%d\n", length);
+  printf("%d\n", length);
 
   for (i = 0; i < length; ++i)
-    fprintf(file,"%.17g\n", GET(matrix, length, 0, i));
+    printf("%lf ", GET(matrix, length, 0, i));
 }
 
 
@@ -161,22 +161,20 @@ void printNormal(double **matrix, int length)
   printf("%d\n",length);
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      printf("%.17g " , GET(matrix, length, i, j));
+      printf("%lf\t" , GET(matrix, length, i, j));
     printf("\n");
   }
 }
 
-
-
-void printIndexes(double **matrix, int *line_map, FILE *file, int length)
+void printIndexes(int *line_map, int length)
 {
   int i;
 
-  fprintf(file,"Indexes: \n");
+  printf("Indexes: \n");
 
   for (i = 0; i < length; ++i)
-    fprintf(file,"%d, ", line_map[i]);
+    printf("%d, ", line_map[i]);
 
-  fprintf(file,"\n");
+  printf("\n");
 }
 

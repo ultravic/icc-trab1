@@ -20,10 +20,10 @@ void printMapped(double **matrix, int *line_map, int length);
 
 void printfMapped(double **matrix, int *line_map, FILE *file, int length);
 
-void printMatrixL(double **matrix, FILE *file, int length);
+void printMatrixL(double **matrix, int length);
 
 void printNormal(double **matrix, int length);
 
-void printIndexes(double **matrix, int *line_map, FILE *file, int length);
+void printIndexes(int *line_map, int length);
 
 #endif

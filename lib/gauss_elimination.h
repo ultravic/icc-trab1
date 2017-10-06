@@ -12,6 +12,6 @@
 #ifndef __GAUSS_ELIMINATION__
 #define __GAUSS_ELIMINATION__
 
-void gaussElimination(double **A, double **L, double **U, int *line_map, int length);
+void gaussElimination(double **A, double **L, double **U, int *line_map, int n);
 
 #endif
