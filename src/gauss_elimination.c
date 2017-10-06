@@ -14,6 +14,7 @@
 #include "../lib/io.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 /**
@@ -29,31 +30,22 @@ void gaussElimination(double **A, double **L, double **U, int *line_map, int n)
 {
   int j, i, k, sizeL = 0;
   double aux, mult;
+    memcpy(U,A,SQ(n)*sizeof(double));
 
     for (i = 0; i < (n - 1); ++i) {
-    partialPivoting(A, i, line_map, n);
+      partialPivoting(U, L, i, line_map, n);
 
-      for (k = 0; k < n; ++k)
-        SET(U,n,i,k,(GET(A,n,line_map[i],k)));
+      for (j = i + 1; j < n; ++j) {
+        (*L)[sizeL] = mult = GET(A, n, line_map[j], i) / GET(U, n, line_map[i], i);
 
-    printf("aaa\n");
-    printMapped(A,line_map,n);
+        SET(U, n, line_map[j], i, TRUE_ZERO);
 
-    for (j = i + 1; j < n; ++j) {
-      (*L)[sizeL] = mult = GET(A, n, line_map[j], i) / GET(A, n, line_map[i], i);
-
-      printf("%lf/%lf = %lf\n",GET(A, n, line_map[j], i),GET(A, n, line_map[i], i), mult);
-
-      SET(U, n, j, i, TRUE_ZERO);
-
-      for (k = i + 1; k < n; ++k){
-        aux = GET(A, n, line_map[j],k) - (mult * GET(A, n, line_map[i], k));
-        SET(U, n, j, k, aux);
+        for (k = i + 1; k < n; ++k){
+          aux = GET(A, n, line_map[j],k) - (mult * GET(A, n, line_map[i], k));
+          SET(U, n, line_map[j], k, aux);
+        }
+        sizeL++;
       }
-      sizeL++;
-    }
-    // Problema: o multiplicador está sendo calculado pelo valor desatualizado
-
   }
 }
 

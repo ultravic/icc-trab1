@@ -86,31 +86,27 @@ int main(int argc, char const *argv[]) {
   actual_time = timestamp();
   lu_time = actual_time - initial_time;
   //----------------------------------------------------------------------
-  printf("U---------\n");
-  printNormal(&M.U,M.length);
-  printf("---------\n");
-
-
+ 
   // Inverte a Matriz
   //----------------------------------------------------------------------
   initial_time = timestamp();
 
   printf("L---------\n");
-  printMatrixL(&M.L,TRIANGLE_SIZE(M.length));
+  printMatrixL(&M.L, M.length);
   printf("\n---------\n");
 
   // L*Y = B
   forwardSubstitution(&M.L, &M.Y, &M.I, line_map, M.length);
 
   printf("Y---------\n");
-  printNormal(&M.Y,M.length);
+  printNormal(&M.Y, M.length);
   printf("---------\n");
 
   // U*X = Y
   backwardSubstitution(&M.U, &M.X, &M.Y, M.length);
 
-  printf("L---------\n");
-  printNormal(&M.Y,M.length);
+  printf("Y---------\n");
+  printNormal(&M.Y, M.length);
   printf("---------\n");
 
   actual_time = timestamp();

@@ -138,7 +138,6 @@ void printfMapped(double **matrix, int *line_map, FILE *file, int length)
   }
 }
 
-
  /**
   * @brief      Imprime uma matriz sequncialmente
   *
@@ -146,14 +145,14 @@ void printfMapped(double **matrix, int *line_map, FILE *file, int length)
   */
 void printMatrixL(double **matrix, int length)
 {
-  int i;
-
+  int i,j=0;
   printf("%d\n", length);
-
-  for (i = 0; i < length; ++i)
-    printf("%lf ", GET(matrix, length, 0, i));
+  for (i = 0; i < length-1; ++i) {
+    for (j = 0; j <= i; j++)
+      printf("%lf\t" , GETT(matrix,i,j));
+    printf("\n");
+  }
 }
-
 
 void printNormal(double **matrix, int length)
 {
@@ -169,7 +168,6 @@ void printNormal(double **matrix, int length)
 void printIndexes(int *line_map, int length)
 {
   int i;
-
   printf("Indexes: \n");
 
   for (i = 0; i < length; ++i)

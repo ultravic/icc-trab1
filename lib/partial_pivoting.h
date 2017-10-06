@@ -12,6 +12,6 @@
 #ifndef __PARTIAL_PIVOTING__
 #define __PARTIAL_PIVOTING__
 
-void partialPivoting(double **M, int pos, int *line_map, int length);
+void partialPivoting(double **M, double **L, int pos, int *line_map, int length);
 
 #endif

@@ -24,7 +24,7 @@
  * @param      line_map  vetor de mapeamento de linhas
  * @param[in]  length    A largura das matrizes
  */
-void forwardSubstitution(double **A, double **X, double **B, int *line_map, int length) {
+void forwardSubstitution(double **L, double **Y, double **B, int *line_map, int length) {
   int last = length - 1;
 
   // contadores
@@ -35,17 +35,17 @@ void forwardSubstitution(double **A, double **X, double **B, int *line_map, int 
 
   double temp = 0;
   for (c = 0; c < length; ++c) {
-    aux = GET(B, length, line_map[0], c) / GET(A, length, 0, 0);
-    SET(X, length, 0, c, aux);
+    aux = GET(B, length, line_map[0], c) / GETT(L, 0, 0);
+    SET(Y, length, 0, c, aux);
 
     for (i = 1; i < last; ++i) {
       temp = GET(B, length, line_map[i], c);
       for (j = 0; j <= i; j++) {
-        temp = temp - (GET(A, length, i, j) * GET(X, length, j, c));
+        temp = temp - (GETT(L, i-1, j) * GET(Y, length, j, c));
       }
 
-      temp = temp / GET(A, length, i, j);
-      SET(X, length, i, c, temp);
+      temp = temp / GETT(L, i-1, j);
+      SET(Y, length, i, c, temp);
     }
   }
 

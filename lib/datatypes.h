@@ -92,7 +92,7 @@
 	 * @param      M     Conjunto de matrizes
 	 */
 	#define INIT_MATRIX_PACK(M) { \
-		M.L = ALLOC(double,TRIANGLE_SIZE(M.length-1));	\
+		M.L = ALLOC(double,TRIANGLE_SIZE(M.length-2));	\
 		M.U = ALLOC(double,SQ(M.length));	\
 		M.Y = ALLOC(double,SQ(M.length));	\
 		M.X = ALLOC(double,SQ(M.length));	\
@@ -150,6 +150,7 @@
 	 * @return     O valor acessado
 	 */
 	#define GET(M,length,l,c) ((*M)[(l) * (length) + (c)])
+	#define GETT(M,l,c) ((*M)[((((l)*((l)+1))/2)+(c))])
 
 	/**
 	 * @brief      Retorna um valor na matriz
@@ -163,6 +164,7 @@
 	 * @return     { description_of_the_return_value }
 	 */
 	#define SET(M,length,l,c,v) ((*M)[(l) * (length) + (c)] = (v))
+	#define SETT(M,l,c,v) ( (*M)[ ((((l)*((l)+1))/2)+(c)) ] = (v))
 
 
 #endif
