@@ -30,22 +30,22 @@ void gaussElimination(double **A, double **L, double **U, int *line_map, int n)
 {
   int j, i, k, sizeL = 0;
   double aux, mult;
-    memcpy(U,A,SQ(n)*sizeof(double));
+    memcpy(*U,*A,SQ(n)*sizeof(double));
 
-    for (i = 0; i < (n - 1); ++i) {
+    for (i = 0; i < n-1; ++i) {
       partialPivoting(U, L, i, line_map, n);
-
       for (j = i + 1; j < n; ++j) {
-        (*L)[sizeL] = mult = GET(A, n, line_map[j], i) / GET(U, n, line_map[i], i);
+        mult = GET(U, n, line_map[j], i) / GET(U, n, line_map[i], i);
+        (*L)[sizeL] = mult;
 
+        printf("%1.17g\n", (*L)[sizeL]);
         SET(U, n, line_map[j], i, TRUE_ZERO);
 
-        for (k = i + 1; k < n; ++k){
-          aux = GET(A, n, line_map[j],k) - (mult * GET(A, n, line_map[i], k));
+        for (k = i + 1; k < n; ++k) {
+          aux = GET(U, n, line_map[j], k) - (mult * GET(U, n, line_map[i], k));
           SET(U, n, line_map[j], k, aux);
         }
         sizeL++;
       }
   }
 }
-

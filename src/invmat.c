@@ -82,11 +82,18 @@ int main(int argc, char const *argv[]) {
 
   gaussElimination(&M.A, &M.L, &M.U, line_map, M.length);
 
+  printf("A---------\n");
+  printNormal(&M.A, M.length);
+  printf("\n---------\n");
+
+  printf("U---------\n");
+  printMapped(&M.U, line_map,  M.length);
+  printf("\n---------\n");
 
   actual_time = timestamp();
   lu_time = actual_time - initial_time;
   //----------------------------------------------------------------------
- 
+
   // Inverte a Matriz
   //----------------------------------------------------------------------
   initial_time = timestamp();
@@ -105,7 +112,7 @@ int main(int argc, char const *argv[]) {
   // U*X = Y
   backwardSubstitution(&M.U, &M.X, &M.Y, M.length);
 
-  printf("Y---------\n");
+  printf("X---------\n");
   printNormal(&M.Y, M.length);
   printf("---------\n");
 

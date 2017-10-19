@@ -12,7 +12,7 @@
 #include "../lib/partial_pivoting.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <math.h>
 /**
  * @brief      Encontra o maior valor de uma coluna da matriz, a partir de uma
  *             determinada posição e troca as posições no vetor de troca de
@@ -24,19 +24,19 @@
 void partialPivoting(double **M, double **L, int pos, int *line_map, int length){
     int i;
     int max_line = pos;
-    double max_num = abs(GET(M, length, line_map[pos], pos));
+    double max_num = fabs(GET(M, length, line_map[pos], pos));
     double aux;
 
     for (i = pos+1; i < length; ++i) {
         aux = GET(M, length, line_map[i], pos);
-        if(abs(aux) > max_num) {
-            max_num = aux;
+        if(fabs(aux) > max_num) {
+            max_num = fabs(aux);
             max_line = i;
         }
     }
 
-    if(IS_ZERO(ABS(max_num)))
-        die(ERROR_ZERO_PIVOT);
+    // if(IS_ZERO(ABS(max_num)))
+    //     die(ERROR_ZERO_PIVOT);
     aux = line_map[pos];
     line_map[pos] = line_map[max_line];
     line_map[max_line] = aux;
@@ -47,5 +47,4 @@ void partialPivoting(double **M, double **L, int pos, int *line_map, int length)
         SETT(L, pos-1, i, (GETT(L, max_line-1, i)));
         SETT(L, max_line-1, i, aux);
     }
-
 }

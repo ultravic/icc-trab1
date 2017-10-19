@@ -117,7 +117,7 @@ void printMapped(double **matrix, int *line_map, int length)
   printf("%d\n",length);
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      printf("%.17g " , GET(matrix, length, line_map[i], j));
+      printf("%1.17g " , GET(matrix, length, line_map[i], j));
     printf("\n");
   }
 }
@@ -149,7 +149,7 @@ void printMatrixL(double **matrix, int length)
   printf("%d\n", length);
   for (i = 0; i < length-1; ++i) {
     for (j = 0; j <= i; j++)
-      printf("%lf\t" , GETT(matrix,i,j));
+      printf("%lf\t" , GETT(matrix, i, j));
     printf("\n");
   }
 }
@@ -160,7 +160,7 @@ void printNormal(double **matrix, int length)
   printf("%d\n",length);
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      printf("%lf\t" , GET(matrix, length, i, j));
+      printf("%1.17g\t" , GET(matrix, length, i, j));
     printf("\n");
   }
 }
@@ -175,4 +175,3 @@ void printIndexes(int *line_map, int length)
 
   printf("\n");
 }
-
