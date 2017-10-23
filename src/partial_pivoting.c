@@ -41,10 +41,13 @@ void partialPivoting(double **M, double **L, int pos, int *line_map, int length)
     line_map[pos] = line_map[max_line];
     line_map[max_line] = aux;
 
-    for (i = 0; i <= line_map[pos]; ++i)
-    {
-        aux = GETT(L, pos-1, i);
-        SETT(L, pos-1, i, (GETT(L, max_line-1, i)));
-        SETT(L, max_line-1, i, aux);
+    if (pos) {
+      aux = GETT(L, pos-1, i);
+      SETT(L, pos-1, i, (GETT(L, max_line-1, i)));
+      SETT(L, max_line-1, i, aux);
+    } else {
+      aux = GETT(L, pos, i);
+      SETT(L, pos, i, (GETT(L, max_line-1, i)));
+      SETT(L, max_line-1, i, aux);
     }
 }

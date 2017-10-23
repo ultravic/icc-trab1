@@ -59,7 +59,7 @@ void forwardSubstitution(double **L, double **Y, double **B, int *line_map, int 
  * @param      B         Matriz de termos independentes
  * @param[in]  length    A largura das matrizes
  */
-void backwardSubstitution(double **A, double **B, double **X, int length) {
+void backwardSubstitution(double **A, double **X, double **B, int length) {
   int last = length - 1;
 
   // contadores
