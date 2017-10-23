@@ -149,7 +149,7 @@ void printMatrixL(double **matrix, int length)
   printf("%d\n", length);
   for (i = 0; i < length-1; ++i) {
     for (j = 0; j <= i; j++)
-      printf("%lf\t" , GETT(matrix, i, j));
+      printf("%1.17g\t" , GET(matrix, length, i, j));
     printf("\n");
   }
 }

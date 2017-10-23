@@ -38,8 +38,9 @@ void gaussElimination(double **A, double **L, double **U, int *line_map, int n)
         mult = GET(U, n, line_map[j], i) / GET(U, n, line_map[i], i);
         (*L)[sizeL] = mult;
 
-        printf("%1.17g\n", (*L)[sizeL]);
+        printf("i: %d j: %d %1.17g\n", i, j, (*L)[sizeL]);
         SET(U, n, line_map[j], i, TRUE_ZERO);
+        printMapped(U, line_map, n);
 
         for (k = i + 1; k < n; ++k) {
           aux = GET(U, n, line_map[j], k) - (mult * GET(U, n, line_map[i], k));
