@@ -92,7 +92,7 @@
 	 * @param      M     Conjunto de matrizes
 	 */
 	#define INIT_MATRIX_PACK(M) { \
-		M.L = ALLOC(double,TRIANGLE_SIZE(M.length));	\
+		M.L = ALLOC(double,SQ(M.length));	\
 		M.U = ALLOC(double,SQ(M.length));	\
 		M.Y = ALLOC(double,SQ(M.length));	\
 		M.X = ALLOC(double,SQ(M.length));	\

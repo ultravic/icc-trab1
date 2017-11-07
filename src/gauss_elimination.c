@@ -28,27 +28,24 @@
  */
 void gaussElimination(double **A, double **L, double **U, int *line_map, int n)
 {
-  int j, i, k, sizeL = 0;
+  int j, i, k, sizeL;
   double aux, mult;
-    memcpy(*U,*A,SQ(n)*sizeof(double));
+  memcpy(*U,*A,SQ(n)*sizeof(double));
 
-    SETT(L, 0, 0, TRUE_ONE);
-    for (i = 0; i < n-1; ++i) {
-      partialPivoting(U, L, i, line_map, n);
-      for (j = i + 1; j < n; ++j) {
-        mult = GET(U, n, line_map[j], i) / GET(U, n, line_map[i], i);
-        (*L)[sizeL+1] = mult;
+  for (i = 0; i < n-1; ++i) {
+    sizeL = 1;
+    partialPivoting(U, L, i, line_map, n);
+    for (j = i + 1; j < n; ++j) {
+      mult = GET(U, n, line_map[j], i) / GET(U, n, line_map[i], i);
+      SET(L, n, j, i, mult);
 
-        printf("i: %d j: %d %1.17g\n", i, j, (*L)[sizeL]);
-        SET(U, n, line_map[j], i, TRUE_ZERO);
-        // printMapped(U, line_map, n);
+      SET(U, n, line_map[j], i, TRUE_ZERO);
 
-        for (k = i + 1; k < n; ++k) {
-          aux = GET(U, n, line_map[j], k) - (mult * GET(U, n, line_map[i], k));
-          SET(U, n, line_map[j], k, aux);
-        }
-        sizeL++;
+      for (k = i + 1; k < n; ++k) {
+        aux = GET(U, n, line_map[j], k) - (mult * GET(U, n, line_map[i], k));
+        SET(U, n, line_map[j], k, aux);
       }
-      SETT(L, i, j, TRUE_ONE);
+      sizeL++;
+    }
   }
 }

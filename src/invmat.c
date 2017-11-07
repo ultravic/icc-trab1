@@ -67,6 +67,8 @@ int main(int argc, char const *argv[]) {
   // Gera uma matriz identidade
   M.I = generateIdentityMatrix(M.length);
 
+  memcpy(M.L, M.I, SQ(M.length)*sizeof(double));
+
 //----------------------------------------------------------------------
 // Inversão da Matriz
 //----------------------------------------------------------------------
@@ -80,7 +82,15 @@ int main(int argc, char const *argv[]) {
   //----------------------------------------------------------------------
   initial_time = timestamp();
 
+  printf("L---------\n");
+  printNormal(&M.L, M.length);
+  printf("\n---------\n");
+
   gaussElimination(&M.A, &M.L, &M.U, line_map, M.length);
+
+  printf("DL---------\n");
+  printNormal(&M.L, M.length);
+  printf("\n---------\n");
 
   printf("A---------\n");
   printNormal(&M.A, M.length);
@@ -99,7 +109,7 @@ int main(int argc, char const *argv[]) {
   initial_time = timestamp();
 
   printf("L---------\n");
-  printMatrixL(&M.L, M.length);
+  printNormal(&M.L, M.length);
   printf("\n---------\n");
 
   // L*Y = B
