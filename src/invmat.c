@@ -112,10 +112,10 @@ int main(int argc, char const *argv[]) {
   printf("---------\n");
 
   // U*X = Y
-  backwardSubstitution(&M.U, &M.X, &M.Y, M.length);
+  backwardSubstitution(&M.U, &M.X, &M.Y, line_map, M.length);
 
   printf("X---------\n");
-  printNormal(&M.Y, M.length);
+  printNormal(&M.X, M.length);
   printf("---------\n");
 
   actual_time = timestamp();
@@ -171,7 +171,7 @@ int main(int argc, char const *argv[]) {
     forwardSubstitution(&M.L, &M.Y, &M.R, line_map, M.length);
 
     // U*W = Y
-    backwardSubstitution(&M.U, &M.W, &M.Y, M.length);
+    backwardSubstitution(&M.U, &M.W, &M.Y, line_map, M.length);
 
     // X+=W
     sumMatrix(&M.W, &M.X, M.length);

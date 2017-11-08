@@ -13,6 +13,6 @@
 
 void forwardSubstitution(double **L, double **Y, double **B, int *line_map, int length);
 
-void backwardSubstitution(double **A, double **X, double **B, int length);
+void backwardSubstitution(double **A, double **X, double **B, int *line_map, int length);
 
 #endif

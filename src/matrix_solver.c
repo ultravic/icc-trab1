@@ -10,6 +10,7 @@
 #include "../lib/datatypes.h"
 #include "../lib/double_operations.h"
 #include "../lib/matrix_solver.h"
+#include "../lib/io.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -24,9 +25,8 @@
  * @param      line_map  vetor de mapeamento de linhas
  * @param[in]  length    A largura das matrizes
  */
-void forwardSubstitution(double **L, double **Y, double **B, int *line_map, int length) {
-  int last = length - 1;
-
+void forwardSubstitution(double **L, double **Y, double **B, int *line_map, int length)
+{
   // contadores
   int i, j, c;
 
@@ -35,20 +35,17 @@ void forwardSubstitution(double **L, double **Y, double **B, int *line_map, int 
 
   double temp = 0;
   for (c = 0; c < length; ++c) {
-    aux = GET(B, length, line_map[0], c) / GET(L, length, 0, 0);
+    aux = GET(B, length, 0, c) / GET(L, length, 0, 0);
     SET(Y, length, 0, c, aux);
-
-    for (i = 1; i < last; ++i) {
-      temp = GET(B, length, line_map[i], c);
-      for (j = 0; j <= i; j++) {
-        temp = temp - (GET(L, length, i-1, j) * GET(Y, length, j, c));
+    for (i = 1; i < length; ++i) {
+      temp = GET(B, length, i, c);
+      for (j = 0; j < i; j++) {
+        temp = temp - (GET(L, length, i, j) * GET(Y, length, j, c));
       }
-
-      temp = temp / GET(L, length, i-1, j);
+      temp = temp / GET(L, length, i, j);
       SET(Y, length, i, c, temp);
     }
   }
-
 }
 
 /**
@@ -59,7 +56,8 @@ void forwardSubstitution(double **L, double **Y, double **B, int *line_map, int 
  * @param      B         Matriz de termos independentes
  * @param[in]  length    A largura das matrizes
  */
-void backwardSubstitution(double **A, double **X, double **B, int length) {
+void backwardSubstitution(double **U, double **X, double **Y, int *line_map, int length)
+{
   int last = length - 1;
 
   // contadores
@@ -70,17 +68,15 @@ void backwardSubstitution(double **A, double **X, double **B, int length) {
 
   double temp = 0;
   for (c = 0; c < length; ++c) {
-    aux = GET(B, length, last, c) / GET(A, length, last, last);
+    aux = GET(Y, length, last, c) / GET(U, length, line_map[last], last);
     SET(X, length, last, c, aux);
-
-    for (i = last - 1; i >= 0; --i) {
-      temp = GET(B, length, i, c);
+    for (i = last-1; i >= 0; --i) {
+      temp = GET(Y, length, i, c);
       for (j = last; j > i; --j) {
-        temp = temp - (GET(A, length, i, j) * GET(X, length, j, c));
+        temp = temp - (GET(U, length, line_map[i], j) * GET(X, length, j, c));
       }
-      temp = temp / GET(A, length, i, j);
+      temp = temp / GET(U, length, line_map[i], j);
       SET(X, length, i, c, temp);
     }
-
   }
 }
