@@ -82,15 +82,7 @@ int main(int argc, char const *argv[]) {
   //----------------------------------------------------------------------
   initial_time = timestamp();
 
-  printf("L---------\n");
-  printNormal(&M.L, M.length);
-  printf("\n---------\n");
-
   gaussElimination(&M.A, &M.L, &M.U, line_map, M.length);
-
-  printf("DL---------\n");
-  printNormal(&M.L, M.length);
-  printf("\n---------\n");
 
   printf("A---------\n");
   printNormal(&M.A, M.length);

@@ -40,4 +40,10 @@ void partialPivoting(double **M, double **L, int pos, int *line_map, int length)
     aux = line_map[pos];
     line_map[pos] = line_map[max_line];
     line_map[max_line] = aux;
+
+    for (i = 0; i < pos; i++) {
+      aux = GET(L, length, pos, i);
+      SET(L, length, pos, i, (GET(L, length, max_line, i)));
+      SET(L, length, max_line, i, aux);
+    }
 }
