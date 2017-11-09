@@ -133,7 +133,7 @@ void printfMapped(double **matrix, int *line_map, FILE *file, int length)
   fprintf(file,"%d\n",length);
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      fprintf(file,"%1.17g\t" , GET(matrix, length, line_map[i], j));
+      fprintf(file,"%1.17g\t" , GET(matrix, length, i, j));
     fprintf(file,"\n");
   }
 }

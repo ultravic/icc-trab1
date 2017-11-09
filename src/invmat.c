@@ -136,51 +136,51 @@ int main(int argc, char const *argv[]) {
 // Refinamento
 //----------------------------------------------------------------------
   int iter = 1;
-  while(iter <= P.K){
-    // Calcula resíduo R = I - A*X
-    //----------------------------------------------------------------------
-    initial_time = timestamp();
-
-    residueCalc(&M.A, &M.X, &M.R, &M.I, M.length);
-
-    actual_time = timestamp();
-    residue_time +=(actual_time - initial_time);
-    //----------------------------------------------------------------------
-
-    // Calcula norma L2 do resíduo
-    //----------------------------------------------------------------------
-    initial_time = timestamp();
-
-    norm = normCalc(&M.R, M.length);
-
-    actual_time = timestamp();
-    iter_time += (actual_time - initial_time);
-
-    fprintf(output_file, "# iter %d: %.17g\n", iter, norm);
-    //----------------------------------------------------------------------
-
-    // Calcula novo S.L
-    //----------------------------------------------------------------------
-    initial_time = timestamp();
-
-    // Pivotamento parcial em R
-    // ????
-    // Efetua Aw = R
-
-    // L*Y = R
-    forwardSubstitution(&M.L, &M.Y, &M.R, line_map, M.length);
-
-    // U*W = Y
-    backwardSubstitution(&M.U, &M.W, &M.Y, line_map, M.length);
-
-    // X+=W
-    sumMatrix(&M.W, &M.X, M.length);
-    actual_time = timestamp();
-    residue_time +=(actual_time - initial_time);
-    //----------------------------------------------------------------------
-
-    iter++;
-  }
+  // while(iter <= P.K){
+  //   // Calcula resíduo R = I - A*X
+  //   //----------------------------------------------------------------------
+  //   initial_time = timestamp();
+  //
+  //   residueCalc(&M.A, &M.X, &M.R, &M.I, M.length);
+  //
+  //   actual_time = timestamp();
+  //   residue_time +=(actual_time - initial_time);
+  //   //----------------------------------------------------------------------
+  //
+  //   // Calcula norma L2 do resíduo
+  //   //----------------------------------------------------------------------
+  //   initial_time = timestamp();
+  //
+  //   norm = normCalc(&M.R, M.length);
+  //
+  //   actual_time = timestamp();
+  //   iter_time += (actual_time - initial_time);
+  //
+  //   fprintf(output_file, "# iter %d: %.17g\n", iter, norm);
+  //   //----------------------------------------------------------------------
+  //
+  //   // Calcula novo S.L
+  //   //----------------------------------------------------------------------
+  //   initial_time = timestamp();
+  //
+  //   // Pivotamento parcial em R
+  //   // ????
+  //   // Efetua Aw = R
+  //
+  //   // L*Y = R
+  //   forwardSubstitution(&M.L, &M.Y, &M.R, line_map, M.length);
+  //
+  //   // U*W = Y
+  //   backwardSubstitution(&M.U, &M.W, &M.Y, line_map, M.length);
+  //
+  //   // X+=W
+  //   sumMatrix(&M.W, &M.X, M.length);
+  //   actual_time = timestamp();
+  //   residue_time +=(actual_time - initial_time);
+  //   //----------------------------------------------------------------------
+  //
+  //   iter++;
+  // }
 
   // Calcula médias dos tempos
   //----------------------------------------------------------------------
@@ -194,15 +194,15 @@ int main(int argc, char const *argv[]) {
   fprintf(output_file, "# Tempo iter %lf\n", iter_time);
   fprintf(output_file, "# Tempo residuo: %lf\n", residue_time);
   fprintf(output_file, "#\n");
+
   printfMapped(&M.X, line_map, output_file, M.length);
   //----------------------------------------------------------------------
-
-  // Fecha arquivo de saída
-  fclose(output_file);
 
   // Libera a memória do conjunto de matrizes
   // FREE_MATRIX_PACK(&M);
 
+  // Fecha arquivo de saída
+  fclose(output_file);
 
   return SUCCESS;
 }
