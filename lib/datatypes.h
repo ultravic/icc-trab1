@@ -111,7 +111,6 @@
 		free(M.R);	\
 		free(M.I);	\
 		free(M.W);	\
-		free(M); 	\
 	}
 
 

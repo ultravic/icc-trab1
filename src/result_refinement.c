@@ -7,6 +7,7 @@
  *             o refinamento do resultado da inversão
  */
 
+#include "../lib/io.h"
 #include "../lib/datatypes.h"
 #include "../lib/double_operations.h"
 #include "../lib/result_refinement.h"
@@ -77,15 +78,13 @@ void residueCalc(double **A, double **X, double **I, double **R, int length)
   double aux;
   int i, j;
 
-  memcpy(R, I, sizeof(double)*SQ(length));
+  memcpy(*R, *I, SQ(length)*sizeof(double));
 
   for (i = 0; i < length; ++i) {
-
     for (j = 0; j < length; ++j) {
       aux = (GET(R, length, i, j) - lineTimesColumn(A, X, i, j, length));
       SET(R, length, i, j, aux);
     }
-
   }
 }
 
@@ -102,6 +101,7 @@ double normCalc(double **R, int length)
   int size = SQ(length);
   double norm;
 
+  norm = TRUE_ZERO;
   for (i = 0; i < size; ++i)
     norm += SQ((*R)[i]);
 
