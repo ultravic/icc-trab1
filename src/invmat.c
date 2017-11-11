@@ -84,13 +84,13 @@ int main(int argc, char const *argv[]) {
 
   gaussElimination(&M.A, &M.L, &M.U, line_map, M.length);
 
-  printf("A---------\n");
-  printNormal(&M.A, M.length);
-  printf("\n---------\n");
+  // printf("A---------\n");
+  // printNormal(&M.A, M.length);
+  // printf("\n---------\n");
 
-  printf("U---------\n");
-  printMapped(&M.U, line_map,  M.length);
-  printf("\n---------\n");
+  // printf("U---------\n");
+  // printMapped(&M.U, line_map,  M.length);
+  // printf("\n---------\n");
 
   actual_time = timestamp();
   lu_time = actual_time - initial_time;
@@ -100,23 +100,23 @@ int main(int argc, char const *argv[]) {
   //----------------------------------------------------------------------
   initial_time = timestamp();
 
-  printf("L---------\n");
-  printNormal(&M.L, M.length);
-  printf("\n---------\n");
+  // printf("L---------\n");
+  // printNormal(&M.L, M.length);
+  // printf("\n---------\n");
 
   // L*Y = B
   forwardSubstitution(&M.L, &M.Y, &M.I, line_map, M.length);
 
-  printf("Y---------\n");
-  printNormal(&M.Y, M.length);
-  printf("---------\n");
+  // printf("Y---------\n");
+  // printNormal(&M.Y, M.length);
+  // printf("---------\n");
 
   // U*X = Y
   backwardSubstitution(&M.U, &M.X, &M.Y, line_map, M.length);
 
-  printf("X---------\n");
-  printNormal(&M.X, M.length);
-  printf("---------\n");
+  // printf("X---------\n");
+  // printNormal(&M.X, M.length);
+  // printf("---------\n");
 
   actual_time = timestamp();
   residue_time +=(actual_time - initial_time);
@@ -136,53 +136,54 @@ int main(int argc, char const *argv[]) {
 // Refinamento
 //----------------------------------------------------------------------
   int iter = 1;
+  memcpy(M.R, M.I, SQ(M.length)*sizeof(double));
   while(iter <= P.K){
     // Calcula resíduo R = I - A*X
     //----------------------------------------------------------------------
     initial_time = timestamp();
-  
+
     residueCalc(&M.A, &M.X, &M.I, &M.R, M.length);
 
-    printf("R---------\n");
-    printNormal(&M.R, M.length);
-    printf("---------\n");
+    // printf("R---------\n");
+    // printNormal(&M.R, M.length);
+    // printf("---------\n");
 
     actual_time = timestamp();
     residue_time +=(actual_time - initial_time);
     //----------------------------------------------------------------------
-  
+
     // Calcula norma L2 do resíduo
     //----------------------------------------------------------------------
     initial_time = timestamp();
-  
+
     norm = normCalc(&M.R, M.length);
-  
+
     actual_time = timestamp();
     iter_time += (actual_time - initial_time);
-  
+
     fprintf(output_file, "# iter %d: %1.17g\n", iter, norm);
     //----------------------------------------------------------------------
-  
+
     // Calcula novo S.L
     //----------------------------------------------------------------------
     initial_time = timestamp();
-  
+
     // Pivotamento parcial em R
     // ????
     // Efetua Aw = R
-  
+
     // L*Y = R
     forwardSubstitution(&M.L, &M.Y, &M.R, line_map, M.length);
-  
+
     // U*W = Y
     backwardSubstitution(&M.U, &M.W, &M.Y, line_map, M.length);
-  
+
     // X+=W
     sumMatrix(&M.W, &M.X, M.length);
     actual_time = timestamp();
     residue_time +=(actual_time - initial_time);
     //----------------------------------------------------------------------
-  
+
     iter++;
   }
 
@@ -199,7 +200,7 @@ int main(int argc, char const *argv[]) {
   fprintf(output_file, "# Tempo residuo: %lf\n", residue_time);
   fprintf(output_file, "#\n");
 
-  printfMapped(&M.X, line_map, output_file, M.length);
+  // printfMapped(&M.X, line_map, output_file, M.length);
   //----------------------------------------------------------------------
 
   // Libera a memória do conjunto de matrizes
