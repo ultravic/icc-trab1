@@ -41,8 +41,9 @@ double lineTimesColumn(double **A, double **B, int line, int column, int length)
     temporary += GET(A, length, line, i+3) * GET(B, length, i+3, column);
   }
 
-  for (j = length - (i - length); j < length; ++j)
-    temporary += GET(A, length, line, i) * GET(B, length, i, column);
+  if (i > length)
+    for (j = i - 4; j < length; ++j)
+      temporary += GET(A, length, line, i) * GET(B, length, i, column);
 
   return temporary;
 }
