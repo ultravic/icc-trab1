@@ -78,7 +78,7 @@ void residueCalc(double **A, double **X, double **I, double **R, int length)
 
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; ++j) {
-      aux = GET(R, length, i, j) - lineTimesColumn(A, X, i, j, length);
+      aux = GET(I, length, i, j) - lineTimesColumn(A, X, i, j, length);
       SET(R, length, i, j, aux);
     }
   }

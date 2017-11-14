@@ -136,7 +136,7 @@ int main(int argc, char const *argv[]) {
 // Refinamento
 //----------------------------------------------------------------------
   int iter = 1;
-  memcpy(M.R, M.I, SQ(M.length)*sizeof(double));
+  // memcpy(M.R, M.I, SQ(M.length)*sizeof(double));
   while(iter <= P.K){
     // Calcula resíduo R = I - A*X
     //----------------------------------------------------------------------
