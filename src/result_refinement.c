@@ -31,10 +31,17 @@
  */
 double lineTimesColumn(double **A, double **B, int line, int column, int length)
 {
-  int i;
+  int i, j;
   double temporary = TRUE_ZERO;
 
-  for (i = 0; i < length; ++i)
+  for (i = 0; i < length; i+=4) {
+    temporary += GET(A, length, line, i) * GET(B, length, i, column);
+    temporary += GET(A, length, line, i+1) * GET(B, length, i+1, column);
+    temporary += GET(A, length, line, i+2) * GET(B, length, i+2, column);
+    temporary += GET(A, length, line, i+3) * GET(B, length, i+3, column);
+  }
+
+  for (j = length - (i - length); j < length; ++j)
     temporary += GET(A, length, line, i) * GET(B, length, i, column);
 
   return temporary;
