@@ -18,11 +18,17 @@ int readMatrix(matrixPack *M, char *file_path);
 
 void printMapped(double **matrix, int *line_map, int length);
 
+void printTranspMapped(double **matrix, int *line_map, int length);
+
 void printfMapped(double **matrix, int *line_map, FILE *file, int length);
+
+void printfTranspMapped(double **matrix, int *line_map, FILE *file, int length);
 
 void printMatrixL(double **matrix, int length);
 
 void printNormal(double **matrix, int length);
+
+void printTranspNormal(double **matrix, int length);
 
 void printIndexes(int *line_map, int length);
 

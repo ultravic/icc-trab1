@@ -25,8 +25,7 @@
 int main(int argc, char const *argv[]) {
 //----------------------------------------------------------------------
 // Instanciações e Alocação de memoria
-//----------------------------------------------------------------------
-
+// ----------------------------------------------------------------------
   // Variaveis para temporização
   //----------------------------------------------------------------------
   double initial_time, actual_time, norm;
@@ -114,9 +113,9 @@ int main(int argc, char const *argv[]) {
   // U*X = Y
   backwardSubstitution(&M.U, &M.X, &M.Y, line_map, M.length);
 
-  // printf("X---------\n");
-  // printNormal(&M.X, M.length);
-  // printf("---------\n");
+  printf("X---------\n");
+  printTranspNormal(&M.X, M.length);
+  printf("---------\n");
 
   actual_time = timestamp();
   residue_time +=(actual_time - initial_time);
@@ -130,7 +129,7 @@ int main(int argc, char const *argv[]) {
     output_file = stdout;
 
   fprintf(output_file, "#\n");
-  //----------------------------------------------------------------------
+//----------------------------------------------------------------------
 
 //----------------------------------------------------------------------
 // Refinamento

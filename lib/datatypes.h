@@ -149,6 +149,7 @@
 	 * @return     O valor acessado
 	 */
 	#define GET(M,length,l,c) ((*M)[(l) * (length) + (c)])
+	#define GET_TRANSP(M,length,l,c) ((*M)[(c) * (length) + (l)])
 	#define GETT(M,l,c) ((*M)[((((l)*((l)+1))/2)+(c))])
 
 	/**
@@ -163,6 +164,7 @@
 	 * @return     { description_of_the_return_value }
 	 */
 	#define SET(M,length,l,c,v) ((*M)[(l) * (length) + (c)] = (v))
+	#define SET_TRANSP(M,length,l,c,v) ((*M)[(c) * (length) + (l)] = (v))
 	#define SETT(M,l,c,v) ( (*M)[ ((((l)*((l)+1))/2)+(c)) ] = (v))
 
 

@@ -127,6 +127,22 @@ void printMapped(double **matrix, int *line_map, int length)
  *
  * @param      M     Matriz a ser impressa
  */
+void printTranspMapped(double **matrix, int *line_map, int length)
+{
+  int i, j;
+  printf("%d\n",length);
+  for (i = 0; i < length; ++i) {
+    for (j = 0; j < length; j++)
+      printf("%1.17g\t" , GET_TRANSP(matrix, length, line_map[i], j));
+    printf("\n");
+  }
+}
+
+/**
+ * @brief      Imprime a matriz no formato especificado
+ *
+ * @param      M     Matriz a ser impressa
+ */
 void printfMapped(double **matrix, int *line_map, FILE *file, int length)
 {
   int i, j;
@@ -134,6 +150,22 @@ void printfMapped(double **matrix, int *line_map, FILE *file, int length)
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
       fprintf(file,"%1.17g\t" , GET(matrix, length, i, j));
+    fprintf(file,"\n");
+  }
+}
+
+/**
+ * @brief      Imprime a matriz no formato especificado
+ *
+ * @param      M     Matriz a ser impressa
+ */
+void printfTranspMapped(double **matrix, int *line_map, FILE *file, int length)
+{
+  int i, j;
+  fprintf(file,"%d\n",length);
+  for (i = 0; i < length; ++i) {
+    for (j = 0; j < length; j++)
+      fprintf(file,"%1.17g\t" , GET_TRANSP(matrix, length, i, j));
     fprintf(file,"\n");
   }
 }
@@ -161,6 +193,16 @@ void printNormal(double **matrix, int length)
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
       printf("%1.17g\t" , GET(matrix, length, i, j));
+    printf("\n");
+  }
+}
+void printTranspNormal(double **matrix, int length)
+{
+  int i, j;
+  printf("%d\n",length);
+  for (i = 0; i < length; ++i) {
+    for (j = 0; j < length; j++)
+      printf("%1.17g\t" , GET_TRANSP(matrix, length, i, j));
     printf("\n");
   }
 }

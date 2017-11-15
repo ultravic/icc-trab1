@@ -69,14 +69,14 @@ void backwardSubstitution(double **U, double **X, double **Y, int *line_map, int
   double temp = 0;
   for (c = 0; c < length; ++c) {
     aux = GET(Y, length, last, c) / GET(U, length, line_map[last], last);
-    SET(X, length, last, c, aux);
+    SET_TRANSP(X, length, last, c, aux);
     for (i = last-1; i >= 0; --i) {
       temp = GET(Y, length, i, c);
       for (j = last; j > i; --j) {
-        temp = temp - (GET(U, length, line_map[i], j) * GET(X, length, j, c));
+        temp = temp - (GET(U, length, line_map[i], j) * GET_TRANSP(X, length, j, c));
       }
       temp = temp / GET(U, length, line_map[i], j);
-      SET(X, length, i, c, temp);
+      SET_TRANSP(X, length, i, c, temp);
     }
   }
 }
