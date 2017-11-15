@@ -34,16 +34,17 @@ double lineTimesColumn(double **A, double **B, int line, int column, int length)
   int i, j;
   double temporary = TRUE_ZERO;
 
-  for (i = 0; i < length; i+=4) {
-    temporary += GET(A, length, line, i) * GET(B, length, i, column);
-    temporary += GET(A, length, line, i+1) * GET(B, length, i+1, column);
-    temporary += GET(A, length, line, i+2) * GET(B, length, i+2, column);
-    temporary += GET(A, length, line, i+3) * GET(B, length, i+3, column);
+  for (i = 0; i < length; i++) {
+  // for (i = 0; i < length; i+=4) {
+    temporary += GET(A, length, line, i) * GET_TRANSP(B, length, i, column);
+    // temporary += GET(A, length, line, i+1) * GET_TRANSP(B, length, i+1, column);
+    // temporary += GET(A, length, line, i+2) * GET_TRANSP(B, length, i+2, column);
+    // temporary += GET(A, length, line, i+3) * GET_TRANSP(B, length, i+3, column);
   }
-
-  if (i > length)
-    for (j = i - 4; j < length; ++j)
-      temporary += GET(A, length, line, i) * GET(B, length, i, column);
+  //
+  // if (i > length)
+  //   for (j = i - 4; j < length; ++j)
+  //     temporary += GET(A, length, line, i) * GET_TRANSP(B, length, i, column);
 
   return temporary;
 }
@@ -64,8 +65,8 @@ void sumMatrix(double **A, double **B, int length)
   for (i = 0; i < length; ++i)
   {
     for (j = 0; j < length; ++j) {
-      aux = GET(B,length, i, j) + GET(A,length, i, j);
-      SET(B,length, i, j, aux);
+      aux = GET(B,length, i, j) + GET_TRANSP(A,length, i, j);
+      SET_TRANSP(B,length, i, j, aux);
     }
   }
 }
