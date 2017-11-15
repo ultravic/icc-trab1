@@ -7,14 +7,13 @@
  *             o refinamento do resultado da inversão
  */
 
-#include "../lib/io.h"
 #include "../lib/datatypes.h"
 #include "../lib/double_operations.h"
+#include "../lib/io.h"
 #include "../lib/result_refinement.h"
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
-
 
 /**
  * @brief      Efetua o produto interno de uma linha de uma matriz por uma
@@ -29,27 +28,29 @@
  *
  * @return     O resultado da operação
  */
-double lineTimesColumn(double **A, double **B, int line, int column, int length)
-{
-  int i, j;
-  double temporary = TRUE_ZERO;
+double lineTimesColumn(double **A, double **B, int line, int column,
+                       int length) {
+    int i, j;
+    double temporary = TRUE_ZERO;
 
-  for (i = 0; i < length; i++) {
-  // for (i = 0; i < length; i+=4) {
-    temporary += GET(A, length, line, i) * GET_TRANSP(B, length, i, column);
-    // temporary += GET(A, length, line, i+1) * GET_TRANSP(B, length, i+1, column);
-    // temporary += GET(A, length, line, i+2) * GET_TRANSP(B, length, i+2, column);
-    // temporary += GET(A, length, line, i+3) * GET_TRANSP(B, length, i+3, column);
-  }
-  //
-  // if (i > length)
-  //   for (j = i - 4; j < length; ++j)
-  //     temporary += GET(A, length, line, i) * GET_TRANSP(B, length, i, column);
+    for (i = 0; i < length; i++) {
+        // for (i = 0; i < length; i+=4) {
+        temporary += GET(A, length, line, i) * GET(B, length, i, column);
+        // temporary += GET(A, length, line, i+1) * GET_TRANSP(B, length, i+1,
+        // column);
+        // temporary += GET(A, length, line, i+2) * GET_TRANSP(B, length, i+2,
+        // column);
+        // temporary += GET(A, length, line, i+3) * GET_TRANSP(B, length, i+3,
+        // column);
+    }
+    //
+    // if (i > length)
+    //   for (j = i - 4; j < length; ++j)
+    //     temporary += GET(A, length, line, i) * GET_TRANSP(B, length, i,
+    //     column);
 
-  return temporary;
+    return temporary;
 }
-
-
 
 /**
  * @brief      Efetua a soma de duas matrizes
@@ -57,40 +58,47 @@ double lineTimesColumn(double **A, double **B, int line, int column, int length)
  * @param      X     Matriz
  * @param      XW    Matriz
  */
-void sumMatrix(double **A, double **B, int length)
-{
-  int i, j;
-  double aux;
+void sumMatrix(double **A, double **B, int length) {
+    int i, j;
+    double aux;
 
-  for (i = 0; i < length; ++i)
-  {
-    for (j = 0; j < length; ++j) {
-      aux = GET(B,length, i, j) + GET_TRANSP(A,length, i, j);
-      SET_TRANSP(B,length, i, j, aux);
+    for (i = 0; i < length; ++i) {
+        for (j = 0; j < length; ++j) {
+            aux = GET(B, length, i, j) + GET_TRANSP(A, length, i, j);
+            SET_TRANSP(B, length, i, j, aux);
+        }
     }
-  }
 }
 
 /**
  * @brief      Executa o refinamento do resultado
  *
- * @param      U     Matriz triangular superior resultante da eliminação gaussiana
+ * @param      U     Matriz triangular superior resultante da eliminação
+ * gaussiana
  * @param      X     Matriz de resultados
  * @param      I     Matriz Identidade
  *
  * @return     Matriz de Residuos
  */
-void residueCalc(double **A, double **X, double **I, double **R, int length)
-{
-  double aux;
-  int i, j;
+void residueCalc(double **A, double **X, double **I, double **R, int length) {
+    double aux;
+    int i, j, k;
 
-  for (i = 0; i < length; ++i) {
-    for (j = 0; j < length; ++j) {
-      aux = GET(I, length, i, j) - lineTimesColumn(A, X, i, j, length);
-      SET(R, length, i, j, aux);
+    // Calcula resíduo R = I - A*X
+    for (i = 0; i < length; ++i) {
+        for (j = 0; j < length; ++j) {
+            aux = TRUE_ZERO;
+            //A[i]*X[j]
+            for (k = 0; k < length; k++) {
+                aux += GET(A, length, i, k) * GET(X, length, j, k);
+            }
+
+            // I-A*X
+            aux = ((i==j)?1:0) - aux;
+
+            SET(R, length, i, j, aux);
+        }
     }
-  }
 }
 
 /**
@@ -100,15 +108,14 @@ void residueCalc(double **A, double **X, double **I, double **R, int length)
  *
  * @return     A norma
  */
-double normCalc(double **R, int length)
-{
-  int i;
-  int size = SQ(length);
-  double norm;
+double normCalc(double **R, int length) {
+    int i;
+    int size = SQ(length);
+    double norm;
 
-  norm = TRUE_ZERO;
-  for (i = 0; i < size; ++i)
-    norm += SQ((*R)[i]);
+    norm = TRUE_ZERO;
+    for (i = 0; i < size; ++i)
+        norm += SQ((*R)[i]);
 
-  return sqrt(norm);
+    return sqrt(norm);
 }
