@@ -23,6 +23,7 @@
 
 
 int main(int argc, char const *argv[]) {
+  // LIKWID_MARKER_INIT;
 //----------------------------------------------------------------------
 // Instanciações e Alocação de memoria
 //----------------------------------------------------------------------
@@ -99,6 +100,8 @@ int main(int argc, char const *argv[]) {
   printMatrixL(&M.L,TRIANGLE_SIZE(M.length));
   printf("\n---------\n");
 
+  // LIKWID_MARKER_START("op1");
+
   // L*Y = B
   forwardSubstitution(&M.L, &M.Y, &M.I, line_map, M.length);
 
@@ -109,6 +112,7 @@ int main(int argc, char const *argv[]) {
   // U*X = Y
   backwardSubstitution(&M.U, &M.X, &M.Y, M.length);
 
+  // LIKWID_MARKER_STOP("op1");
   printf("L---------\n");
   printNormal(&M.Y,M.length);
   printf("---------\n");
@@ -136,7 +140,9 @@ int main(int argc, char const *argv[]) {
     //----------------------------------------------------------------------
     initial_time = timestamp();
 
+    // LIKWID_MARKER_START("op2");
     residueCalc(&M.A, &M.X, &M.R, &M.I, M.length);
+    // LIKWID_MARKER_STOP("op2");
 
     actual_time = timestamp();
     residue_time +=(actual_time - initial_time);
@@ -161,13 +167,13 @@ int main(int argc, char const *argv[]) {
     // Pivotamento parcial em R
     // ????
     // Efetua Aw = R
-
+    // LIKWID_MARKER_START("op1");
     // L*Y = R
     forwardSubstitution(&M.L, &M.Y, &M.R, line_map, M.length);
 
     // U*W = Y
     backwardSubstitution(&M.U, &M.W, &M.Y, M.length);
-
+    // LIKWID_MARKER_STOP("op1");
     // X+=W
     sumMatrix(&M.W, &M.X, M.length);
     actual_time = timestamp();
@@ -198,6 +204,6 @@ int main(int argc, char const *argv[]) {
   // Libera a memória do conjunto de matrizes
   // FREE_MATRIX_PACK(&M);
 
-
+  // LIKWID_MARKER_CLOSE;
   return SUCCESS;
 }

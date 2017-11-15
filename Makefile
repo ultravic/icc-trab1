@@ -24,3 +24,5 @@ clean: clean_doc
 	rm -f $(OBJ)
 purge: clean
 	rm -f invmat
+	# -DLIKWID_PERFMON -I<PATH_TO_LIKWID>/include
+	#  -L<PATH_TO_LIKWID>/lib -llikwid
