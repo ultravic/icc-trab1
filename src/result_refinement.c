@@ -89,12 +89,18 @@ void residueCalc(double **A, double **X, double **I, double **R, int length) {
         for (j = 0; j < length; ++j) {
             aux = TRUE_ZERO;
             //A[i]*X[j]
-            for (k = 0; k < length; ++k) {
+            for (k = 0; k+4 < length; k+=4) {
                 // printf("A[%d][%d] %lf * ",i,k,GET(A, length, i, k) );
                 // printf("X[%d][%d] %lf \n",i,k,GET(X, length, i, k) );
                 aux += GET(A, length, i, k) * GET(X, length, j, k);
+                aux += GET(A, length, i, k+1) * GET(X, length, j, k+1);
+                aux += GET(A, length, i, k+2) * GET(X, length, j, k+2);
+                aux += GET(A, length, i, k+3) * GET(X, length, j, k+3);
                 // printf("aux = %lf\n",aux );
             }
+
+            for (; k < length; ++k)
+                aux += GET(A, length, i, k) * GET(X, length, j, k);
 
             // I-A*X
             aux = (i==j) ? TRUE_ZERO : (IS_ZERO(aux)? TRUE_ZERO : -aux);

@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <likwid.h>
 
 
 int main(int argc, char const *argv[]) {
