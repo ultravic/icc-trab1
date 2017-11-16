@@ -28,6 +28,8 @@ int main(int argc, char const *argv[]) {
 // ----------------------------------------------------------------------
   // Variaveis para temporização
   //----------------------------------------------------------------------
+  LIKWID_MARKER_INIT;
+
   double initial_time, actual_time, norm;
   double iter_time, residue_time, lu_time;
   iter_time = residue_time = lu_time = TRUE_ZERO;
@@ -49,11 +51,11 @@ int main(int argc, char const *argv[]) {
    M.length = 0;
   // Obtém matriz original
   //----------------------------------------------------------------------
-  if (P.random = true) {
+  if (P.random) {
     // Gera matriz aleatória
     // M.length = 5;
     M.length = P.N;
-    srand(20172 );
+    srand(20172);
     M.A = generateRandomSquareMatrix(M.length);
   } else {
     //  Le a matriz
@@ -105,6 +107,7 @@ int main(int argc, char const *argv[]) {
   // printf("\n---------\n");
 
   // L*Y = B
+  LIKWID_MARKER_START("op1");
   forwardSubstitution(&M.L, &M.Y, &M.I, line_map, M.length);
 
   // printf("Y---------\n");
@@ -113,6 +116,7 @@ int main(int argc, char const *argv[]) {
 
   // U*X = Y
   backwardSubstitution(&M.U, &M.X, &M.Y, line_map, M.length);
+  LIKWID_MARKER_STOP("op1");
 
   // printf("X---------\n");
   // printTranspNormal(&M.X, M.length);
@@ -142,11 +146,13 @@ int main(int argc, char const *argv[]) {
     //----------------------------------------------------------------------
     initial_time = timestamp();
 
+    LIKWID_MARKER_START("op2");
     residueCalc(&M.A, &M.X, &M.I, &M.R, M.length);
+    LIKWID_MARKER_STOP("op2");
 
-    printf("R---------\n");
-    printNormal(&M.R, M.length);
-    printf("---------\n");
+    // printf("R---------\n");
+    // printNormal(&M.R, M.length);
+    // printf("---------\n");
 
     actual_time = timestamp();
     residue_time +=(actual_time - initial_time);
@@ -173,10 +179,12 @@ int main(int argc, char const *argv[]) {
     // Efetua Aw = R
 
     // L*Y = R
+    LIKWID_MARKER_START("op1");
     forwardSubstitution(&M.L, &M.Y, &M.R, line_map, M.length);
 
     // U*W = Y
     backwardSubstitution(&M.U, &M.W, &M.Y, line_map, M.length);
+    LIKWID_MARKER_STOP("op1");
 
     // X+=W
     sumMatrix(&M.W, &M.X, M.length);
@@ -214,6 +222,8 @@ int main(int argc, char const *argv[]) {
 
   // Fecha arquivo de saída
   fclose(output_file);
+
+  LIKWID_MARKER_CLOSE;
 
   return SUCCESS;
 }
