@@ -119,8 +119,16 @@ double normCalc(double **R, int length) {
     double norm;
 
     norm = TRUE_ZERO;
-    for (i = 0; i < size; ++i)
+    for (i = 0; i < size; i+=4) {
         norm += SQ((*R)[i]);
+        norm += SQ((*R)[i+1]);
+        norm += SQ((*R)[i+2]);
+        norm += SQ((*R)[i+3]);
+    }
+
+    for (i = size - (size + 4 - i); i < size; ++i) {
+        norm += SQ((*R)[i]);
+    }
 
     return sqrt(norm);
 }
