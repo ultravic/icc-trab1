@@ -1,0 +1,14 @@
+gcc -Wall -lrt -lm   -c -o invmat.o src/invmat.c
+gcc -Wall -lrt -lm   -c -o matrix_generator.o src/matrix_generator.c
+gcc -Wall -lrt -lm   -c -o matrix_solver.o src/matrix_solver.c
+gcc -Wall -lrt -lm   -c -o partial_pivoting.o src/partial_pivoting.c
+gcc -Wall -lrt -lm   -c -o result_refinement.o src/result_refinement.c
+src/result_refinement.c: In function ‘lineTimesColumn’:
+src/result_refinement.c:33:12: warning: unused variable ‘j’ [-Wunused-variable]
+     int i, j;
+            ^
+gcc -Wall -lrt -lm   -c -o gauss_elimination.o src/gauss_elimination.c
+gcc -Wall -lrt -lm   -c -o io.o src/io.c
+gcc -Wall -lrt -lm   -c -o time_measurement.o src/time_measurement.c
+gcc -Wall -lrt -lm   -c -o error_handler.o src/error_handler.c
+gcc -o invmat invmat.o matrix_generator.o matrix_solver.o partial_pivoting.o result_refinement.o gauss_elimination.o io.o time_measurement.o error_handler.o -Wall -lrt -lm

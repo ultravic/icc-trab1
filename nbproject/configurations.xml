@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="97">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+    </df>
+    <logicalFolder name="src"
+                   displayName="src"
+                   projectFiles="true"
+                   root="../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src">
+      <itemPath>../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/error_handler.c</itemPath>
+      <itemPath>../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/gauss_elimination.c</itemPath>
+      <itemPath>../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/invmat.c</itemPath>
+      <itemPath>../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/io.c</itemPath>
+      <itemPath>../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/matrix_generator.c</itemPath>
+      <itemPath>../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/matrix_solver.c</itemPath>
+      <itemPath>../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/partial_pivoting.c</itemPath>
+      <itemPath>../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/result_refinement.c</itemPath>
+      <itemPath>../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/time_measurement.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+      <itemPath>nbproject/private/launcher.properties</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath>/media/storage/bcc/2_ano/2_semestre/icc/icc-trab1/invmat</executablePath>
+          <cTool>
+            <incDir>
+              <pElem>../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1</pElem>
+            </incDir>
+          </cTool>
+        </makeTool>
+        <preBuild>
+          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
+          <preBuildCommand></preBuildCommand>
+        </preBuild>
+      </makefileType>
+      <item path="../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/error_handler.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/gauss_elimination.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/invmat.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/io.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/matrix_generator.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/matrix_solver.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/partial_pivoting.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/result_refinement.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../../../storage/bcc/2_ano/2_semestre/icc/icc-trab1/src/time_measurement.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

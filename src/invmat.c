@@ -45,12 +45,13 @@ int main(int argc, char const *argv[]) {
     die(ERROR_PARAM);
 
   // Conjunto de matrizes
-  matrixPack M;
-  M.length = 0;
+   matrixPack M;
+   M.length = 0;
   // Obtém matriz original
   //----------------------------------------------------------------------
-  if (P.random) {
-    // Gera matriz aleatŕoia
+  if (P.random = true) {
+    // Gera matriz aleatória
+    // M.length = 5;
     M.length = P.N;
     srand(20172 );
     M.A = generateRandomSquareMatrix(M.length);
@@ -134,18 +135,18 @@ int main(int argc, char const *argv[]) {
 //----------------------------------------------------------------------
 // Refinamento
 //----------------------------------------------------------------------
-  int iter = 1;
+ int iter = 1;
   // memcpy(M.R, M.I, SQ(M.length)*sizeof(double));
-  while(iter <= P.K){
+ while(iter <= P.K){
     // Calcula resíduo R = I - A*X
     //----------------------------------------------------------------------
     initial_time = timestamp();
 
     residueCalc(&M.A, &M.X, &M.I, &M.R, M.length);
 
-    printf("R---------\n");
-    printNormal(&M.R, M.length);
-    printf("---------\n");
+    // printf("R---------\n");
+    // printNormal(&M.R, M.length);
+    // printf("---------\n");
 
     actual_time = timestamp();
     residue_time +=(actual_time - initial_time);
@@ -179,6 +180,11 @@ int main(int argc, char const *argv[]) {
 
     // X+=W
     sumMatrix(&M.W, &M.X, M.length);
+
+    // printf("X---------\n");
+    // printTranspNormal(&M.X, M.length);
+    // printf("---------\n");
+
     actual_time = timestamp();
     residue_time +=(actual_time - initial_time);
     //----------------------------------------------------------------------

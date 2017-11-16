@@ -64,7 +64,7 @@ void sumMatrix(double **A, double **B, int length) {
 
     for (i = 0; i < length; ++i) {
         for (j = 0; j < length; ++j) {
-            aux = GET(B, length, i, j) + GET_TRANSP(A, length, i, j);
+            aux = GET_TRANSP(B, length, i, j) + GET_TRANSP(A, length, i, j);
             SET_TRANSP(B, length, i, j, aux);
         }
     }
@@ -89,14 +89,19 @@ void residueCalc(double **A, double **X, double **I, double **R, int length) {
         for (j = 0; j < length; ++j) {
             aux = TRUE_ZERO;
             //A[i]*X[j]
-            for (k = 0; k < length; k++) {
+            for (k = 0; k < length; ++k) {
+                // printf("A[%d][%d] %lf * ",i,k,GET(A, length, i, k) );
+                // printf("X[%d][%d] %lf \n",i,k,GET(X, length, i, k) );
                 aux += GET(A, length, i, k) * GET(X, length, j, k);
+                // printf("aux = %lf\n",aux );
             }
 
             // I-A*X
-            aux = ((i==j)?1:0) - aux;
-
+            aux = (i==j) ? TRUE_ZERO : -aux;
+            // printf("I-A*X = %lf\n",aux );
+            // R =  I-A*X
             SET(R, length, i, j, aux);
+            // printf("R[%d][%d]=%lf\n",i,j,GET(R,length,i,j));
         }
     }
 }
