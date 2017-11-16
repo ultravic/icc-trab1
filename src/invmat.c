@@ -49,11 +49,11 @@ int main(int argc, char const *argv[]) {
    M.length = 0;
   // Obtém matriz original
   //----------------------------------------------------------------------
-  if (P.random = true) {
+  if (P.random) {
     // Gera matriz aleatória
     // M.length = 5;
     M.length = P.N;
-    srand(20172 );
+    srand(20172);
     M.A = generateRandomSquareMatrix(M.length);
   } else {
     //  Le a matriz
@@ -114,9 +114,9 @@ int main(int argc, char const *argv[]) {
   // U*X = Y
   backwardSubstitution(&M.U, &M.X, &M.Y, line_map, M.length);
 
-  printf("X---------\n");
-  printTranspNormal(&M.X, M.length);
-  printf("---------\n");
+  // printf("X---------\n");
+  // printTranspNormal(&M.X, M.length);
+  // printf("---------\n");
 
   actual_time = timestamp();
   residue_time +=(actual_time - initial_time);
@@ -144,9 +144,9 @@ int main(int argc, char const *argv[]) {
 
     residueCalc(&M.A, &M.X, &M.I, &M.R, M.length);
 
-    printf("R---------\n");
-    printNormal(&M.R, M.length);
-    printf("---------\n");
+    // printf("R---------\n");
+    // printNormal(&M.R, M.length);
+    // printf("---------\n");
 
     actual_time = timestamp();
     residue_time +=(actual_time - initial_time);
@@ -205,7 +205,7 @@ int main(int argc, char const *argv[]) {
   fprintf(output_file, "# Tempo residuo: %lf\n", residue_time);
   fprintf(output_file, "#\n");
 
-  printfTranspMapped(&M.X, line_map, output_file, M.length);
+  // printfTranspMapped(&M.X, line_map, output_file, M.length);
   //----------------------------------------------------------------------
 
   // Libera a memória do conjunto de matrizes

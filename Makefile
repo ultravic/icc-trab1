@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -lrt -lm -g
+CFLAGS = -Wall -lrt -lm -O3 -march=native 
 DEBUG = -DDEBUG -g
 
 vpath %.c src
