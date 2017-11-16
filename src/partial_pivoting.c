@@ -35,8 +35,8 @@ void partialPivoting(double **M, double **L, int pos, int *line_map, int length)
         }
     }
 
-    // if(IS_ZERO(ABS(max_num)))
-    //     die(ERROR_ZERO_PIVOT);
+    if(IS_ZERO(max_num))
+        die(ERROR_ZERO_PIVOT);
     aux = line_map[pos];
     line_map[pos] = line_map[max_line];
     line_map[max_line] = aux;

@@ -97,7 +97,7 @@ void residueCalc(double **A, double **X, double **I, double **R, int length) {
             }
 
             // I-A*X
-            aux = (i==j) ? TRUE_ZERO : -aux;
+            aux = (i==j) ? TRUE_ZERO : (IS_ZERO(aux)? TRUE_ZERO : -aux);
             // printf("I-A*X = %lf\n",aux );
             // R =  I-A*X
             SET(R, length, i, j, aux);

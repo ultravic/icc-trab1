@@ -144,9 +144,9 @@ int main(int argc, char const *argv[]) {
 
     residueCalc(&M.A, &M.X, &M.I, &M.R, M.length);
 
-    // printf("R---------\n");
-    // printNormal(&M.R, M.length);
-    // printf("---------\n");
+    printf("R---------\n");
+    printNormal(&M.R, M.length);
+    printf("---------\n");
 
     actual_time = timestamp();
     residue_time +=(actual_time - initial_time);

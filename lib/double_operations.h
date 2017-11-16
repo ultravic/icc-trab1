@@ -34,7 +34,7 @@
  *
  * @return     Verdadeiro se zero, ou Falso se não.
  */
-#define IS_ZERO(NUM) (NUM) < DBL_EPSILON
+#define IS_ZERO(NUM) ABS(NUM) < DBL_EPSILON
 
 /**
  * @brief      Efetua uma soma de Kahan
