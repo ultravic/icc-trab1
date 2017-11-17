@@ -32,10 +32,10 @@ double lineTimesColumn(double **A, double **B, int line, int column,
                        int length) {
     int i, j;
     double temporary = TRUE_ZERO;
-
+    int alength = SIZE_OF_ALIGNED_LINE(length);
     for (i = 0; i < length; i++) {
         // for (i = 0; i < length; i+=4) {
-        temporary += GET(A, length, line, i) * GET(B, length, i, column);
+        temporary += GET(A, alength, line, i) * GET(B, alength, i, column);
         // temporary += GET(A, length, line, i+1) * GET_TRANSP(B, length, i+1,
         // column);
         // temporary += GET(A, length, line, i+2) * GET_TRANSP(B, length, i+2,
@@ -61,11 +61,11 @@ double lineTimesColumn(double **A, double **B, int line, int column,
 void sumMatrix(double **A, double **B, int length) {
     int i, j;
     double aux;
-
+    int alength = SIZE_OF_ALIGNED_LINE(length);
     for (i = 0; i < length; ++i) {
         for (j = 0; j < length; ++j) {
-            aux = GET_TRANSP(B, length, i, j) + GET_TRANSP(A, length, i, j);
-            SET_TRANSP(B, length, i, j, aux);
+            aux = GET_TRANSP(B, alength, i, j) + GET_TRANSP(A, alength, i, j);
+            SET_TRANSP(B, alength, i, j, aux);
         }
     }
 }
@@ -83,7 +83,7 @@ void sumMatrix(double **A, double **B, int length) {
 void residueCalc(double **A, double **X, double **I, double **R, int length) {
     double aux;
     int i, j, k;
-
+    int alength = SIZE_OF_ALIGNED_LINE(length); 
     // Calcula resíduo R = I - A*X
     for (i = 0; i < length; ++i) {
         for (j = 0; j < length; ++j) {
@@ -92,7 +92,7 @@ void residueCalc(double **A, double **X, double **I, double **R, int length) {
             for (k = 0; k < length; ++k) {
                 // printf("A[%d][%d] %lf * ",i,k,GET(A, length, i, k) );
                 // printf("X[%d][%d] %lf \n",i,k,GET(X, length, i, k) );
-                aux += GET(A, length, i, k) * GET(X, length, j, k);
+                aux += GET(A, alength, i, k) * GET(X, alength, j, k);
                 // printf("aux = %lf\n",aux );
             }
 
@@ -100,7 +100,7 @@ void residueCalc(double **A, double **X, double **I, double **R, int length) {
             aux = (i==j) ? TRUE_ZERO : (IS_ZERO(aux)? TRUE_ZERO : -aux);
             // printf("I-A*X = %lf\n",aux );
             // R =  I-A*X
-            SET(R, length, i, j, aux);
+            SET(R, alength, i, j, aux);
             // printf("R[%d][%d]=%lf\n",i,j,GET(R,length,i,j));
         }
     }

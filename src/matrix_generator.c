@@ -23,17 +23,21 @@ double *generateRandomSquareMatrix(int length) {
   double *mat = NULL;
 
   /* return NULL if memory allocation fails */
-  if (!(mat = ALLOC(double, SQ(length))))
+  ALLOC(mat,double, SIZE_OF_ALIGNED_MATRIX(length));
+  if (!(mat))
     return NULL;
 
   /* generate a randomly initialized matrix in row-major order */
-  double *ptr = mat;
-  double *end = mat + SQ(length);
-
+  int size = SIZE_OF_ALIGNED_LINE(length);
+  
   double invRandMax = 1.0 / (double)RAND_MAX;
 
-  while (ptr != end) {
-    *ptr++ = (double)rand() * invRandMax;
+  for (int i = 0; i < length; ++i)
+  {
+    for (int j = 0; j < length; ++j)
+    {
+      mat[i*size+j] = (double)rand() * invRandMax;
+    }
   }
 
   return mat;
@@ -49,7 +53,8 @@ double* generateIdentityMatrix(int length){
 
   int i, j;
 
-  double *I = ALLOC(double, SQ(length));
+  double *I = NULL;
+  ALLOC(I,double, SIZE_OF_ALIGNED_LINE(length));
 
   for (i = 0; i < length; ++i)
     for (j = i + 1; j < length; ++j)
@@ -70,7 +75,8 @@ double* generateIdentityMatrix(int length){
  */
 int* generateLineMap(int length) {
   int i;
-  int *line_map = ALLOC(int,length);
+  int *line_map = NULL; 
+  ALLOC(line_map,int,length);
 
   for (i = 0; i < length; ++i) {
     line_map[i] = i;

@@ -88,8 +88,8 @@ int readMatrix(matrixPack *M, char *file_path) {
   if (file) {
     if (fscanf(file, "%d\n", &(*M).length) == ERROR)
       return ERROR;
-    size = SQ(M->length);
-    M->A = ALLOC(double, size);
+    size = SIZE_OF_ALIGNED_MATRIX(M->length);
+    ALLOC(M->A, double, size);
 
     for (i = 0; i < size; ++i)
       c = fscanf(file, "%lf ", &(*M).A[i]);

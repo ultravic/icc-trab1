@@ -20,15 +20,16 @@
 
 	/** @brief     Estrutura para guardar um conjunto de matrizes. */
 	typedef struct {
-		int length; // Largura das Matrizes
-		double *A; 	// Matriz Original
-		double *L; 	// Matriz de Multiplicadores
-		double *U; 	// Matriz escalonada
-		double *Y; 	// Matriz temporária (L*Y = B)
-		double *X; 	// Matriz resultante (U*X = Y)
-		double *R; 	// Matriz de resíduos
-		double *I; 	// Matriz indentidade
-		double *W; 	// Matriz novo X (A*W = R)
+		int length; 	// Largura das Matrizes
+		int alength;	// Largura da linha alinhada
+		double *A; 		// Matriz Original
+		double *L; 		// Matriz de Multiplicadores
+		double *U; 		// Matriz escalonada
+		double *Y; 		// Matriz temporária (L*Y = B)
+		double *X; 		// Matriz resultante (U*X = Y)
+		double *R; 		// Matriz de resíduos
+		double *I; 		// Matriz indentidade
+		double *W; 		// Matriz novo X (A*W = R)
 	} matrixPack;
 
 	/** @brief     Estrutura para guardar variaveis da soma de kahan */
@@ -54,6 +55,11 @@
 	 */
 	#define SQ(x) (x)*(x)
 
+	#define CACHE_LINE 64
+	#define DOUBLE_PER_CACHE_LINE (CACHE_LINE / sizeof(double))
+	#define SIZE_OF_ALIGNED_LINE(L) (L)+(DOUBLE_PER_CACHE_LINE-((L)%DOUBLE_PER_CACHE_LINE))
+	#define SIZE_OF_ALIGNED_MATRIX(L) (L)*(SIZE_OF_ALIGNED_LINE(L))
+
 	/**
 	 * @brief      Aloca memória
 	 *
@@ -62,9 +68,8 @@
 	 *
 	 * @return     uma região de memória
 	 */
-	#define ALLOC(t,n) (t *) malloc((n)*sizeof(t))
+	#define ALLOC(M,t,n) {int g = posix_memalign((void **)&(M),CACHE_LINE,(n)*sizeof(t)); g++;}
 
-	#define ALLOC_SQ_MAT(t,n) (ALLOC(t,SQ(n)))
 
 // INICIALIZAÇÔES
 
@@ -74,7 +79,7 @@
 	 * @param      M     matriz a ser inicializada
 	 */
 	#define INIT_MATRIX(M) { \
-		M = ALLOC(t_matrix,1); \
+		ALLOC(M,t_matrix,1); \
 	}
 
 	/**
@@ -92,13 +97,13 @@
 	 * @param      M     Conjunto de matrizes
 	 */
 	#define INIT_MATRIX_PACK(M) { \
-		M.L = ALLOC(double,SQ(M.length));	\
-		M.U = ALLOC(double,SQ(M.length));	\
-		M.Y = ALLOC(double,SQ(M.length));	\
-		M.X = ALLOC(double,SQ(M.length));	\
-		M.R = ALLOC(double,SQ(M.length));	\
-		M.I = ALLOC(double,SQ(M.length));	\
-		M.W = ALLOC(double,SQ(M.length));	\
+		ALLOC(M.L,double,SIZE_OF_ALIGNED_MATRIX(M.length));	\
+		ALLOC(M.U,double,SIZE_OF_ALIGNED_MATRIX(M.length));	\
+		ALLOC(M.Y,double,SIZE_OF_ALIGNED_MATRIX(M.length));	\
+		ALLOC(M.X,double,SIZE_OF_ALIGNED_MATRIX(M.length));	\
+		ALLOC(M.R,double,SIZE_OF_ALIGNED_MATRIX(M.length));	\
+		ALLOC(M.I,double,SIZE_OF_ALIGNED_MATRIX(M.length));	\
+		ALLOC(M.W,double,SIZE_OF_ALIGNED_MATRIX(M.length));	\
 	}
 
 

@@ -32,18 +32,18 @@ void forwardSubstitution(double **L, double **Y, double **B, int *line_map, int 
 
   // define primeiro valor a ser usado
   double aux;
-
+  int alength = SIZE_OF_ALIGNED_LINE(length);
   double temp = 0;
   for (c = 0; c < length; ++c) {
-    aux = GET(B, length, line_map[0], c) / GET(L, length, 0, 0);
-    SET(Y, length, 0, c, aux);
+    aux = GET(B, alength, line_map[0], c) / GET(L, alength, 0, 0);
+    SET(Y, alength, 0, c, aux);
     for (i = 1; i < length; ++i) {
-      temp = GET(B, length, line_map[i], c);
+      temp = GET(B, alength, line_map[i], c);
       for (j = 0; j < i; j++) {
-        temp = temp - (GET(L, length, i, j) * GET(Y, length, j, c));
+        temp = temp - (GET(L, alength, i, j) * GET(Y, alength, j, c));
       }
-      temp = temp / GET(L, length, i, j);
-      SET(Y, length, i, c, temp);
+      temp = temp / GET(L, alength, i, j);
+      SET(Y, alength, i, c, temp);
     }
   }
 }
@@ -66,17 +66,18 @@ void backwardSubstitution(double **U, double **X, double **Y, int *line_map, int
   // define primeiro valor a ser usado
   double aux;
 
+  int alength = SIZE_OF_ALIGNED_LINE(length);
   double temp = 0;
   for (c = 0; c < length; ++c) {
-    aux = GET(Y, length, last, c) / GET(U, length, line_map[last], last);
-    SET_TRANSP(X, length, last, c, aux);
+    aux = GET(Y, alength, last, c) / GET(U, alength, line_map[last], last);
+    SET_TRANSP(X, alength, last, c, aux);
     for (i = last-1; i >= 0; --i) {
-      temp = GET(Y, length, i, c);
+      temp = GET(Y, alength, i, c);
       for (j = last; j > i; --j) {
-        temp = temp - (GET(U, length, line_map[i], j) * GET_TRANSP(X, length, j, c));
+        temp = temp - (GET(U, alength, line_map[i], j) * GET_TRANSP(X, alength, j, c));
       }
-      temp = temp / GET(U, length, line_map[i], j);
-      SET_TRANSP(X, length, i, c, temp);
+      temp = temp / GET(U, alength, line_map[i], j);
+      SET_TRANSP(X, alength, i, c, temp);
     }
   }
 }

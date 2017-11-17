@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+// #include <likwid.h>
 
 
 int main(int argc, char const *argv[]) {
@@ -28,7 +29,7 @@ int main(int argc, char const *argv[]) {
 // ----------------------------------------------------------------------
   // Variaveis para temporização
   //----------------------------------------------------------------------
-  LIKWID_MARKER_INIT;
+  // LIKWID_MARKER_INIT;
 
   double initial_time, actual_time, norm;
   double iter_time, residue_time, lu_time;
@@ -49,6 +50,7 @@ int main(int argc, char const *argv[]) {
   // Conjunto de matrizes
    matrixPack M;
    M.length = 0;
+  
   // Obtém matriz original
   //----------------------------------------------------------------------
   if (P.random) {
@@ -62,6 +64,9 @@ int main(int argc, char const *argv[]) {
     if (readMatrix(&M, P.in_file) == ERROR)
       die(ERROR_READING);
   }
+  
+  M.alength = SIZE_OF_ALIGNED_LINE(M.length);
+
   //----------------------------------------------------------------------
   // Aloca memória para as matrizes necessarias no processo
   INIT_MATRIX_PACK(M);
@@ -69,7 +74,7 @@ int main(int argc, char const *argv[]) {
   // Gera uma matriz identidade
   M.I = generateIdentityMatrix(M.length);
 
-  memcpy(M.L, M.I, SQ(M.length)*sizeof(double));
+  memcpy(M.L, M.I, SIZE_OF_ALIGNED_MATRIX(M.length)*sizeof(double));
 
 //----------------------------------------------------------------------
 // Inversão da Matriz
@@ -86,28 +91,16 @@ int main(int argc, char const *argv[]) {
 
   gaussElimination(&M.A, &M.L, &M.U, line_map, M.length);
 
-  // printf("A---------\n");
-  // printNormal(&M.A, M.length);
-  // printf("\n---------\n");
-
-  // printf("U---------\n");
-  // printMapped(&M.U, line_map,  M.length);
-  // printf("\n---------\n");
-
   actual_time = timestamp();
   lu_time = actual_time - initial_time;
-  //----------------------------------------------------------------------
 
+  //----------------------------------------------------------------------
   // Inverte a Matriz
   //----------------------------------------------------------------------
   initial_time = timestamp();
 
-  // printf("L---------\n");
-  // printNormal(&M.L, M.length);
-  // printf("\n---------\n");
-
   // L*Y = B
-  LIKWID_MARKER_START("op1");
+  // LIKWID_MARKER_START("op1");
   forwardSubstitution(&M.L, &M.Y, &M.I, line_map, M.length);
 
   // printf("Y---------\n");
@@ -116,7 +109,7 @@ int main(int argc, char const *argv[]) {
 
   // U*X = Y
   backwardSubstitution(&M.U, &M.X, &M.Y, line_map, M.length);
-  LIKWID_MARKER_STOP("op1");
+  // LIKWID_MARKER_STOP("op1");
 
   // printf("X---------\n");
   // printTranspNormal(&M.X, M.length);
@@ -146,9 +139,9 @@ int main(int argc, char const *argv[]) {
     //----------------------------------------------------------------------
     initial_time = timestamp();
 
-    LIKWID_MARKER_START("op2");
+    // LIKWID_MARKER_START("op2");
     residueCalc(&M.A, &M.X, &M.I, &M.R, M.length);
-    LIKWID_MARKER_STOP("op2");
+    // LIKWID_MARKER_STOP("op2");
 
     // printf("R---------\n");
     // printNormal(&M.R, M.length);
@@ -179,12 +172,12 @@ int main(int argc, char const *argv[]) {
     // Efetua Aw = R
 
     // L*Y = R
-    LIKWID_MARKER_START("op1");
+    // LIKWID_MARKER_START("op1");
     forwardSubstitution(&M.L, &M.Y, &M.R, line_map, M.length);
 
     // U*W = Y
     backwardSubstitution(&M.U, &M.W, &M.Y, line_map, M.length);
-    LIKWID_MARKER_STOP("op1");
+    // LIKWID_MARKER_STOP("op1");
 
     // X+=W
     sumMatrix(&M.W, &M.X, M.length);
@@ -223,7 +216,7 @@ int main(int argc, char const *argv[]) {
   // Fecha arquivo de saída
   fclose(output_file);
 
-  LIKWID_MARKER_CLOSE;
+  // LIKWID_MARKER_CLOSE;
 
   return SUCCESS;
 }

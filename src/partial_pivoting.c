@@ -24,11 +24,12 @@
 void partialPivoting(double **M, double **L, int pos, int *line_map, int length){
     int i;
     int max_line = pos;
-    double max_num = fabs(GET(M, length, line_map[pos], pos));
-    double aux;
 
+    int alength = SIZE_OF_ALIGNED_LINE(length);
+    double max_num = fabs(GET(M, alength, line_map[pos], pos));
+    double aux;
     for (i = pos+1; i < length; ++i) {
-        aux = GET(M, length, line_map[i], pos);
+        aux = GET(M, alength, line_map[i], pos);
         if(fabs(aux) > max_num) {
             max_num = fabs(aux);
             max_line = i;
@@ -42,8 +43,8 @@ void partialPivoting(double **M, double **L, int pos, int *line_map, int length)
     line_map[max_line] = aux;
 
     for (i = 0; i < pos; i++) {
-      aux = GET(L, length, pos, i);
-      SET(L, length, pos, i, (GET(L, length, max_line, i)));
-      SET(L, length, max_line, i, aux);
+      aux = GET(L, alength, pos, i);
+      SET(L, alength, pos, i, (GET(L, alength, max_line, i)));
+      SET(L, alength, max_line, i, aux);
     }
 }
