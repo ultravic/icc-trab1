@@ -24,21 +24,59 @@
 void sumMatrix(double **A, double **B, int length)
 {
     int i, j;
+    int i1, i2, i3;
     double aux, aux2, aux3, aux4;
 
-    for (i = 0; i < length; ++i) {
+    for (i = 0; i+4 < length; i+=4) {
+      i1 = i+1; i2 = i+2; i3 = i+3;
       for (j = 0; j+4 < length; j+=4) {
         aux = GET_TRANSP(B, length, i, j) + GET_TRANSP(A, length, i, j);
         aux2 = GET_TRANSP(B, length, i, j+1) + GET_TRANSP(A, length, i, j+1);
         aux3 = GET_TRANSP(B, length, i, j+2) + GET_TRANSP(A, length, i, j+2);
         aux4 = GET_TRANSP(B, length, i, j+3) + GET_TRANSP(A, length, i, j+3);
         SET_TRANSPFC(B, length, i, j, aux, aux2, aux3, aux4);
+
+        aux = GET_TRANSP(B, length, i1, j) + GET_TRANSP(A, length, i1, j);
+        aux2 = GET_TRANSP(B, length, i1, j+1) + GET_TRANSP(A, length, i1, j+1);
+        aux3 = GET_TRANSP(B, length, i1, j+2) + GET_TRANSP(A, length, i1, j+2);
+        aux4 = GET_TRANSP(B, length, i1, j+3) + GET_TRANSP(A, length, i1, j+3);
+        SET_TRANSPFC(B, length, i1, j, aux, aux2, aux3, aux4);
+
+        aux = GET_TRANSP(B, length, i2, j) + GET_TRANSP(A, length, i2, j);
+        aux2 = GET_TRANSP(B, length, i2, j+1) + GET_TRANSP(A, length, i2, j+1);
+        aux3 = GET_TRANSP(B, length, i2, j+2) + GET_TRANSP(A, length, i2, j+2);
+        aux4 = GET_TRANSP(B, length, i2, j+3) + GET_TRANSP(A, length, i2, j+3);
+        SET_TRANSPFC(B, length, i2, j, aux, aux2, aux3, aux4);
+
+        aux = GET_TRANSP(B, length, i3, j) + GET_TRANSP(A, length, i3, j);
+        aux2 = GET_TRANSP(B, length, i3, j+1) + GET_TRANSP(A, length, i3, j+1);
+        aux3 = GET_TRANSP(B, length, i3, j+2) + GET_TRANSP(A, length, i3, j+2);
+        aux4 = GET_TRANSP(B, length, i3, j+3) + GET_TRANSP(A, length, i3, j+3);
+        SET_TRANSPFC(B, length, i3, j, aux, aux2, aux3, aux4);
       }
 
       for (; j < length; ++j) {
         aux = GET_TRANSP(B, length, i, j) + GET_TRANSP(A, length, i, j);
-        SET_TRANSP(B, length, i, j, aux);
+        aux2 = GET_TRANSP(B, length, i1, j) + GET_TRANSP(A, length, i1, j);
+        aux3 = GET_TRANSP(B, length, i2, j) + GET_TRANSP(A, length, i2, j);
+        aux4 = GET_TRANSP(B, length, i3, j) + GET_TRANSP(A, length, i3, j);
+        SET_TRANSPFL(B, length, i, j, aux, aux2, aux3, aux4);
       }
+  }
+
+  for (; i < length; ++i) {
+    for (j = 0; j+4 < length; j+=4) {
+      aux = GET_TRANSP(B, length, i, j) + GET_TRANSP(A, length, i, j);
+      aux2 = GET_TRANSP(B, length, i, j+1) + GET_TRANSP(A, length, i, j+1);
+      aux3 = GET_TRANSP(B, length, i, j+2) + GET_TRANSP(A, length, i, j+2);
+      aux4 = GET_TRANSP(B, length, i, j+3) + GET_TRANSP(A, length, i, j+3);
+      SET_TRANSPFC(B, length, i, j, aux, aux2, aux3, aux4);
+    }
+
+    for (; j < length; ++j) {
+      aux = GET_TRANSP(B, length, i, j) + GET_TRANSP(A, length, i, j);
+      SET_TRANSP(B, length, i, j, aux);
+    }
   }
 }
 

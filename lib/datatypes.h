@@ -185,5 +185,11 @@
 		((*M)[(c+2) * (length) + (l)] = (v3)); \
 		((*M)[(c+3) * (length) + (l)] = (v4)); \
 	}
+	#define SET_TRANSPFL(M,length,l,c,v,v2,v3,v4) { \
+		((*M)[(c) * (length) + (l)] = (v)); \
+		((*M)[(c) * (length) + (l+1)] = (v2)); \
+		((*M)[(c) * (length) + (l+2)] = (v3)); \
+		((*M)[(c) * (length) + (l+3)] = (v4)); \
+	}
 
 #endif
