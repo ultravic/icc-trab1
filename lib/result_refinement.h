@@ -16,7 +16,7 @@ double lineTimesColumn(double **A, double **B, int line, int column, int length)
 
 void sumMatrix(double **A, double **B, int length);
 
-void residueCalc(double **A, double **X, double **I, double **R, int length);
+void residueCalc(double **A, double **X, double **R, int length);
 
 double normCalc(double **R, int length);
 

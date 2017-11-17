@@ -35,6 +35,8 @@ void gaussElimination(double **A, double **L, double **U, int *line_map, int n)
   for (i = 0; i < n-1; ++i) {
     sizeL = 1;
     partialPivoting(U, L, i, line_map, n);
+    SET(L, n, i, i, TRUE_ONE);
+
     for (j = i + 1; j < n; ++j) {
       mult = GET(U, n, line_map[j], i) / GET(U, n, line_map[i], i);
       SET(L, n, j, i, mult);
@@ -57,4 +59,5 @@ void gaussElimination(double **A, double **L, double **U, int *line_map, int n)
       sizeL++;
     }
   }
+  SET(L, n, i, i, TRUE_ONE);
 }

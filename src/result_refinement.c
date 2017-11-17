@@ -52,7 +52,7 @@ void sumMatrix(double **A, double **B, int length)
  *
  * @return     Matriz de Residuos
  */
-void residueCalc(double **A, double **X, double **I, double **R, int length) {
+void residueCalc(double **A, double **X, double **R, int length) {
     double aux;
     int i, j, k;
 

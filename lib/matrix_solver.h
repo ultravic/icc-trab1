@@ -11,6 +11,8 @@
 #ifndef __MATRIX_SOLVER__
 #define __MATRIX_SOLVER__
 
+void forwardSubstitutionI(double **L, double **Y, int *line_map, int length);
+
 void forwardSubstitution(double **L, double **Y, double **B, int *line_map, int length);
 
 void backwardSubstitution(double **A, double **X, double **B, int *line_map, int length);

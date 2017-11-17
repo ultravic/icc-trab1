@@ -68,9 +68,7 @@ int main(int argc, char const *argv[]) {
   INIT_MATRIX_PACK(M);
 
   // Gera uma matriz identidade
-  M.I = generateIdentityMatrix(M.length);
-
-  memcpy(M.L, M.I, SQ(M.length)*sizeof(double));
+  M.L = ALLOC(double, SQ(M.length));
 
 //----------------------------------------------------------------------
 // Inversão da Matriz
@@ -86,7 +84,6 @@ int main(int argc, char const *argv[]) {
   initial_time = timestamp();
 
   gaussElimination(&M.A, &M.L, &M.U, line_map, M.length);
-
   // printf("A---------\n");
   // printNormal(&M.A, M.length);
   // printf("\n---------\n");
@@ -103,13 +100,9 @@ int main(int argc, char const *argv[]) {
   //----------------------------------------------------------------------
   initial_time = timestamp();
 
-  // printf("L---------\n");
-  // printNormal(&M.L, M.length);
-  // printf("\n---------\n");
-
   // L*Y = B
   LIKWID_MARKER_START("op1");
-  forwardSubstitution(&M.L, &M.Y, &M.I, line_map, M.length);
+  forwardSubstitutionI(&M.L, &M.Y, line_map, M.length);
 
   // printf("Y---------\n");
   // printNormal(&M.Y, M.length);
@@ -148,7 +141,7 @@ int main(int argc, char const *argv[]) {
     initial_time = timestamp();
 
     LIKWID_MARKER_START("op2");
-    residueCalc(&M.A, &M.X, &M.I, &M.R, M.length);
+    residueCalc(&M.A, &M.X, &M.R, M.length);
     LIKWID_MARKER_STOP("op2");
 
     // printf("R---------\n");
