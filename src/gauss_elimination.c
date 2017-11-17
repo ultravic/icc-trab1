@@ -29,7 +29,7 @@
 void gaussElimination(double **A, double **L, double **U, int *line_map, int n)
 {
   int j, i, k, sizeL;
-  double aux, mult;
+  double aux, aux2, aux3, aux4, mult;
   memcpy(*U,*A,SQ(n)*sizeof(double));
 
   for (i = 0; i < n-1; ++i) {
@@ -41,10 +41,19 @@ void gaussElimination(double **A, double **L, double **U, int *line_map, int n)
 
       SET(U, n, line_map[j], i, TRUE_ZERO);
 
-      for (k = i + 1; k < n; ++k) {
+      for (k = i + 1; k+4 < n; k+=4) {
+        aux = GET(U, n, line_map[j], k) - (mult * GET(U, n, line_map[i], k));
+        aux2 = GET(U, n, line_map[j], k+1) - (mult * GET(U, n, line_map[i], k+1));
+        aux3 = GET(U, n, line_map[j], k+2) - (mult * GET(U, n, line_map[i], k+2));
+        aux4 = GET(U, n, line_map[j], k+3) - (mult * GET(U, n, line_map[i], k+3));
+        SETFC(U, n, line_map[j], k, aux, aux2, aux3, aux4);
+      }
+
+      for (; k < n; ++k) {
         aux = GET(U, n, line_map[j], k) - (mult * GET(U, n, line_map[i], k));
         SET(U, n, line_map[j], k, aux);
       }
+
       sizeL++;
     }
   }

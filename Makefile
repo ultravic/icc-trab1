@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -lrt -lm -O3 -march=native -DLIKWID_PERFMON -I /home/soft/likwid/include -L /home/soft/likwid/lib -llikwid
+CFLAGS = -Wall -lrt -lm -O3 -march=native -DLIKWID_PERFMON -I /home/victor/include -L /home/victor/lib -llikwid
 OPT = -O3 -march=native
 LIK = -DLIKWID_PERFMON -I /home/soft/likwid/include -L /home/soft/likwid/lib -llikwid
 ALLFLAGS = $(CFLAGS) $(OPT) $(LIK)

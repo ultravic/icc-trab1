@@ -39,9 +39,16 @@ void forwardSubstitution(double **L, double **Y, double **B, int *line_map, int 
     SET(Y, length, 0, c, aux);
     for (i = 1; i < length; ++i) {
       temp = GET(B, length, line_map[i], c);
-      for (j = 0; j < i; j++) {
-        temp = temp - (GET(L, length, i, j) * GET(Y, length, j, c));
+      for (j = 0; j+4 < i; j+=4) {
+        temp -= (GET(L, length, i, j) * GET(Y, length, j, c));
+        temp -= (GET(L, length, i, j+1) * GET(Y, length, j+1, c));
+        temp -= (GET(L, length, i, j+2) * GET(Y, length, j+2, c));
+        temp -= (GET(L, length, i, j+3) * GET(Y, length, j+3, c));
       }
+
+      for (; j < i; ++j)
+        temp -= (GET(L, length, i, j) * GET(Y, length, j, c));
+
       temp = temp / GET(L, length, i, j);
       SET(Y, length, i, c, temp);
     }
@@ -72,9 +79,16 @@ void backwardSubstitution(double **U, double **X, double **Y, int *line_map, int
     SET_TRANSP(X, length, last, c, aux);
     for (i = last-1; i >= 0; --i) {
       temp = GET(Y, length, i, c);
-      for (j = last; j > i; --j) {
-        temp = temp - (GET(U, length, line_map[i], j) * GET_TRANSP(X, length, j, c));
+      for (j = last; j-4 > i; j-=4) {
+        temp -= (GET(U, length, line_map[i], j) * GET_TRANSP(X, length, j, c));
+        temp -= (GET(U, length, line_map[i], j-1) * GET_TRANSP(X, length, j-1, c));
+        temp -= (GET(U, length, line_map[i], j-2) * GET_TRANSP(X, length, j-2, c));
+        temp -= (GET(U, length, line_map[i], j-3) * GET_TRANSP(X, length, j-3, c));
       }
+
+      for (; j > i; --j)
+        temp -= (GET(U, length, line_map[i], j) * GET_TRANSP(X, length, j, c));
+
       temp = temp / GET(U, length, line_map[i], j);
       SET_TRANSP(X, length, i, c, temp);
     }
