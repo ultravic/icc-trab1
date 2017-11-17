@@ -77,8 +77,10 @@ int readMatrix(matrixPack *M, char *file_path) {
 
   // contadores
   int i = 0;
+  int j = 0;
   int c = 0;
   int size;
+  double temp;
 
   if (strcmp(file_path, "stdin") == 0)
     file = stdin;
@@ -91,8 +93,11 @@ int readMatrix(matrixPack *M, char *file_path) {
     size = SIZE_OF_ALIGNED_MATRIX(M->length);
     ALLOC(M->A, double, size);
 
-    for (i = 0; i < size; ++i)
-      c = fscanf(file, "%lf ", &(*M).A[i]);
+    for (i = 0; i < M->length; ++i)
+      for (j = 0; i < M->length; ++j){
+        c = fscanf(file, "%lf ", &temp);
+        SET(&(*M).A,size,i,j,temp);
+      }
 
     fclose(file);
 
@@ -190,9 +195,10 @@ void printNormal(double **matrix, int length)
 {
   int i, j;
   printf("%d\n",length);
+  int alength = SIZE_OF_ALIGNED_LINE(length);
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      printf("%1.17g\t" , GET(matrix, length, i, j));
+      printf("%1.17g\t" , GET(matrix, alength, i, j));
     printf("\n");
   }
 }

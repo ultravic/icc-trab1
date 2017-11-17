@@ -66,7 +66,6 @@ int main(int argc, char const *argv[]) {
   }
   
   M.alength = SIZE_OF_ALIGNED_LINE(M.length);
-
   //----------------------------------------------------------------------
   // Aloca memória para as matrizes necessarias no processo
   INIT_MATRIX_PACK(M);
@@ -87,6 +86,9 @@ int main(int argc, char const *argv[]) {
 
   // Efetua a eliminação gaussiana com pivotamento parcial e fatoração LU
   //----------------------------------------------------------------------
+  printf("---------\n"); // printf("Y---------\n");
+  printNormal(&M.A, M.length);
+  printf("---------\n");
   initial_time = timestamp();
 
   gaussElimination(&M.A, &M.L, &M.U, line_map, M.length);
@@ -104,15 +106,14 @@ int main(int argc, char const *argv[]) {
   forwardSubstitution(&M.L, &M.Y, &M.I, line_map, M.length);
 
   // printf("Y---------\n");
-  // printNormal(&M.Y, M.length);
-  // printf("---------\n");
+  printNormal(&M.Y, M.length);
 
   // U*X = Y
   backwardSubstitution(&M.U, &M.X, &M.Y, line_map, M.length);
   // LIKWID_MARKER_STOP("op1");
 
   // printf("X---------\n");
-  // printTranspNormal(&M.X, M.length);
+  printTranspNormal(&M.X, M.length);
   // printf("---------\n");
 
   actual_time = timestamp();
@@ -129,6 +130,9 @@ int main(int argc, char const *argv[]) {
   fprintf(output_file, "#\n");
 //----------------------------------------------------------------------
 
+ printf("X---------\n");
+    printTranspNormal(&M.X, M.length);
+    printf("---------\n");
 //----------------------------------------------------------------------
 // Refinamento
 //----------------------------------------------------------------------

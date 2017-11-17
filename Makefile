@@ -1,4 +1,4 @@
-CC = gcc
+CC = gcc -std=gnu99
 CFLAGS = -Wall -lrt -lm $(OPTFLAGS) $(LIKFLAGS)
 OPTFLAGS = -O3 -march=native 
 # LIKFLAGS = -DLIKWID_PERFMON -I /home/soft/likwid/include -L /home/soft/likwid/lib -llikwid

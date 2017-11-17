@@ -54,14 +54,16 @@ double* generateIdentityMatrix(int length){
   int i, j;
 
   double *I = NULL;
-  ALLOC(I,double, SIZE_OF_ALIGNED_LINE(length));
+  int alength = SIZE_OF_ALIGNED_LINE(length);
+
+  ALLOC(I,double, SIZE_OF_ALIGNED_MATRIX(length));
 
   for (i = 0; i < length; ++i)
     for (j = i + 1; j < length; ++j)
-      I[i * length + j] = TRUE_ZERO;
+      I[i * alength + j] = TRUE_ZERO;
 
   for (i = 0; i < length; ++i)
-    I[i * length + i] = TRUE_ONE;
+    I[i * alength + i] = TRUE_ONE;
   return I;
 }
 
