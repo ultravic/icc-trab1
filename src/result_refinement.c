@@ -58,6 +58,7 @@ void residueCalc(double **A, double **X, double **I, double **R, int length) {
     double aux;
     int i, j, k;
     int alength = SIZE_OF_ALIGNED_LINE(length);
+
     // Calcula resíduo R = I - A*X
     for (i = 0; i < length; ++i) {
         for (j = 0; j < length; ++j) {
@@ -75,7 +76,7 @@ void residueCalc(double **A, double **X, double **I, double **R, int length) {
                 aux += GET(A, alength, i, k) * GET(X, alength, j, k);
 
             // I-A*X
-            aux = (i==j) ? TRUE_ZERO : (IS_ZERO(aux)? TRUE_ZERO : -aux);
+            aux = (i==j) ? TRUE_ZERO : (IS_ZERO(aux)? TRUE_ZERO : 1-aux);
 
             // R =  I-A*X
             SET(R, alength, i, j, aux);

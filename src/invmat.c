@@ -141,6 +141,7 @@ printTranspNormal(&M.X, M.length);
       residue_time +=(actual_time - initial_time);
     //----------------------------------------------------------------------
 
+    printTranspNormal(&M.R, M.length);
     //----------------------------------------------------------------------
     // Calcula norma L2 do resíduo
     //----------------------------------------------------------------------
@@ -155,8 +156,6 @@ printTranspNormal(&M.X, M.length);
     //----------------------------------------------------------------------
     initial_time = timestamp();
 
-    // Pivotamento parcial em R
-    // ????
     // Efetua Aw = R
 
     // LIKWID_MARKER_START("op1");
@@ -169,8 +168,7 @@ printTranspNormal(&M.X, M.length);
     // X+=W
     sumMatrix(&M.W, &M.X, M.length);
 
-    // printf("X---------\n");
-    // printTranspNormal(&M.X, M.length);
+    printf("R---------\n");
     // printf("---------\n");
 
     actual_time = timestamp();
