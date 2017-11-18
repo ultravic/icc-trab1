@@ -13,7 +13,7 @@ for f in {trab1,trab2}; do
     done
     cd ..;
 done
-cd trab2;
-for i in {32,33,64,65,128,129,256,257,512,1000,200}; do
-    {echo "#####\n##### trab2\n#####\n" && likwid-perfcter -C 0 -g FLOPS_AVX -m ./invmat -r $i -o /dev/null -i 10 } >/>  ../measurement/flops_avx.txt;
-done
+# cd trab2;
+# for i in {32,33,64,65,128,129,256,257,512,1000,200}; do
+#     {echo "#####\n##### trab2\n#####\n" && likwid-perfcter -C 0 -g FLOPS_AVX -m ./invmat -r $i -o /dev/null -i 10 } >/>  ../measurement/flops_avx.txt;
+# done

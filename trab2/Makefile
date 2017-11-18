@@ -1,7 +1,7 @@
 CC = gcc
-CFLAGS = -Wall -lrt -lm -O3 -march=native -DLIKWID_PERFMON -I /home/victor/include -L /home/victor/lib -llikwid
+CFLAGS = -Wall -lrt -lm -O3
 OPT = -O3 -march=native
-LIK = -DLIKWID_PERFMON -I /home/soft/likwid/include -L /home/soft/likwid/lib -llikwid
+# LIK = -DLIKWID_PERFMON -I /home/soft/likwid/include -L /home/soft/likwid/lib -llikwid
 ALLFLAGS = $(CFLAGS) $(OPT) $(LIK)
 DEBUG = -DDEBUG -g
 
@@ -14,7 +14,7 @@ OBJ = invmat.o matrix_generator.o matrix_solver.o partial_pivoting.o result_refi
 all: invmat
 
 invmat: $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -o $@ $^ $(ALLFLAGS)
 
 doc: FORCE
 	doxygen doc/config

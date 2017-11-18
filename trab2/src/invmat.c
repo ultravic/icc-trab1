@@ -149,7 +149,7 @@ int main(int argc, char const *argv[]) {
     // printf("---------\n");
 
     actual_time = timestamp();
-    residue_time +=(actual_time - initial_time);
+    iter_time += (actual_time - initial_time);
     //----------------------------------------------------------------------
 
     // Calcula norma L2 do resíduo
@@ -159,7 +159,7 @@ int main(int argc, char const *argv[]) {
     norm = normCalc(&M.R, M.length);
 
     actual_time = timestamp();
-    iter_time += (actual_time - initial_time);
+    residue_time +=(actual_time - initial_time);
 
     fprintf(output_file, "# iter %d: %1.17g\n", iter, norm);
     //----------------------------------------------------------------------
@@ -188,7 +188,7 @@ int main(int argc, char const *argv[]) {
     // printf("---------\n");
 
     actual_time = timestamp();
-    residue_time +=(actual_time - initial_time);
+    iter_time += (actual_time - initial_time);
     //----------------------------------------------------------------------
 
     iter++;
