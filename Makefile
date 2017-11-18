@@ -1,8 +1,8 @@
-CC = gcc -std=gnu99
-CFLAGS = -Wall -lrt -lm $(OPTFLAGS) $(LIKFLAGS)
-OPTFLAGS = -O3 -march=native 
-# LIKFLAGS = -DLIKWID_PERFMON -I /home/soft/likwid/include -L /home/soft/likwid/lib -llikwid
-DEBUG = -DDEBUG -g
+CC = gcc
+CFLAGS = -Wall -lrt -lm -O3 -march=native -DLIKWID_PERFMON -I /home/victor/include -L /home/victor/lib -llikwid
+OPT = -O3 -march=native
+LIK = -DLIKWID_PERFMON -I /home/soft/likwid/include -L /home/soft/likwid/lib -llikwid
+ALLFLAGS = $(CFLAGS) $(OPT) $(LIK)
 
 vpath %.c src
 vpath %.h lib
@@ -11,8 +11,9 @@ src = $(wildcard *.c)
 OBJ = invmat.o matrix_generator.o matrix_solver.o partial_pivoting.o result_refinement.o gauss_elimination.o io.o time_measurement.o error_handler.o
 
 all: invmat
+
 invmat: $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -o $@ $^ $(ALLFLAGS)
 
 doc: FORCE
 	doxygen doc/config

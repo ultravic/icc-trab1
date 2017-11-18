@@ -29,22 +29,33 @@
 void gaussElimination(double **A, double **L, double **U, int *line_map, int n)
 {
   int j, i, k, sizeL;
-  double aux, mult;
+
   memcpy(*U,*A,SIZE_OF_ALIGNED_MATRIX(n)*sizeof(double));
-  int an = SIZE_OF_ALIGNED_LINE(n);
+  int alength = SIZE_OF_ALIGNED_LINE(n);
+  double aux, aux2, aux3, aux4, mult;
+
   for (i = 0; i < n-1; ++i) {
     sizeL = 1;
     partialPivoting(U, L, i, line_map, n);
     for (j = i + 1; j < n; ++j) {
-      mult = GET(U, an, line_map[j], i) / GET(U, an, line_map[i], i);
-      SET(L, an, j, i, mult);
+      mult = GET(U, alength, line_map[j], i) / GET(U, alength, line_map[i], i);
+      SET(L, alength, j, i, mult);
 
-      SET(U, an, line_map[j], i, TRUE_ZERO);
+      SET(U, alength, line_map[j], i, TRUE_ZERO);
 
-      for (k = i + 1; k < n; ++k) {
-        aux = GET(U, an, line_map[j], k) - (mult * GET(U, an, line_map[i], k));
-        SET(U, an, line_map[j], k, aux);
+      for (k = i + 1; k+4 < n; k+=4) {
+        aux =  GET(U, alength, line_map[j], k) -   (mult * GET(U, alength, line_map[i], k));
+        aux2 = GET(U, alength, line_map[j], k+1) - (mult * GET(U, alength, line_map[i], k+1));
+        aux3 = GET(U, alength, line_map[j], k+2) - (mult * GET(U, alength, line_map[i], k+2));
+        aux4 = GET(U, alength, line_map[j], k+3) - (mult * GET(U, alength, line_map[i], k+3));
+        SETFC(U, alength, line_map[j], k, aux, aux2, aux3, aux4);
       }
+
+      for (; k < n; ++k) {
+        aux = GET(U, alength, line_map[j], k) - (mult * GET(U, alength, line_map[i], k));
+        SET(U, alength, line_map[j], k, aux);
+      }
+
       sizeL++;
     }
   }

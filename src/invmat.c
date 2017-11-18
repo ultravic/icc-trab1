@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-// #include <likwid.h>
+#include <likwid.h>
 
 
 int main(int argc, char const *argv[]) {
@@ -93,6 +93,7 @@ int main(int argc, char const *argv[]) {
     lu_time = actual_time - initial_time;
   //----------------------------------------------------------------------
 
+
   //----------------------------------------------------------------------
   // Inverte a Matriz
   //----------------------------------------------------------------------
@@ -119,7 +120,7 @@ int main(int argc, char const *argv[]) {
 //----------------------------------------------------------------------
 
 // printf("X---------\n");
-// printTranspNormal(&M.X, M.length);
+printTranspNormal(&M.X, M.length);
 // printf("---------\n");
 
 //----------------------------------------------------------------------

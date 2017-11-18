@@ -22,16 +22,26 @@
  * @param      X     Matriz
  * @param      XW    Matriz
  */
-void sumMatrix(double **A, double **B, int length) {
+void sumMatrix(double **A, double **B, int length)
+{
     int i, j;
-    double aux;
     int alength = SIZE_OF_ALIGNED_LINE(length);
+    double aux, aux2, aux3, aux4;
+
     for (i = 0; i < length; ++i) {
-        for (j = 0; j < length; ++j) {
-            aux = GET_TRANSP(B, alength, i, j) + GET_TRANSP(A, alength, i, j);
-            SET_TRANSP(B, alength, i, j, aux);
-        }
-    }
+      for (j = 0; j+4 < length; j+=4) {
+        aux = GET_TRANSP(B, alength, i, j) + GET_TRANSP(A, alength, i, j);
+        aux2 = GET_TRANSP(B, alength, i, j+1) + GET_TRANSP(A, alength, i, j+1);
+        aux3 = GET_TRANSP(B, alength, i, j+2) + GET_TRANSP(A, alength, i, j+2);
+        aux4 = GET_TRANSP(B, alength, i, j+3) + GET_TRANSP(A, alength, i, j+3);
+        SET_TRANSPFC(B, alength, i, j, aux, aux2, aux3, aux4);
+      }
+
+      for (; j < length; ++j) {
+        aux = GET_TRANSP(B, alength, i, j) + GET_TRANSP(A, alength, i, j);
+        SET_TRANSP(B, alength, i, j, aux);
+      }
+  }
 }
 
 /**
@@ -53,19 +63,22 @@ void residueCalc(double **A, double **X, double **I, double **R, int length) {
         for (j = 0; j < length; ++j) {
             aux = TRUE_ZERO;
             //A[i]*X[j]
-            for (k = 0; k < length; ++k) {
-                // printf("A[%d][%d] %lf * ",i,k,GET(A, length, i, k) );
-                // printf("X[%d][%d] %lf \n",i,k,GET(X, length, i, k) );
-                aux += GET(A, alength, i, k) * GET(X, alength, j, k);
-                // printf("aux = %lf\n",aux );
+
+            for (k = 0; k+4 < length; k+=4) {
+                aux += GET(A, alength, i, k) *   GET(X, alength, j, k);
+                aux += GET(A, alength, i, k+1) * GET(X, alength, j, k+1);
+                aux += GET(A, alength, i, k+2) * GET(X, alength, j, k+2);
+                aux += GET(A, alength, i, k+3) * GET(X, alength, j, k+3);
             }
+
+            for (; k < length; ++k)
+                aux += GET(A, alength, i, k) * GET(X, alength, j, k);
 
             // I-A*X
             aux = (i==j) ? TRUE_ZERO : (IS_ZERO(aux)? TRUE_ZERO : -aux);
-            // printf("I-A*X = %lf\n",aux );
+
             // R =  I-A*X
             SET(R, alength, i, j, aux);
-            // printf("R[%d][%d]=%lf\n",i,j,GET(R,length,i,j));
         }
     }
 }
@@ -83,7 +96,14 @@ double normCalc(double **R, int length) {
     double norm;
 
     norm = TRUE_ZERO;
-    for (i = 0; i < size; ++i)
+    for (i = 0; i+4 < size; i+=4) {
+        norm += SQ((*R)[i]);
+        norm += SQ((*R)[i+1]);
+        norm += SQ((*R)[i+2]);
+        norm += SQ((*R)[i+3]);
+    }
+
+    for (; i < size; ++i)
         norm += SQ((*R)[i]);
 
     return sqrt(norm);

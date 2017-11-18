@@ -33,6 +33,7 @@ void forwardSubstitution(double **L, double **Y, double **B, int *line_map, int 
   // define primeiro valor a ser usado
   double aux;
   int alength = SIZE_OF_ALIGNED_LINE(length);
+
   double temp = 0;
   for (c = 0; c < length; ++c) {
     aux = GET(B, alength, line_map[0], c) / GET(L, alength, 0, 0);
@@ -40,9 +41,17 @@ void forwardSubstitution(double **L, double **Y, double **B, int *line_map, int 
 
     for (i = 1; i < length; ++i) {
       temp = GET(B, alength, line_map[i], c);
-      for (j = 0; j < i; j++) {
-        temp = temp - (GET(L, alength, i, j) * GET(Y, alength, j, c));
+
+      for (j = 0; j+4 < i; j+=4) {
+        temp -= (GET(L, alength, i, j) *   GET(Y, alength, j, c));
+        temp -= (GET(L, alength, i, j+1) * GET(Y, alength, j+1, c));
+        temp -= (GET(L, alength, i, j+2) * GET(Y, alength, j+2, c));
+        temp -= (GET(L, alength, i, j+3) * GET(Y, alength, j+3, c));
       }
+
+      for (; j < i; ++j)
+        temp -= (GET(L, alength, i, j) * GET(Y, alength, j, c));
+
       temp = temp / GET(L, alength, i, j);
       SET(Y, alength, i, c, temp);
     }
@@ -74,10 +83,18 @@ void backwardSubstitution(double **U, double **X, double **Y, int *line_map, int
     aux = GET(Y, alength, last, c) / GET(U, alength, line_map[last], last);
     SET_TRANSP(X, alength, last, c, aux);
     for (i = last-1; i >= 0; --i) {
-      temp = GET(Y, alength, i, c);
-      for (j = last; j > i; --j) {
-        temp = temp - (GET(U, alength, line_map[i], j) * GET_TRANSP(X, alength, j, c));
+      temp = GET(Y, length, i, c);
+
+      for (j = last; j-4 > i; j-=4) {
+        temp -= (GET(U, alength, line_map[i], j) * GET_TRANSP(X, alength, j, c));
+        temp -= (GET(U, alength, line_map[i], j-1) * GET_TRANSP(X, alength, j-1, c));
+        temp -= (GET(U, alength, line_map[i], j-2) * GET_TRANSP(X, alength, j-2, c));
+        temp -= (GET(U, alength, line_map[i], j-3) * GET_TRANSP(X, alength, j-3, c));
       }
+
+      for (; j > i; --j)
+        temp -= (GET(U, alength, line_map[i], j) * GET_TRANSP(X, alength, j, c));
+
       temp = temp / GET(U, alength, line_map[i], j);
       SET_TRANSP(X, alength, i, c, temp);
     }

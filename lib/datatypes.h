@@ -172,5 +172,23 @@
 	#define SET_TRANSP(M,length,l,c,v) ((*M)[(c) * (length) + (l)] = (v))
 	#define SETT(M,l,c,v) ( (*M)[ ((((l)*((l)+1))/2)+(c)) ] = (v))
 
+	#define SETFL(M,length,l,c,v,v2,v3,v4) { \
+		((*M)[(l) * (length) + (c)] = (v)); \
+		((*M)[(l+1) * (length) + (c)] = (v2)); \
+		((*M)[(l+2) * (length) + (c)] = (v3)); \
+		((*M)[(l+3) * (length) + (c)] = (v4)); \
+	}
+	#define SETFC(M,length,l,c,v,v2,v3,v4) { \
+		((*M)[(l) * (length) + (c)] = (v)); \
+		((*M)[(l) * (length) + (c+1)] = (v2)); \
+		((*M)[(l) * (length) + (c+2)] = (v3)); \
+		((*M)[(l) * (length) + (c+3)] = (v4)); \
+	}
+	#define SET_TRANSPFC(M,length,l,c,v,v2,v3,v4) { \
+		((*M)[(c) * (length) + (l)] = (v)); \
+		((*M)[(c+1) * (length) + (l)] = (v2)); \
+		((*M)[(c+2) * (length) + (l)] = (v3)); \
+		((*M)[(c+3) * (length) + (l)] = (v4)); \
+	}
 
 #endif
