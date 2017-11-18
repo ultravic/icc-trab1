@@ -29,7 +29,7 @@ double *generateRandomSquareMatrix(int length) {
 
   /* generate a randomly initialized matrix in row-major order */
   int size = SIZE_OF_ALIGNED_LINE(length);
-  
+
   double invRandMax = 1.0 / (double)RAND_MAX;
 
   for (int i = 0; i < length; ++i)
@@ -77,7 +77,7 @@ double* generateIdentityMatrix(int length){
  */
 int* generateLineMap(int length) {
   int i;
-  int *line_map = NULL; 
+  int *line_map = NULL;
   ALLOC(line_map,int,length);
 
   for (i = 0; i < length; ++i) {

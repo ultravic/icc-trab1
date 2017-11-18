@@ -30,7 +30,7 @@ void gaussElimination(double **A, double **L, double **U, int *line_map, int n)
 {
   int j, i, k, sizeL;
   double aux, mult;
-  memcpy(*U,*A,SQ(n)*sizeof(double));
+  memcpy(*U,*A,SIZE_OF_ALIGNED_MATRIX(n)*sizeof(double));
   int an = SIZE_OF_ALIGNED_LINE(n);
   for (i = 0; i < n-1; ++i) {
     sizeL = 1;

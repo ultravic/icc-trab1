@@ -37,6 +37,7 @@ void forwardSubstitution(double **L, double **Y, double **B, int *line_map, int 
   for (c = 0; c < length; ++c) {
     aux = GET(B, alength, line_map[0], c) / GET(L, alength, 0, 0);
     SET(Y, alength, 0, c, aux);
+
     for (i = 1; i < length; ++i) {
       temp = GET(B, alength, line_map[i], c);
       for (j = 0; j < i; j++) {
@@ -45,6 +46,7 @@ void forwardSubstitution(double **L, double **Y, double **B, int *line_map, int 
       temp = temp / GET(L, alength, i, j);
       SET(Y, alength, i, c, temp);
     }
+
   }
 }
 

@@ -15,42 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/**
- * @brief      Efetua o produto interno de uma linha de uma matriz por uma
- *             coluna de outra matriz
- *
- * @param      A       Matriz A
- * @param      B       Matriz B
- * @param[in]  line    A linha da matriz A
- * @param[in]  column  A coluna da matriz B
- * @param[in]  length  The length
- * @param      line_map  The index array
- *
- * @return     O resultado da operação
- */
-double lineTimesColumn(double **A, double **B, int line, int column,
-                       int length) {
-    int i, j;
-    double temporary = TRUE_ZERO;
-    int alength = SIZE_OF_ALIGNED_LINE(length);
-    for (i = 0; i < length; i++) {
-        // for (i = 0; i < length; i+=4) {
-        temporary += GET(A, alength, line, i) * GET(B, alength, i, column);
-        // temporary += GET(A, length, line, i+1) * GET_TRANSP(B, length, i+1,
-        // column);
-        // temporary += GET(A, length, line, i+2) * GET_TRANSP(B, length, i+2,
-        // column);
-        // temporary += GET(A, length, line, i+3) * GET_TRANSP(B, length, i+3,
-        // column);
-    }
-    //
-    // if (i > length)
-    //   for (j = i - 4; j < length; ++j)
-    //     temporary += GET(A, length, line, i) * GET_TRANSP(B, length, i,
-    //     column);
-
-    return temporary;
-}
 
 /**
  * @brief      Efetua a soma de duas matrizes
@@ -83,7 +47,7 @@ void sumMatrix(double **A, double **B, int length) {
 void residueCalc(double **A, double **X, double **I, double **R, int length) {
     double aux;
     int i, j, k;
-    int alength = SIZE_OF_ALIGNED_LINE(length); 
+    int alength = SIZE_OF_ALIGNED_LINE(length);
     // Calcula resíduo R = I - A*X
     for (i = 0; i < length; ++i) {
         for (j = 0; j < length; ++j) {

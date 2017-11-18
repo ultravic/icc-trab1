@@ -119,10 +119,11 @@ int readMatrix(matrixPack *M, char *file_path) {
 void printMapped(double **matrix, int *line_map, int length)
 {
   int i, j;
+  int alength = SIZE_OF_ALIGNED_LINE(length);
   printf("%d\n",length);
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      printf("%1.17g\t" , GET(matrix, length, line_map[i], j));
+      printf("%1.17g\t" , GET(matrix, alength, line_map[i], j));
     printf("\n");
   }
 }
@@ -135,10 +136,11 @@ void printMapped(double **matrix, int *line_map, int length)
 void printTranspMapped(double **matrix, int *line_map, int length)
 {
   int i, j;
+  int alength = SIZE_OF_ALIGNED_LINE(length);
   printf("%d\n",length);
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      printf("%1.17g\t" , GET_TRANSP(matrix, length, line_map[i], j));
+      printf("%1.17g\t" , GET_TRANSP(matrix, alength, line_map[i], j));
     printf("\n");
   }
 }
@@ -151,10 +153,11 @@ void printTranspMapped(double **matrix, int *line_map, int length)
 void printfMapped(double **matrix, int *line_map, FILE *file, int length)
 {
   int i, j;
+  int alength = SIZE_OF_ALIGNED_LINE(length);
   fprintf(file,"%d\n",length);
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      fprintf(file,"%1.17g\t" , GET(matrix, length, i, j));
+      fprintf(file,"%1.17g\t" , GET(matrix, alength, i, j));
     fprintf(file,"\n");
   }
 }
@@ -168,9 +171,11 @@ void printfTranspMapped(double **matrix, int *line_map, FILE *file, int length)
 {
   int i, j;
   fprintf(file,"%d\n",length);
+
+  int alength = SIZE_OF_ALIGNED_LINE(length);
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      fprintf(file,"%1.17g\t" , GET_TRANSP(matrix, length, i, j));
+      fprintf(file,"%1.17g\t" , GET_TRANSP(matrix, alength, i, j));
     fprintf(file,"\n");
   }
 }
@@ -205,10 +210,11 @@ void printNormal(double **matrix, int length)
 void printTranspNormal(double **matrix, int length)
 {
   int i, j;
+  int alength = SIZE_OF_ALIGNED_LINE(length);
   printf("%d\n",length);
   for (i = 0; i < length; ++i) {
     for (j = 0; j < length; j++)
-      printf("%1.17g\t" , GET_TRANSP(matrix, length, i, j));
+      printf("%1.17g\t" , GET_TRANSP(matrix, alength, i, j));
     printf("\n");
   }
 }
