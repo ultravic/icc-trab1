@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -lrt -lm -O3
 OPT = -O3 -march=native
-# LIK = -DLIKWID_PERFMON -I /home/soft/likwid/include -L /home/soft/likwid/lib -llikwid
+LIK = -DLIKWID_PERFMON -I /home/soft/likwid/include -L /home/soft/likwid/lib -llikwid
 ALLFLAGS = $(CFLAGS) $(OPT) $(LIK)
 DEBUG = -DDEBUG -g
 
