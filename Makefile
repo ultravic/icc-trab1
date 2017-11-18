@@ -1,6 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -lrt -lm -O3 -march=native
 DEBUG = -DDEBUG -g
+LIK = -DLIKWID_PERFMON -I /home/soft/likwid/include -L /home/soft/likwid/lib -llikwid
 
 vpath %.c src
 vpath %.h lib
