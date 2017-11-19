@@ -9,6 +9,6 @@
 #include <time.h>
 #ifndef __TIME_MEASUREMENT__
 #define __TIME_MEASUREMENT__
-long timestamp(void);
+double timestamp(void);
 
 #endif
