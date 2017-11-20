@@ -207,7 +207,7 @@ int main(int argc, char const *argv[]) {
   fprintf(output_file, "# Tempo residuo: %lf\n", residue_time);
   fprintf(output_file, "#\n");
 
-  // printfTranspMapped(&M.X, line_map, output_file, M.length);
+  printfTranspMapped(&M.X, line_map, output_file, M.length);
   //----------------------------------------------------------------------
 
   // Libera a memória do conjunto de matrizes

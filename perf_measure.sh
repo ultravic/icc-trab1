@@ -6,10 +6,10 @@ for f in {trab1,trab2}; do
     cd $f;
     make -B;
     for i in {32,33,64,65,128,129,256,257,512,1000,200}; do
-        ./invmat -r $i -o ../measurement/$(f)_output.txt -i 10 } ;
-        {echo "#####\n##### $f\n#####\n" && likwid-perfcter -C 0 -g CACHE -m ./invmat -r $i -o /dev/null -i 10 } >>  ../measurement/cache.txt;
-        {echo "#####\n##### $f\n#####\n" && likwid-perfcter -C 0 -g MEM -m ./invmat -r $i -o /dev/null -i 10 } >>  ../measurement/mem.txt;
-        {echo "#####\n##### $f\n#####\n" && likwid-perfcter -C 0 -g FLOPS -m ./invmat -r $i -o /dev/null -i 10 } >>  ../measurement/flops.txt;
+        ./invmat -r $i -o ../measurement/$f_output.txt -i 10 } ;
+        { likwid-perfcter -C 0 -g CACHE -m ./invmat -r $i -o /dev/null -i 10 } >>  ../measurement/cache.txt;
+        { likwid-perfcter -C 0 -g MEM -m ./invmat -r $i -o /dev/null -i 10 } >>  ../measurement/mem.txt;
+        { likwid-perfcter -C 0 -g FLOPS -m ./invmat -r $i -o /dev/null -i 10 } >>  ../measurement/flops.txt;
     done
     cd ..;
 done
